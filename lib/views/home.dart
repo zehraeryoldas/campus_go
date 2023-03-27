@@ -1,0 +1,103 @@
+import 'package:campusgo/utility/color.dart';
+import 'package:campusgo/views/conversation.dart';
+import 'package:campusgo/views/productSearch.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
+
+import '../arayuz.dart';
+import 'allAds.dart';
+
+class homePage extends StatefulWidget {
+  const homePage({super.key});
+
+  @override
+  State<homePage> createState() => _homePageState();
+}
+
+class _homePageState extends State<homePage> {
+  final locationIdController = TextEditingController();
+
+  TextEditingController userIdController = TextEditingController();
+
+  CollectionReference location =
+      FirebaseFirestore.instance.collection("location");
+  String? dropdownValue1;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(30),
+          ),
+        ),
+        leading: _location(),
+        leadingWidth: 120,
+        title: TextButton.icon(
+            onPressed: () {
+              showSearch(context: context, delegate: searchDelegate());
+            },
+            icon: const Icon(
+              Icons.search,
+              color: Colors.grey,
+            ),
+            label: const Text(
+              "Kitap, defter vb.",
+              style: TextStyle(
+                color: Colors.grey,
+              ),
+            )),
+        actions: [
+          Row(
+            children: [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.notification_add),
+                color: mainColor.color,
+              )
+            ],
+          )
+        ],
+      ),
+      //body: conversationPage(),
+      body: ilanlarim2(),
+    );
+  }
+
+  StreamBuilder<QuerySnapshot<Object?>> _location() {
+    return StreamBuilder<QuerySnapshot>(
+        stream: location.snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Text('Something went wrong');
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Text("Loading");
+          }
+          return Container(
+            width: double.infinity,
+            child: DropdownButton<String>(
+              hint: Text("Konum Seç"),
+              onChanged: (String? newValue) {
+                setState(() {
+                  //locationIdController.text = newValue!;
+                  dropdownValue1 = newValue;
+                });
+              },
+              value: dropdownValue1,
+              items: snapshot.data!.docs.map((DocumentSnapshot doc) {
+                return DropdownMenuItem(
+                  alignment: Alignment.bottomCenter,
+                  child: Text(doc['name']),
+                  value: doc.reference.id.toString(),
+                );
+              }).toList(),
+            ),
+          );
+        });
+  }
+}
