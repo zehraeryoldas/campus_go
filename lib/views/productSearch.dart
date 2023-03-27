@@ -1,3 +1,5 @@
+import 'package:campusgo/utility/color.dart';
+import 'package:campusgo/views/allAdsDetail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -26,7 +28,10 @@ class searchDelegate extends SearchDelegate {
               query = '';
             }
           },
-          icon: const Icon(Icons.clear))
+          icon: const Icon(
+            Icons.clear,
+            color: mainColor.color,
+          ))
     ];
   }
 
@@ -34,12 +39,15 @@ class searchDelegate extends SearchDelegate {
   Widget? buildLeading(BuildContext context) {
     // TODO: implement buildLeading
     return IconButton(
-        color: Colors.blue,
+        //color: Colors.blue,
         onPressed: () {
           Navigator.push(context,
               MaterialPageRoute(builder: (BuildContext) => const Arayuz()));
         },
-        icon: const Icon(Icons.arrow_back));
+        icon: const Icon(
+          Icons.arrow_back,
+          color: mainColor.color,
+        ));
   }
 
   @override
@@ -67,12 +75,52 @@ class searchDelegate extends SearchDelegate {
             Map<String, dynamic> data =
                 document.data()! as Map<String, dynamic>;
 
-            var id = data['rid'];
+            var id = data['userId'].toString();
+            String resim = data['images'].toString();
+            String name = data['name'].toString();
 
+            int price = data['price'];
+            String durum = data['status'];
+            String aciklama = data['description'];
+            String konum = data['location'];
+            String user = data['user.name'].toString();
+
+            // return Card(
+            //   child: ListTile(
+            //     title: Text(data['name']),
+            //     subtitle: Text('fiyat:' + data['price'].toString()+" \u20ba"),
+            //     trailing: Container(
+            //       width: 80,
+            //       height: 70,
+            //       decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(data['images'].toString()))),
+            //     ),
+            //   ),
+            // );
             return Card(
               child: ListTile(
+                leading: Container(
+                    width: 80,
+                    height: 70,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: NetworkImage(data['images'].toString())))),
                 title: Text(data['name']),
-                subtitle: Text('description:' + data['description']),
+                subtitle: Text('fiyat:' + data['price'].toString() + " \u20ba"),
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AllAdsDetailPage(
+                                id: id,
+                                price: price,
+                                name: name,
+                                resim: resim,
+                                durum: durum,
+                                aciklama: aciklama,
+                                konum: konum,
+                                user: user,
+                              )));
+                },
               ),
             );
           }).toList(),

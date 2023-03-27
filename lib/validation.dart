@@ -11,6 +11,17 @@ class UserLogin extends StatefulWidget {
 }
 
 class _userLoginState extends State<UserLogin> {
+  void showMessage(BuildContext context) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: const Text('email ve şifre bilgilerini kontrol ediniz!'),
+        action: SnackBarAction(
+            label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
+      ),
+    );
+  }
+
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController sifreController = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
@@ -23,22 +34,38 @@ class _userLoginState extends State<UserLogin> {
   String url =
       "https://cdn.pixabay.com/photo/2019/06/06/16/02/technology-4256272_960_720.jpg";
 
-    bool _isObscure = true;
+  bool _isObscure = true;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  Future<void> resetPassword(String email) async {
+    await _auth.sendPasswordResetEmail(email: email);
+  }
 
   Future<void> girisYap() async {
-    await auth
-        .signInWithEmailAndPassword(
-            email: emailcontroller.text, password: sifreController.text)
-        .then((kullanici) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Arayuz()));
-    });
+    try {
+      await auth
+          .signInWithEmailAndPassword(
+              email: emailcontroller.text, password: sifreController.text)
+          .then((kullanici) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Arayuz()));
+      });
+    } on Exception catch (e) {
+      showMessage(context);
+      // TODO
+    }
   }
 
   signOut() async {
     return await auth.signOut();
   }
+
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   WidgetsBinding.instance.addPostFrameCallback((_)=>girisYap());
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +92,16 @@ class _userLoginState extends State<UserLogin> {
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: _myContainers(email, emailcontroller,
-                        TextInputType.emailAddress, Icon(Icons.email,color: Colors.white70,)),
+                    child: _myContainers(
+                        email,
+                        emailcontroller,
+                        TextInputType.emailAddress,
+                        Icon(
+                          Icons.email,
+                          color: Colors.white70,
+                        )),
                   ),
-                                    sifrecontainer(),
+                  sifrecontainer(),
 
                   SizedBox(
                     height: 5,
@@ -76,7 +109,9 @@ class _userLoginState extends State<UserLogin> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        resetPassword(emailcontroller.text);
+                      },
                       child: Text(
                         "-------------Şifremi Unuttum-------------",
                         style: TextStyle(color: Colors.pink.shade200),
@@ -104,6 +139,7 @@ class _userLoginState extends State<UserLogin> {
           ),
         ));
   }
+
   Container sifrecontainer() {
     return Container(
       //decoration: BoxDecoration(color: Colors.transparent),
@@ -121,9 +157,15 @@ class _userLoginState extends State<UserLogin> {
                 _isObscure = !_isObscure;
               });
             },
-            icon: Icon(_isObscure ? Icons.visibility_off : Icons.visibility,color: Colors.white70,),
+            icon: Icon(
+              _isObscure ? Icons.visibility_off : Icons.visibility,
+              color: Colors.white70,
+            ),
           ),
-          prefixIcon: Icon(Icons.password,color: Colors.white70,),
+          prefixIcon: Icon(
+            Icons.password,
+            color: Colors.white70,
+          ),
           label: Text(
             "sifre",
             style: TextStyle(color: Colors.grey),

@@ -1,26 +1,36 @@
 class usersModel {
   int? id;
-  String? mail;
+  String? email;
   String? name;
-  String? password;
+  // String? password;
+  // String? password2;
   int? phone;
 
-  usersModel({this.id, this.mail, this.name, this.password, this.phone});
+  usersModel(
+      {this.id,
+      this.email,
+      this.name,
+      // this.password,
+      // this.password2,
+      this.phone,
+      });
 
   usersModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    mail = json['mail'];
+    email = json['email'];
     name = json['name'];
-    password = json['password'];
+    // password = json['password'];
+    // password2 = json['password2'];
     phone = json['phone'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['mail'] = this.mail;
+    data['email'] = this.email;
     data['name'] = this.name;
-    data['password'] = this.password;
+    // data['password'] = this.password;
+    // data['password2'] = this.password2;
     data['phone'] = this.phone;
     return data;
   }

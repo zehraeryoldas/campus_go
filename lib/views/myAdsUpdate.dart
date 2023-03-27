@@ -2,9 +2,12 @@
 
 import 'dart:io';
 
+import 'package:campusgo/models/products_model.dart';
 import 'package:campusgo/utility/color.dart';
+import 'package:campusgo/views/ads.dart';
 import 'package:campusgo/views/call_backDropDown.dart';
 import 'package:campusgo/services/products_services.dart';
+import 'package:campusgo/views/myAds.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -15,19 +18,37 @@ import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 
-class payPage extends StatefulWidget {
-  const payPage({super.key});
+class MyAdsUpdate extends StatefulWidget {
+  MyAdsUpdate({
+    super.key,
+    required this.id,
+    required this.name,
+    required this.resim,
+    required this.idx,
+    required this.price,
+    required this.durum,
+    required this.aciklama,
+    required this.konum,
+  });
+  final String id;
+final String idx;
+  final String resim;
+  final String name;
+  final int price;
+  final String durum;
+  final String aciklama;
+  final String konum;
 
   @override
-  State<payPage> createState() => _payPageState();
+  State<MyAdsUpdate> createState() => _MyAdsUpdateState();
 }
 
-class _payPageState extends State<payPage> {
+class _MyAdsUpdateState extends State<MyAdsUpdate> {
   void showMessage(BuildContext context) {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
-        content: const Text('Kayıt Başarılı'),
+        content: const Text('Güncelleme Başarılı'),
         action: SnackBarAction(
             label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
       ),
@@ -46,7 +67,7 @@ class _payPageState extends State<payPage> {
         _photo = File(pickedFile.path);
 
         //sonradan eklendi
-                //imagesController.text=_photo.toString();
+        //imagesController.text=_photo.toString();
 
         uploadFile();
       } else {
@@ -70,6 +91,7 @@ class _payPageState extends State<payPage> {
       }
     });
   }
+
   String? indirmeBaglantisi;
 
   Future uploadFile() async {
@@ -79,13 +101,14 @@ class _payPageState extends State<payPage> {
 
     try {
       final ref = firebase_storage.FirebaseStorage.instance
-          .ref(destination).child(FirebaseAuth.instance.currentUser!.uid)
+          .ref(destination)
+          .child(FirebaseAuth.instance.currentUser!.uid)
           .child('file/');
       ref.putFile(_photo!);
-      String url=await(await ref.putFile(_photo!)).ref.getDownloadURL();
+      String url = await (await ref.putFile(_photo!)).ref.getDownloadURL();
       setState(() {
-         indirmeBaglantisi=url; 
-      imagesController.text=url as String; 
+        indirmeBaglantisi = url;
+        imagesController.text = url as String;
       });
     } catch (e) {
       print('error occured');
@@ -95,7 +118,7 @@ class _payPageState extends State<payPage> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController imagesController = TextEditingController();
   TextEditingController nameController = TextEditingController();
-  TextEditingController priceController = TextEditingController();
+  var priceController = TextEditingController();
   TextEditingController statusController = TextEditingController();
   final CategoryIdController = TextEditingController();
   final locationIdController = TextEditingController();
@@ -106,18 +129,86 @@ class _payPageState extends State<payPage> {
       FirebaseFirestore.instance.collection("location");
   String? dropdownValue;
   String? dropdownValue1;
+  // late Map userData2;
+
+  //@override
+  // void initState() {
+  //   // TODO: implement initState
+  //   super.initState();
+  //   var product_model = widget.model;
+  //   descriptionController.text = product_model.description!;
+  //   imagesController.text = product_model.images!;
+  //   nameController.text = product_model.name!;
+  //   priceController.text = product_model.price!.toString();
+  //   statusController.text = product_model.status!;
+  //   CategoryIdController.text = product_model.categoryId!;
+  //   locationIdController.text = product_model.location!;
+  // }
+
+  // Future<void> update(String id,String name,String description,int price,String durum,String Kategori,String konum,String resim) async{
+  //   CollectionReference ref=FirebaseFirestore.instance.collection("productss");
+  //   var bilgi=Map<String,dynamic>();
+  //   bilgi['name']=name;
+  //   bilgi['description']=description;
+  //   bilgi['price']=price;
+  //   bilgi['status']=durum;
+  //   bilgi['category_id']=Kategori;
+  //   bilgi['location']=konum;
+  //   bilgi['images']=resim;
+  //   ref.doc(id).update(bilgi);
+
+  // }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    var id = widget.id;
+
+    nameController.text = widget.name;
+    descriptionController.text=widget.aciklama;
+    priceController.text=widget.price.toString();
+    statusController.text=widget.durum;
+    
+    locationIdController.text=widget.konum;
+    imagesController.text=widget.resim;
+    print("<<<<<<<<<<<<");
+    print(id);
+    print("<<<<<<<<<<<<");
+  }
+
+  Future<void> update(String name, String description, int price, String status,
+      String category_id, String locationn, String images) async {
+    var collection = await FirebaseFirestore.instance
+        .collection("productss")
+        .doc(widget.id)
+        .update({
+      'name': name,
+      'description': description,
+      'price': price,
+      'status': status.toString(),
+      'category_id': category_id.toString(),
+      'location': locationn.toString(),
+      'images': images.toString(),
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(30),
-          ),
-        ),
+        backgroundColor: Colors.white,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => adsPage()));
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            )),
         title: Text(
-          "Ne Satıyorsun",
+          "Güncelle",
           style: TextStyle(color: Colors.black),
         ),
         actions: [
@@ -130,21 +221,19 @@ class _payPageState extends State<payPage> {
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18.0)))),
               onPressed: () {
-                
                 showMessage(context);
-                productService().addHedef(
-                    nameController.text,
-                    statusController.text,
-                    descriptionController.text,
-                    imagesController.text,
-                    int.parse(priceController.text),
-                    CategoryIdController.text,
-                    locationIdController.text);
-                    
-                   
+                update(
+                  nameController.text,
+                  descriptionController.text,
+                  int.parse(priceController.text),
+                  statusController.text,
+                  CategoryIdController.text,
+                  locationIdController.text,
+                  imagesController.text,
+                );
               },
               icon: Icon(Icons.save),
-              label: Text("Kaydet")),
+              label: Text("Güncelle")),
           Divider(
             color: mainColor.color,
             thickness: 3,
@@ -167,7 +256,6 @@ class _payPageState extends State<payPage> {
                 _category(),
                 _location(),
                 imageMethod(context),
-                
               ],
             ))
           ],

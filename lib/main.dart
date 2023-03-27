@@ -32,17 +32,15 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb || Platform.isAndroid || Platform.isIOS) {
     await Firebase.initializeApp(
-    //   options: const FirebaseOptions(
-    //   apiKey: 'AIzaSyAjqBHlBRhxUYpMq92kfMk8zsxzW7xFDcY',
-    //  projectId: 'campusgo-6eec2',
-    //   storageBucket: 'campusgo-6eec2.appspot.com',
-    //   messagingSenderId: '898695960774',
-    //   appId: '1:898695960774:web:a7a21c5caf34fabb331fc7',
-    // )
-    options: DefaultFirebaseOptions.currentPlatform,
+      //   options: const FirebaseOptions(
+      //   apiKey: 'AIzaSyAjqBHlBRhxUYpMq92kfMk8zsxzW7xFDcY',
+      //  projectId: 'campusgo-6eec2',
+      //   storageBucket: 'campusgo-6eec2.appspot.com',
+      //   messagingSenderId: '898695960774',
+      //   appId: '1:898695960774:web:a7a21c5caf34fabb331fc7',
+      // )
+      options: DefaultFirebaseOptions.currentPlatform,
     );
-
-    
   }
 
   runApp(
@@ -57,6 +55,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        
           scaffoldBackgroundColor: Colors.white,
           tabBarTheme: TabBarTheme(
             labelColor: Colors.pink,
@@ -66,7 +65,13 @@ class MyApp extends StatelessWidget {
               AppBarTheme(backgroundColor: Colors.transparent, elevation: 0.0)),
       debugShowCheckedModeBanner: false,
       title: "campusGo",
-      home: UserLogin(),
+
+      //home: UserLogin(),
+      // home:
+      //           signIn.currentUser!.emailVerified ? girisSayfasi() : AnaEkran(),
+      home: FirebaseAuth.instance.currentUser!.emailVerified
+          ? UserLogin()
+          : Arayuz(),
     );
   }
 }

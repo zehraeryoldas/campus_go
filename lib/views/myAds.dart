@@ -1,4 +1,6 @@
 import 'package:campusgo/utility/color.dart';
+import 'package:campusgo/views/myAdsDetail.dart';
+import 'package:campusgo/views/myAdsUpdate.dart';
 import 'package:campusgo/views/productAdd.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,14 +13,18 @@ class ilanlarim extends StatefulWidget {
 
 class _ilanlarimState extends State<ilanlarim> {
   final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
-      .collection('users')
-      .doc(FirebaseAuth.instance.currentUser!.uid)
-      .collection("products")
+      .collection("productss")
+      .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
       .snapshots();
+//  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
+//       .collection("users")
+//       .doc(FirebaseAuth.instance.currentUser!.uid)
+//       .collection("products")
+//       .snapshots();
 
   String? dropdownValue = 'Sil';
 
-payPage newyork=payPage();
+  payPage newyork = payPage();
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -36,68 +42,120 @@ payPage newyork=payPage();
             Map<String, dynamic> data =
                 document.data()! as Map<String, dynamic>;
 
-            // String id = data['rid']!;
+            String idx = data['id']!.toString();
+
+            String id = data['userId']!;
+            String resim = data['images'].toString();
+            String name = data['name'].toString();
+            int price = data['price'];
+            String durum = data['status'];
+            String aciklama = data['description'];
+            String konum = data['location'];
+
             print("******");
             print(data['name']);
             print("******");
 
-            return Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-              elevation: 10,
-              child: Row(children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration( color: mainColor.color,
-                      image: DecorationImage(image: NetworkImage(data['images'].toString()),fit: BoxFit.cover)
+        
+
+            return GestureDetector(
+              onTap: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MyAdsDetail(
+                              id: id,
+                              resim: resim,
+                              name: name,
+                              price: price,
+                              durum: durum,
+                              aciklama: aciklama,
+                              konum: konum,
+                              idx: idx,
+                            )));
+              },
+              child: Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)),
+                // elevation: 10,
+                child: Row(children: [
+                  Card(
+                    child: Container(
+                      //color: Colors.red,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: NetworkImage(data['images'].toString()))),
+                      width: MediaQuery.of(context).size.width * 0.40,
+                      height: MediaQuery.of(context).size.height * 0.12,
                     ),
-                    width: 100,
-                    height: 100,
-                   
                   ),
-                ),
-                Expanded(
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    child: ListTile(
-                      title: Text(
-                        data['name'],
-                        style: TextStyle(
-                            fontStyle: FontStyle.normal,
-                            ),
-                      ),
-                      subtitle: Text(data['price'].toString() + " TL"),
-                      trailing: DropdownButton(
-                        borderRadius: BorderRadius.circular(35.0),
-                        value: dropdownValue,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            FirebaseFirestore.instance
-                                .collection('users')
-                                .doc(FirebaseAuth.instance.currentUser!.uid)
-                                .collection("products")
-                                .where('name', isEqualTo: data['name'])
-                                .get()
-                                .then((snapshot) {
-                              snapshot.docs.forEach((document) {
-                                document.reference.delete();
+                  Expanded(
+                    child: Container(
+                      width: 40,
+                      height: MediaQuery.of(context).size.height * 0.12,
+                      child: ListTile(
+                        title: Text(data['name'],
+                            style: TextStyle(
+                                color: Colors.black87,
+                                fontSize: 18.0,
+                                fontFamily: "RobotoCondensed")),
+                        subtitle: Text(data['price'].toString() + " \u20ba"),
+                        trailing: PopupMenuButton(
+                          child: Icon(Icons.more_vert),
+                          itemBuilder: ((context) => [
+                                PopupMenuItem(
+                                  child: Text("İlanı kaldır"),
+                                  value: 1,
+                                ),
+                                PopupMenuItem(
+                                  child: Text("İlanı Güncelle"),
+                                  value: 2,
+                                ),
+                              ]),
+                          onSelected: (menuItemValue) {
+                            if (menuItemValue == 1) {
+                              print("silindi");
+                              setState(() {
+                                // FirebaseFirestore.instance
+                                //     .collection('users')
+                                //     .doc(FirebaseAuth.instance.currentUser!.uid)
+                                //     .collection('products')
+                                //     .where('name', isEqualTo: data['name'])
+                                //     .get()
+                                //     .then((snapshot) {
+                                //   snapshot.docs.forEach((document) {
+                                //     document.reference.delete();
+                                //   });
+                                // });
+
+                                FirebaseFirestore.instance
+                                    .collection("productss")
+                                    .where('name', isEqualTo: data['name'])
+                                    .get()
+                                    .then((snapshot) {
+                                  snapshot.docs.forEach((document) {
+                                    document.reference.delete();
+                                  });
+                                });
                               });
-                            });
-                            dropdownValue = newValue;
-                          });
-                        },
-                        items: ['Sil'].map((String value) {
-                          return DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
+                            }
+                            if (menuItemValue == 2) {
+                              print("güncellendi");
+                              setState(() {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            MyAdsUpdate(id: idx, name: name, aciklama: aciklama, durum: durum, idx: idx, konum: konum, price: price, resim: resim,)));
+                              });
+                            }
+                          },
+                        ),
                       ),
-                      
                     ),
                   ),
-                ),
-              ]),
+                ]),
+              ),
             );
           }).toList());
         });

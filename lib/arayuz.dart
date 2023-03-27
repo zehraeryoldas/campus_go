@@ -25,6 +25,7 @@ class _AnaSayfaState extends State<Arayuz> {
     super.initState();
     icerikler = [
       //ImageUploads(),
+
       const homePage(),
       const conversationPage(),
       const payPage(),

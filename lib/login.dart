@@ -1,4 +1,6 @@
 import 'package:campusgo/arayuz.dart';
+import 'package:campusgo/models/users_model.dart';
+import 'package:campusgo/services/user_service.dart';
 import 'package:campusgo/validation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,17 +17,22 @@ class _LoginState extends State<Login> {
   TextEditingController namecontroller = TextEditingController();
 
   TextEditingController emailcontroller = TextEditingController();
+  TextEditingController telefonNocontroller = TextEditingController();
+
   TextEditingController sifreController = TextEditingController();
   TextEditingController sifretekrarController = TextEditingController();
 
   FirebaseAuth auth = FirebaseAuth.instance;
   String name = "kullanıcı adı";
   String email = "email";
+    String telefonno = "telefon";
+
   String sifre = "şifre";
   String sifreTekrar = "şifre doğrula";
 
   String kayitOl1 = "Kayıt Ol";
   String girisYap1 = "Giriş Yap";
+
   void showMessage(BuildContext context) {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
@@ -36,25 +43,31 @@ class _LoginState extends State<Login> {
       ),
     );
   }
-
-  Future<void> kayitOl() async {
-
-    if(sifreController.text==sifretekrarController.text){
-      await auth
-        .createUserWithEmailAndPassword(
-            email: emailcontroller.text, password: sifreController.text)
-        .then((kullanici) {
-      FirebaseFirestore.instance
-          .collection("users")
-          .doc(auth.currentUser!.uid)
-          .set({"email": emailcontroller.text, "name": namecontroller.text}); });
-    }
-    else
-    {
-    showMessage(context);
-    }
-
+ void showMessage2(BuildContext context) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: const Text('Kayıt Başarılı!'),
+        action: SnackBarAction(
+            label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
+      ),
+    );
   }
+  // Future<void> kayitOl() async {
+  //   if (sifreController.text == sifretekrarController.text) {
+  //     await auth
+  //         .createUserWithEmailAndPassword(
+  //             email: emailcontroller.text, password: sifreController.text)
+  //         .then((kullanici) {
+  //       FirebaseFirestore.instance
+  //           .collection("users")
+  //           .doc(auth.currentUser!.uid)
+  //           .set({"email": emailcontroller.text, "name": namecontroller.text});
+  //     });
+  //   } else {
+  //     showMessage(context);
+  //   }
+  // }
 
   signOut() async {
     return await auth.signOut();
@@ -82,7 +95,7 @@ class _LoginState extends State<Login> {
                   _myContainers(
                       name,
                       namecontroller,
-                      TextInputType.none,
+                      TextInputType.name,
                       Icon(
                         Icons.person,
                         color: Colors.white,
@@ -95,10 +108,18 @@ class _LoginState extends State<Login> {
                         Icons.email,
                         color: Colors.white,
                       )),
+                      _myContainers(
+                      telefonno,
+                      telefonNocontroller,
+                      TextInputType.phone,
+                      Icon(
+                        Icons.phone,
+                        color: Colors.white,
+                      )),
                   _myContainers(
                       sifre,
                       sifreController,
-                      TextInputType.none,
+                      TextInputType.name,
                       Icon(
                         Icons.password,
                         color: Colors.white,
@@ -106,12 +127,14 @@ class _LoginState extends State<Login> {
                   _myContainers(
                       sifreTekrar,
                       sifretekrarController,
-                      TextInputType.none,
+                      TextInputType.name,
                       Icon(
                         Icons.password,
                         color: Colors.white,
                       )),
-                  _elevatedButton(kayitOl1, Icon(Icons.start), kayitOl),
+                  //  _elevatedButton(kayitOl1, Icon(Icons.start), kayitOl),
+                  _elevatedButton(kayitOl1, Icon(Icons.start)),
+
                   SizedBox(
                     height: 10,
                   ),
@@ -143,14 +166,32 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Padding _elevatedButton(String text, Icon icon, Future<void> fonksiyon()) {
+  Padding _elevatedButton(
+    String text,
+    Icon icon,
+  ) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ElevatedButton.icon(
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Color(0xff31274F))),
           icon: icon,
-          onPressed: fonksiyon,
+          onPressed: () async {
+            showMessage2(context);
+            if (sifreController.text == sifretekrarController.text) {
+              await auth.createUserWithEmailAndPassword(
+                  email: emailcontroller.text, password: sifreController.text);
+            } else {
+              showMessage(context);
+            }
+            userService().addHedef2(
+                emailcontroller.text,
+                namecontroller.text,
+                int.tryParse(telefonNocontroller.text),
+                // sifreController.text,
+                //sifretekrarController.text
+                );
+          },
           label: Text(text)),
     );
   }
