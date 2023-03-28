@@ -29,6 +29,7 @@ class MyAdsUpdate extends StatefulWidget {
     required this.durum,
     required this.aciklama,
     required this.konum,
+    required this.kategori,
   });
   final String id;
 final String idx;
@@ -37,6 +38,7 @@ final String idx;
   final int price;
   final String durum;
   final String aciklama;
+  final String kategori;
   final String konum;
 
   @override
@@ -208,7 +210,7 @@ class _MyAdsUpdateState extends State<MyAdsUpdate> {
               color: Colors.black,
             )),
         title: Text(
-          "Güncelle",
+          widget.name,
           style: TextStyle(color: Colors.black),
         ),
         actions: [

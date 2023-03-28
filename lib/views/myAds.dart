@@ -51,6 +51,8 @@ class _ilanlarimState extends State<ilanlarim> {
             String durum = data['status'];
             String aciklama = data['description'];
             String konum = data['location'];
+                        String kategori = data['category_id'];
+
 
             print("******");
             print(data['name']);
@@ -72,6 +74,7 @@ class _ilanlarimState extends State<ilanlarim> {
                               aciklama: aciklama,
                               konum: konum,
                               idx: idx,
+                              kategori: kategori,
                             )));
               },
               child: Card(
@@ -146,7 +149,7 @@ class _ilanlarimState extends State<ilanlarim> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            MyAdsUpdate(id: idx, name: name, aciklama: aciklama, durum: durum, idx: idx, konum: konum, price: price, resim: resim,)));
+                                            MyAdsUpdate(id: idx, name: name, aciklama: aciklama, durum: durum, idx: idx, konum: konum,kategori:kategori , price: price, resim: resim,)));
                               });
                             }
                           },

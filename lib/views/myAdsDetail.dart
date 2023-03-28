@@ -19,6 +19,8 @@ class MyAdsDetail extends StatefulWidget {
     required this.durum,
     required this.aciklama,
     required this.konum,
+        required this.kategori,
+
   });
 
   final String id;
@@ -29,6 +31,8 @@ final String idx;
   final String durum;
   final String aciklama;
   final String konum;
+    final String kategori;
+
 
   @override
   State<MyAdsDetail> createState() => _MyAdsDetailState();
@@ -81,7 +85,7 @@ class _MyAdsDetailState extends State<MyAdsDetail> {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                         builder: (context) => MyAdsUpdate(id:widget.idx, name: widget.name, aciklama: widget.aciklama, durum: widget.durum, idx: widget.idx, konum:widget. konum, price: widget.price, resim: widget.resim,)));
+                                         builder: (context) => MyAdsUpdate(id:widget.idx, name: widget.name, aciklama: widget.aciklama, durum: widget.durum, idx: widget.idx, konum:widget. konum, price: widget.price, resim: widget.resim, kategori: widget.kategori,)));
 
                               });
                     }
