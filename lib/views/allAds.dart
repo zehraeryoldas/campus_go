@@ -85,8 +85,7 @@ class _ilanlarimState extends State<ilanlarim2> {
                                   onPressed: () {
                                     setState(() {
                                       favMi=!favMi;
-                                     data['id'];
-                                      //liste.add(favMi);
+                                     
                                     });
                                   },
                                   icon: Icon(Icons.favorite_border))
@@ -95,22 +94,11 @@ class _ilanlarimState extends State<ilanlarim2> {
                                     setState(() {
                                       favMi=!favMi;
                                     });
+
                                   },
                                   icon: Icon(Icons.favorite),
                                 ),
-                          // child: IconButton(
-                          //     onPressed: () {
-                          //       setState(() {
-                          //         favMi = !favMi;
-
-                          //       });
-                          //     },
-                          //     icon: favMi
-                          //         ? Icon(Icons.favorite_border)
-                          //         : Icon(
-                          //             Icons.favorite,
-                          //             color: mainColor.color,
-                          //           ))
+                  
                         )
                       ]),
                       Text(

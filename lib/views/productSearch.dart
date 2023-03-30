@@ -54,8 +54,8 @@ class searchDelegate extends SearchDelegate {
   Widget buildResults(BuildContext context) {
     //return Container();
     final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
-        .collection('products')
-        .where('name', isEqualTo: query)
+        .collection('productss')
+        .where('name', isEqualTo: query,).where('productStatus',isEqualTo: 1).where('user.userStatus', isEqualTo: 1)
         .snapshots();
 
     // TODO: implement buildResults
@@ -85,17 +85,6 @@ class searchDelegate extends SearchDelegate {
             String konum = data['location'];
             String user = data['user.name'].toString();
 
-            // return Card(
-            //   child: ListTile(
-            //     title: Text(data['name']),
-            //     subtitle: Text('fiyat:' + data['price'].toString()+" \u20ba"),
-            //     trailing: Container(
-            //       width: 80,
-            //       height: 70,
-            //       decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(data['images'].toString()))),
-            //     ),
-            //   ),
-            // );
             return Card(
               child: ListTile(
                 leading: Container(
