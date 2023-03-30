@@ -1,3 +1,6 @@
+// ignore_for_file: unnecessary_new, prefer_const_constructors, sort_child_properties_last
+
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:campusgo/utility/color.dart';
@@ -6,70 +9,124 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'dart:io';
 
-class profilePage extends StatefulWidget {
-  const profilePage({super.key});
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as Path;
+
+class profilePagee extends StatefulWidget {
+  const profilePagee({super.key});
 
   @override
-  State<profilePage> createState() => _profilePageState();
+  State<profilePagee> createState() => _profilePageState();
 }
 
-class _profilePageState extends State<profilePage> {
+class _profilePageState extends State<profilePagee> {
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
+  File? _photo;
+  final ImagePicker _picker = ImagePicker();
+  Future imgFromGallery() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      if (pickedFile != null) {
+        _photo = File(pickedFile.path);
+
+        uploadFile();
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Future imgFromCamera() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.camera);
+
+    setState(() {
+      if (pickedFile != null) {
+        _photo = File(pickedFile.path);
+
+        uploadFile();
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  String? indirmeBaglantisi;
+
+  Future uploadFile() async {
+    if (_photo == null) return;
+    final fileName = Path.basename(_photo!.path);
+    final destination = 'userProfil/$fileName';
+
+    try {
+      final ref = firebase_storage.FirebaseStorage.instance
+          .ref(destination)
+          .child(FirebaseAuth.instance.currentUser!.uid)
+          .child('userProfile/');
+      ref.putFile(_photo!);
+      String url = await (await ref.putFile(_photo!)).ref.getDownloadURL();
+      setState(() {
+        indirmeBaglantisi = url;
+        FirebaseFirestore.instance
+            .collection("users")
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .update({'images': imagesController.text=url as String});
+       
+       //imagesController.text = url as String;
+      });
+    } catch (e) {
+      print('error occured');
+    }
+  }
+
   FirebaseAuth auth = FirebaseAuth.instance;
   signOut() async {
     return await auth.signOut();
   }
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<void> deleteUser() async {
+    User? user = _auth.currentUser;
+    await user!.delete();
+    // Kullanıcı hesabı silindi
+  }
+
+  Future<void> profilInfo() async {
+    
+  }
+  Future<void> cikisYap() async {
+    await Navigator.pushReplacement(
+        context, (MaterialPageRoute(builder: (context) => const UserLogin())));
+  }
+
   final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
       .collection('users')
       .where('id', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+      .where('userStatus', isEqualTo: 1)
       .snapshots();
+
+  TextEditingController imagesController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text(
-      //     "CampusGo",
-      //     style: TextStyle(
-      //         fontWeight: FontWeight.bold,
-      //         fontSize: 20,
-      //         fontStyle: FontStyle.italic,
-      //         color: mainColor.color),
-      //   ),
-      //   bottom: PreferredSize(
-      //       child: SizedBox(
-      //         width: MediaQuery.of(context).size.width * 0.95,
-      //       ),
-      //       preferredSize: const Size.fromHeight(30)),
-      //   // actions: [
-      //   //   IconButton(
-      //   //       onPressed: () {
-      //   //         Navigator.pushReplacement(
-      //   //             context,
-      //   //             (MaterialPageRoute(
-      //   //                 builder: (context) => const UserLogin())));
-      //   //       },
-      //   //       icon: const Icon(
-      //   //         Icons.exit_to_app,
-      //   //         color: mainColor.color,
-      //   //       ))
-      //   // ],
-      // ),
-      appBar: AppBar(
-        actions: [ IconButton(
-           onPressed: () {
-        Navigator.pushReplacement(
-                context,
-                (MaterialPageRoute(
-                    builder: (context) => const UserLogin())));
-          },
-       icon: const Icon(
-             Icons.exit_to_app,
-            color: mainColor.color,
-          ))]
-      ),
+      appBar: AppBar(actions: [
+        IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(context,
+                  (MaterialPageRoute(builder: (context) => const UserLogin())));
+            },
+            icon: const Icon(
+              Icons.exit_to_app,
+              color: mainColor.color,
+            ))
+      ]),
       body: StreamBuilder<QuerySnapshot>(
           stream: _usersStream,
           builder:
@@ -86,13 +143,12 @@ class _profilePageState extends State<profilePage> {
               Map<String, dynamic> data =
                   document.data()! as Map<String, dynamic>;
 
-              // String id = data['rid']!;
+              String images = data['images']!;
               print("******");
               print(data['name']);
               print("******");
 
               return Column(
-                
                 children: [
                   Center(
                     child: Text(
@@ -103,31 +159,92 @@ class _profilePageState extends State<profilePage> {
                           fontSize: 22),
                     ),
                   ),
-                  SizedBox(
-                    height: 25,
-                  ),
+                  _sizedBox(),
                   Stack(children: [
-                    SizedBox(
-                        width: 150,
-                        height: 150,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.black,
-                        )),
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: ((context) {
+                              return Container(
+                                child: new Wrap(
+                                  children: <Widget>[
+                                    new ListTile(
+                                        leading: new Icon(Icons.photo_library),
+                                        title: new Text('Gallery'),
+                                        onTap: () {
+                                          imgFromGallery();
+                                          Navigator.of(context).pop();
+                                        }),
+                                    new ListTile(
+                                      leading: new Icon(Icons.photo_camera),
+                                      title: new Text('Camera'),
+                                      onTap: () {
+                                        imgFromCamera();
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }));
+                      },
+                      child: SizedBox(
+                          width: 150,
+                          height: 150,
+                          child: CircleAvatar(
+                            child: _photo == null
+                                ? SizedBox(
+                                    width: 120,
+                                    height: 120,
+                                    child: CircleAvatar(
+                                      backgroundColor: mainColor.color,
+                                      backgroundImage: NetworkImage(
+                                          data['images'].toString()),
+                                    ),
+                                  )
+                                : SizedBox(
+                                    width: 120,
+                                    height: 120,
+                                    child: GestureDetector(
+                                        onTap: () {
+                                          // FirebaseFirestore.instance
+                                          //     .collection("users")
+                                          //     .doc(FirebaseAuth
+                                          //         .instance.currentUser!.uid)
+                                          //     .update({
+                                          //   'images': imagesController.text
+                                          // });
+                                        },
+                                        child: CircleAvatar(
+                                          backgroundColor: mainColor.color,
+                                          backgroundImage: FileImage(_photo!),
+                                        ))),
+                            // backgroundImage: NetworkImage(
+                            //   "https://cdn.pixabay.com/photo/2022/08/17/07/10/strawberries-7391738_1280.jpg",
+                            // ),
+
+                            // backgroundImage:FileImage(_photo!),
+                            //child:_photo!=null ? Image.file(_photo!,fit: BoxFit.cover,):Image.network("https://cdn.pixabay.com/photo/2022/08/17/07/10/strawberries-7391738_1280.jpg"),
+                            backgroundColor: Colors.black,
+                          )),
+                    ),
                     Positioned(
                       top: 100,
                       left: 105,
                       child: CircleAvatar(
-                        backgroundColor: Colors.blue,
+                        backgroundColor: Colors.black,
                         foregroundColor: Colors.white,
                         child: IconButton(
                             onPressed: () {},
-                            icon: Icon(Icons.camera_enhance_outlined)),
+                            icon: Icon(
+                              Icons.camera_enhance_outlined,
+                              color: mainColor.color,
+                            )),
                       ),
                     )
                   ]),
-                  SizedBox(
-                    height: 25,
-                  ),
+                  _sizedBox(),
                   ListTile(
                     title: Padding(
                       padding: const EdgeInsets.only(left: 100, right: 50),
@@ -146,6 +263,8 @@ class _profilePageState extends State<profilePage> {
                       ),
                     ),
                   ),
+                  _myButton(320, 50, "Profil bilgileri", profilInfo),
+                  _sizedBox(),
                   SizedBox(
                     width: 320,
                     height: 50,
@@ -159,305 +278,107 @@ class _profilePageState extends State<profilePage> {
                         ),
                         onPressed: () {},
                         child: ListTile(
-                          title: Text(
-                            "Profil bilgileri",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 18),
-                          ),
-                          trailing: IconButton(
-                              onPressed: () {},
+                            title: Text(
+                              "Hesabı Sil",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontSize: 18),
+                            ),
+                            trailing: PopupMenuButton(
                               icon: Icon(
                                 Icons.navigate_next,
                                 size: 30,
-                              )) ,
-                        )),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    width: 320,
-                    height: 50,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 2,
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                              side: BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.circular(18)),
-                        ),
-                        onPressed: () {},
-                        child: ListTile(
-                          title: Text(
-                            "Hesabı Sil",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 18),
-                          ),
-                          trailing: IconButton(
-                              onPressed: () {
-                                 FirebaseFirestore.instance
-                                    .collection("productss")
-                                    .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                                    .get()
-                                    .then((snapshot) {
-                                  snapshot.docs.forEach((document) {
-                                    document.reference.delete();
+                              ),
+                              itemBuilder: ((context) => [
+                                    PopupMenuItem(
+                                      child: Text("Hesabı Sil"),
+                                      value: 1,
+                                    )
+                                  ]),
+                              onSelected: (value) {
+                                if (value == 1) {
+                                  FirebaseFirestore.instance
+                                      .collection("productss")
+                                      .where('userId',
+                                          isEqualTo: FirebaseAuth
+                                              .instance.currentUser!.uid)
+                                      .get()
+                                      .then((snapshot) {
+                                    snapshot.docs.forEach((document) {
+                                      document.reference.update({
+                                        'user.userStatus': 0,
+                                        'productStatus': 0
+                                      });
+                                    });
                                   });
-                                });
-                                setState(() {
-                                   FirebaseFirestore.instance
-                                    .collection("users")
-                                    .where('name', isEqualTo: data['name'])
-                                    .get()
-                                    .then((snapshot) {
-                                  snapshot.docs.forEach((document) {
-                                    document.reference.delete();
+                                  setState(() {
+                                    FirebaseFirestore.instance
+                                        .collection("users")
+                                        .where('name', isEqualTo: data['name'])
+                                        .get()
+                                        .then((snapshot) {
+                                      snapshot.docs.forEach((document) {
+                                        document.reference
+                                            .update({'userStatus': 0});
+                                      });
+                                    });
+                                    //deleteUser();
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: ((context) =>
+                                                UserLogin())));
                                   });
-                                });
-                                });
+                                }
                               },
-                              icon: Icon(
-                                Icons.navigate_next,
-                                size: 30,
-                              )),
-                        )),
+                            ))),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    width: 320,
-                    height: 50,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 2,
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                              side: BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.circular(18)),
-                        ),
-                        onPressed: () {},
-                        child: ListTile(
-                          title: Text(
-                            "Çıkış Yap",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 18),
-                          ),
-                          trailing: IconButton(
-                              onPressed: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    (MaterialPageRoute(
-                                        builder: (context) =>
-                                            const UserLogin())));
-                              },
-                              icon: Icon(
-                                Icons.navigate_next,
-                                size: 30,
-                              )),
-                        )),
-                  ),
+                  _sizedBox(),
+                  _myButton(320, 50, "Çıkış Yap", cikisYap),
                 ],
               );
-
-              // child: ElevatedButton.icon(
-              //         style: ElevatedButton.styleFrom(
-              //             shape: RoundedRectangleBorder(
-              //                 side: BorderSide(color: Colors.white),
-              //                 borderRadius: BorderRadius.circular(18)),
-              //             backgroundColor: Colors.white,
-              //             elevation: 2),
-              //         onPressed: () {},
-
-              //       ),
-
-              // return Column(
-              //   children: [
-              //     Row(
-              //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //       children: [
-              //         GestureDetector(
-              //           child: Container(
-              //             width: 110,
-              //             height: 110,
-              //             decoration: BoxDecoration(
-              //                 image: DecorationImage(
-              //                     image: AssetImage(
-              //                         "assets/images/personAdd.jpg"))),
-              //           ),
-              //         ),
-              //         Column(
-              //           children: [
-              //             Card(
-              //               child: Container(
-              //                 width: 250,
-              //                 height: 50,
-              //                 decoration: BoxDecoration(
-              //                     borderRadius: BorderRadius.circular(15.0)),
-              //                 child: Center(
-              //                     child: Text(
-              //                   data['name'],
-              //                   style: TextStyle(
-              //                       color: Colors.black,
-              //                       fontSize: 18,
-              //                       fontWeight: FontWeight.bold),
-              //                 )),
-              //               ),
-              //             ),
-              //             SizedBox(
-              //               height: 15,
-              //             ),
-              //             Card(
-              //               child: Container(
-              //                 width: 250,
-              //                 height: 50,
-              //                 decoration: BoxDecoration(
-              //                     borderRadius: BorderRadius.circular(15.0)),
-              //                 child: Center(
-              //                     child:
-              //                      Text(
-              //                   data['email'],
-              //                   style: TextStyle(
-              //                       color: Colors.black,
-              //                       fontSize: 18,
-              //                       fontWeight: FontWeight.bold),
-              //                 )
-              //                 ),
-              //               ),
-              //             ),
-              //           ],
-              //         )
-              //       ],
-              //     ),
-              //     SizedBox(
-              //       height: 50,
-              //     ),
-              //     Card(
-              //       child: Container(
-              //         width: 380,
-              //         height: 50,
-              //         decoration: BoxDecoration(
-              //             borderRadius: BorderRadius.circular(15.0)),
-              //         child: Center(
-              //             child: Text(
-              //           data['phone'].toString(),
-              //           style: TextStyle(
-              //               color: Colors.black,
-              //               fontSize: 18,
-              //               fontWeight: FontWeight.bold),
-              //         )),
-              //       ),
-              //     ),
-              //     SizedBox(
-              //       height: 40,
-              //     ),
-              //     InkWell(
-              //         onTap: () {
-              //           Navigator.pushReplacement(
-              //               context,
-              //               (MaterialPageRoute(
-              //                   builder: (context) => const UserLogin())));
-              //         },
-              //         child: Text(
-              //           "Çıkış Yap",
-              //           style: TextStyle(
-              //               color: mainColor.color,
-              //               fontWeight: FontWeight.bold),
-              //         )),
-              //     SizedBox(
-              //       height: 20,
-              //     ),
-              //     InkWell(
-              //         onTap: () {},
-              //         child: Text(
-              //           "Hesabı Sil",
-              //           style: TextStyle(
-              //               color: mainColor.color,
-              //               fontWeight: FontWeight.bold),
-              //         )),
-              //   ],
-              // );
-
-              // return Column(
-              //   children: [
-              //     Padding(
-              //       padding: const EdgeInsets.only(top: 120),
-              //       child: Card(
-              //           child: ListTile(
-              //         leading: IconButton(
-              //             onPressed: () {},
-              //             icon: Icon(
-              //               Icons.person_add,
-              //               size: 50,
-              //               color: Colors.black,
-              //             )),
-              //         title: Padding(
-              //           padding: const EdgeInsets.only(bottom: 10),
-              //           child: Column(
-              //             mainAxisAlignment: MainAxisAlignment.center,
-              //             children: [
-              //               Text(data['name'],
-              //                   style: TextStyle(
-              //                       color: Colors.black87,
-              //                       fontSize: 18.0,
-              //                       fontFamily: "RobotoCondensed")),
-              //               Text(data['email'].toString())
-              //             ],
-              //           ),
-              //         ),
-              //         //subtitle: Text(data['email'].toString()),
-              //       )),
-              //     ),
-              //     SizedBox(height: 20,),
-              //     Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: InkWell(onTap: () {
-              //   Navigator.pushReplacement(
-              //       context,
-              //       (MaterialPageRoute(
-              //           builder: (context) => const UserLogin())));
-              // },child: Text("Çıkış Yap",style: TextStyle(color: mainColor.color,fontWeight: FontWeight.bold),)),
-              //     )
-              //   ],
-              // );
-
-              // return SizedBox(
-              //   width: 50,
-              //   height: 120,
-              //   child: Card(
-              //       child: ListTile(
-              //     leading: IconButton(
-              //         onPressed: () {},
-              //         icon: Icon(
-              //           Icons.person_add,
-              //           size: 80,
-              //           color: Colors.black,
-              //         )),
-              //     title: Padding(
-              //       padding: const EdgeInsets.only(bottom: 10),
-              //       child: Column(
-              //         mainAxisAlignment: MainAxisAlignment.center,
-              //         children: [
-              //           Text(data['name'],
-              //               style: TextStyle(
-              //                   color: Colors.black87,
-              //                   fontSize: 18.0,
-              //                   fontFamily: "RobotoCondensed")),
-              //           Text(data['email'].toString())
-              //         ],
-              //       ),
-              //     ),
-              //     //subtitle: Text(data['email'].toString()),
-              //   )),
-              // );
             }).toList());
           }),
     );
   }
+
+  SizedBox _sizedBox() {
+    return SizedBox(
+      height: 20,
+    );
+  }
+
+  SizedBox _myButton(
+      double width, double height, String metin, Future<void> fonksiyon()) {
+    return SizedBox(
+      width: width,
+      height: height,
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            elevation: 2,
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.white),
+                borderRadius: BorderRadius.circular(18)),
+          ),
+          onPressed: () {},
+          child: ListTile(
+            title: Text(
+              metin,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: 18),
+            ),
+            trailing: IconButton(
+                onPressed: fonksiyon,
+                icon: Icon(
+                  Icons.navigate_next,
+                  size: 30,
+                )),
+          )),
+    );
+  }
 }
+//Icons.keyboard_arrow_down,

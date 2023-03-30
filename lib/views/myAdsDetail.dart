@@ -10,7 +10,6 @@ import 'package:flutter/src/widgets/framework.dart';
 class MyAdsDetail extends StatefulWidget {
   const MyAdsDetail({
     super.key,
-    
     required this.id,
     required this.idx,
     required this.resim,
@@ -19,20 +18,18 @@ class MyAdsDetail extends StatefulWidget {
     required this.durum,
     required this.aciklama,
     required this.konum,
-        required this.kategori,
-
+    required this.kategori,
   });
 
   final String id;
-final String idx;
+  final String idx;
   final String resim;
   final String name;
   final int price;
   final String durum;
   final String aciklama;
   final String konum;
-    final String kategori;
-
+  final String kategori;
 
   @override
   State<MyAdsDetail> createState() => _MyAdsDetailState();
@@ -67,7 +64,10 @@ class _MyAdsDetailState extends State<MyAdsDetail> {
                       color: Colors.black,
                     )),
                 PopupMenuButton(
-                  icon: Icon(Icons.edit,color: Colors.black,),
+                  icon: Icon(
+                    Icons.edit,
+                    color: Colors.black,
+                  ),
                   itemBuilder: ((context) => [
                         PopupMenuItem(
                           child: Text("Güncelle"),
@@ -79,28 +79,36 @@ class _MyAdsDetailState extends State<MyAdsDetail> {
                         ),
                       ]),
                   onSelected: (menuItemValue) {
-                    if(menuItemValue==1){
-                       print("güncellendi");
-                              setState(() {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                         builder: (context) => MyAdsUpdate(id:widget.idx, name: widget.name, aciklama: widget.aciklama, durum: widget.durum, idx: widget.idx, konum:widget. konum, price: widget.price, resim: widget.resim, kategori: widget.kategori,)));
-
-                              });
-                    }
-                    if(menuItemValue==2){
+                    if (menuItemValue == 1) {
+                      print("güncellendi");
                       setState(() {
-                         FirebaseFirestore.instance
-                                    .collection("productss")
-                                    .where('name', isEqualTo: "${widget.name}")
-                                    .get()
-                                    .then((snapshot) {
-                                  snapshot.docs.forEach((document) {
-                                    document.reference.delete();
-                                  });
-                                });
-                                
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MyAdsUpdate(
+                                      id: widget.idx,
+                                      name: widget.name,
+                                      aciklama: widget.aciklama,
+                                      durum: widget.durum,
+                                      idx: widget.idx,
+                                      konum: widget.konum,
+                                      price: widget.price,
+                                      resim: widget.resim,
+                                      kategori: widget.kategori,
+                                    )));
+                      });
+                    }
+                    if (menuItemValue == 2) {
+                      setState(() {
+                        FirebaseFirestore.instance
+                            .collection("productss")
+                            .where('name', isEqualTo: "${widget.name}")
+                            .get()
+                            .then((snapshot) {
+                          snapshot.docs.forEach((document) {
+                            document.reference.delete();
+                          });
+                        });
                       });
                     }
                   },
