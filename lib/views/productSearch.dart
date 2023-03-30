@@ -80,8 +80,8 @@ class searchDelegate extends SearchDelegate {
             String name = data['name'].toString();
 
             int price = data['price'];
-            String durum = data['status'];
-            String aciklama = data['description'];
+            String durum = data['status'].toString();
+            String aciklama = data['description'].toString();
             String konum = data['location'];
             String user = data['user.name'].toString();
 
