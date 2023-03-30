@@ -14,7 +14,7 @@ class ilanlarim extends StatefulWidget {
 class _ilanlarimState extends State<ilanlarim> {
   final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
       .collection("productss")
-      .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+      .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid).where('productStatus',isEqualTo: 1).where('user.userStatus',isEqualTo: 1)
       .snapshots();
 //  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
 //       .collection("users")
@@ -137,7 +137,8 @@ class _ilanlarimState extends State<ilanlarim> {
                                     .get()
                                     .then((snapshot) {
                                   snapshot.docs.forEach((document) {
-                                    document.reference.delete();
+                                    document.reference.update({'productStatus':0});
+
                                   });
                                 });
                               });

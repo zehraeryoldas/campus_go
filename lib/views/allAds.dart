@@ -1,6 +1,7 @@
 import 'package:campusgo/utility/color.dart';
 import 'package:campusgo/views/allAdsDetail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -10,13 +11,17 @@ class ilanlarim2 extends StatefulWidget {
 }
 
 class _ilanlarimState extends State<ilanlarim2> {
-  final Stream<QuerySnapshot> _usersStream =
-      FirebaseFirestore.instance.collection('productss').snapshots();
+  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
+      .collection('productss')
+      .where("productStatus", isEqualTo: 1)
+      .where('user.userStatus', isEqualTo: 1)
+      .snapshots();
   bool favMi = true;
+  var liste = [];
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream:_usersStream,
+      stream: _usersStream,
       builder: (context, snapshot) {
         if (!snapshot.hasData) return const Text('Loading...');
         return GridView.builder(
@@ -32,8 +37,9 @@ class _ilanlarimState extends State<ilanlarim2> {
             String durum = data['status'];
             String aciklama = data['description'];
             String konum = data['location'];
-            String user=data['user.name'].toString();
-           
+            String user = data['user.name'].toString();
+            //bool productStatus = data['productStatus'];
+
             return GestureDetector(
               onTap: () {
                 Navigator.pushReplacement(
@@ -53,11 +59,10 @@ class _ilanlarimState extends State<ilanlarim2> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Card(
-                  elevation: 2.0,
-                  //    shape: RoundedRectangleBorder(
-                  //   borderRadius: BorderRadius.only(bottomRight:Radius.circular(10),topLeft:Radius.circular(10)),
-                  //   side: BorderSide(width: 0,color: Colors.grey),
-                  // ),
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide(width: 0.0, color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(18)),
+                  elevation: 2,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -66,7 +71,6 @@ class _ilanlarimState extends State<ilanlarim2> {
                           //color: mainColor.color,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10.0),
-                              
                               image: DecorationImage(
                                 image: NetworkImage(data['images'].toString()),
                               )),
@@ -74,20 +78,40 @@ class _ilanlarimState extends State<ilanlarim2> {
                           height: MediaQuery.of(context).size.height * 0.16,
                         ),
                         Positioned(
-                            left: 120,
-                            bottom: 90,
-                            child: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    favMi = !favMi;
-                                  });
-                                },
-                                icon: favMi
-                                    ? Icon(Icons.favorite_border)
-                                    : Icon(
-                                        Icons.favorite,
-                                        color: mainColor.color,
-                                      )))
+                          left: 120,
+                          bottom: 90,
+                          child: favMi
+                              ? IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      favMi=!favMi;
+                                     data['id'];
+                                      //liste.add(favMi);
+                                    });
+                                  },
+                                  icon: Icon(Icons.favorite_border))
+                              : IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      favMi=!favMi;
+                                    });
+                                  },
+                                  icon: Icon(Icons.favorite),
+                                ),
+                          // child: IconButton(
+                          //     onPressed: () {
+                          //       setState(() {
+                          //         favMi = !favMi;
+
+                          //       });
+                          //     },
+                          //     icon: favMi
+                          //         ? Icon(Icons.favorite_border)
+                          //         : Icon(
+                          //             Icons.favorite,
+                          //             color: mainColor.color,
+                          //           ))
+                        )
                       ]),
                       Text(
                         data['name'],
@@ -97,7 +121,11 @@ class _ilanlarimState extends State<ilanlarim2> {
                             fontFamily: "RobotoCondensed"),
                       ),
                       Text(
-                        data['price'].toString() + "\u20ba",style: TextStyle(color: mainColor.color),
+                        data['price'].toString() + "\u20ba",
+                        style: TextStyle(
+                            color: mainColor.color,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
                       )
                     ],
                   ),

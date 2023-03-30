@@ -11,6 +11,7 @@ class productModel {
   String? userId;
   String? location;
   String? images;
+  //bool? productsStatus;
 
   productModel({
     this.name,
@@ -22,6 +23,7 @@ class productModel {
     this.userId,
     this.location,
     this.images,
+   // this.productsStatus,
   });
 
   productModel.fromJson(Map<String, dynamic> json) {
@@ -35,6 +37,7 @@ class productModel {
     userId = json['userId'];
     location = json['location'];
     images = json['images'];
+    //productsStatus = json['productsStatus'];
   }
 
   Map<String, dynamic> toJson() {
@@ -49,7 +52,7 @@ class productModel {
     data['userId'] = this.userId;
     data['location'] = this.location;
     data['images'] = this.images;
-
+    //data['productsStatus'] = this.productsStatus;
     return data;
   }
 }

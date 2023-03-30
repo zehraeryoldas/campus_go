@@ -5,6 +5,7 @@ import 'package:campusgo/views/conversation.dart';
 import 'package:campusgo/views/home.dart';
 import 'package:campusgo/views/productAdd.dart';
 import 'package:campusgo/views/profile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 
@@ -27,11 +28,11 @@ class _AnaSayfaState extends State<Arayuz> {
       //ImageUploads(),
 
       const homePage(),
-      const conversationPage(),
+      ConversationPage(userId: FirebaseAuth.instance.currentUser!.uid,),
       const payPage(),
       adsPage(),
 
-      const profilePage(),
+      const profilePagee(),
     ];
   }
 

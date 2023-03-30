@@ -3,6 +3,7 @@
 import 'package:campusgo/arayuz.dart';
 import 'package:campusgo/models/products_model.dart';
 import 'package:campusgo/utility/color.dart';
+import 'package:campusgo/views/conversation.dart';
 import 'package:campusgo/views/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -146,7 +147,12 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
                   SizedBox(
                     width: 150,
                     child: ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: () {
+                        print("000000000");
+                        print(widget.id);
+                         print("000000000");
+                         Navigator.push(context, MaterialPageRoute(builder: ((context) => ConversationPage(userId: widget.id,))));
+                      },
                       icon: Icon(Icons.message),
                       label: Text("Sohbet"),
                       style: ButtonStyle(

@@ -10,6 +10,8 @@ class userService {
     int? phone,
     // String? password,
     // String? password2,
+    String? images,
+
   ) async {
     usersModel userModel = usersModel(
       email: email,
@@ -18,6 +20,7 @@ class userService {
       
       //password: password,
       //password2: password2,
+      images: images,
     );
 
     try {
@@ -31,7 +34,10 @@ class userService {
       FirebaseFirestore.instance
           .collection("users")
           .doc(FirebaseAuth.instance.currentUser!.uid)
-          .update({'id': id});
+          .update({'id': id,
+          'userStatus':1
+
+          });
     } on Exception catch (e) {
       // TODO
     }

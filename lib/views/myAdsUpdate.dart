@@ -171,7 +171,7 @@ class _MyAdsUpdateState extends State<MyAdsUpdate> {
     descriptionController.text=widget.aciklama;
     priceController.text=widget.price.toString();
     statusController.text=widget.durum;
-    
+    CategoryIdController.text=widget.kategori;
     locationIdController.text=widget.konum;
     imagesController.text=widget.resim;
     print("<<<<<<<<<<<<");

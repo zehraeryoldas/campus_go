@@ -1,6 +1,7 @@
 import 'package:campusgo/arayuz.dart';
 import 'package:campusgo/models/users_model.dart';
 import 'package:campusgo/services/user_service.dart';
+import 'package:campusgo/services/user_service.dart';
 import 'package:campusgo/validation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,6 +22,8 @@ class _LoginState extends State<Login> {
 
   TextEditingController sifreController = TextEditingController();
   TextEditingController sifretekrarController = TextEditingController();
+    TextEditingController imagesController = TextEditingController();
+
 
   FirebaseAuth auth = FirebaseAuth.instance;
   String name = "kullanıcı adı";
@@ -53,21 +56,7 @@ class _LoginState extends State<Login> {
       ),
     );
   }
-  // Future<void> kayitOl() async {
-  //   if (sifreController.text == sifretekrarController.text) {
-  //     await auth
-  //         .createUserWithEmailAndPassword(
-  //             email: emailcontroller.text, password: sifreController.text)
-  //         .then((kullanici) {
-  //       FirebaseFirestore.instance
-  //           .collection("users")
-  //           .doc(auth.currentUser!.uid)
-  //           .set({"email": emailcontroller.text, "name": namecontroller.text});
-  //     });
-  //   } else {
-  //     showMessage(context);
-  //   }
-  // }
+ 
 
   signOut() async {
     return await auth.signOut();
@@ -190,6 +179,7 @@ class _LoginState extends State<Login> {
                 int.tryParse(telefonNocontroller.text),
                 // sifreController.text,
                 //sifretekrarController.text
+                imagesController.text,
                 );
           },
           label: Text(text)),

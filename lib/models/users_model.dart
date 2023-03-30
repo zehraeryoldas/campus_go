@@ -5,6 +5,7 @@ class usersModel {
   // String? password;
   // String? password2;
   int? phone;
+  String? images;
 
   usersModel(
       {this.id,
@@ -13,6 +14,7 @@ class usersModel {
       // this.password,
       // this.password2,
       this.phone,
+      this.images,
       });
 
   usersModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +24,7 @@ class usersModel {
     // password = json['password'];
     // password2 = json['password2'];
     phone = json['phone'];
+    images = json['images'];
   }
 
   Map<String, dynamic> toJson() {
@@ -32,6 +35,7 @@ class usersModel {
     // data['password'] = this.password;
     // data['password2'] = this.password2;
     data['phone'] = this.phone;
+     data['images'] = this.images;
     return data;
   }
 }
