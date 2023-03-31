@@ -5,7 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../services/favourite_servicee.dart';
+import '../services/favourite_service.dart';
+
 
 class allAds extends StatefulWidget {
   @override
