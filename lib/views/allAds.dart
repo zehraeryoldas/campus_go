@@ -1,3 +1,4 @@
+import 'package:campusgo/services/favourite_service.dart';
 import 'package:campusgo/utility/color.dart';
 import 'package:campusgo/views/allAdsDetail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,6 +19,22 @@ class _ilanlarimState extends State<ilanlarim2> {
       .snapshots();
   bool favMi = true;
   var liste = [];
+
+  Future<void> favourite(
+    String postUserId,
+    String postId,
+  ) async {
+    var begeni = await FirebaseFirestore.instance
+        .collection("favourite")
+        .where("status")
+        .get();
+    var currentUserID = FirebaseAuth.instance.currentUser!.uid;
+
+    print("//////");
+    print(currentUserID);
+    print("//////");
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -30,7 +47,8 @@ class _ilanlarimState extends State<ilanlarim2> {
               new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
           itemBuilder: (context, index) {
             DocumentSnapshot data = snapshot.data!.docs[index];
-            String id = data['userId'].toString();
+            String postUserId = data['userId'].toString();
+            String postId = data['id'].toString();
             String resim = data['images'].toString();
             String name = data['name'].toString();
             int price = data['price'];
@@ -46,7 +64,7 @@ class _ilanlarimState extends State<ilanlarim2> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => AllAdsDetailPage(
-                              id: id,
+                              id: postUserId,
                               price: price,
                               name: name,
                               resim: resim,
@@ -84,21 +102,24 @@ class _ilanlarimState extends State<ilanlarim2> {
                               ? IconButton(
                                   onPressed: () {
                                     setState(() {
-                                      favMi=!favMi;
-                                     
+                                      favMi = !favMi;
+                                      favouriteService().addFavourite(postId, postUserId, 1,FirebaseAuth.instance.currentUser!.uid);
+                                      // print("00000000");
+                                      // print(data['id']);
+                                      // print(data['user.name']);
+                                      //  print("00000000");
+                                      //favourite(postUserId, postId);
                                     });
                                   },
                                   icon: Icon(Icons.favorite_border))
                               : IconButton(
                                   onPressed: () {
                                     setState(() {
-                                      favMi=!favMi;
+                                      favMi = !favMi;
                                     });
-
                                   },
                                   icon: Icon(Icons.favorite),
                                 ),
-                  
                         )
                       ]),
                       Text(
