@@ -11,35 +11,27 @@ class userService {
     // String? password,
     // String? password2,
     String? images,
-
   ) async {
     usersModel userModel = usersModel(
       email: email,
       name: name,
       phone: phone,
-      
+
       //password: password,
       //password2: password2,
       images: images,
     );
 
-    try {
-      DocumentReference sonuc1 = FirebaseFirestore.instance
-          .collection("users")
-          .doc(FirebaseAuth.instance.currentUser!.uid);
+    DocumentReference sonuc1 = FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid);
 
-      sonuc1.set(userModel.toJson());
+    sonuc1.set(userModel.toJson());
 
-      var id = sonuc1.id;
-      FirebaseFirestore.instance
-          .collection("users")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .update({'id': id,
-          'userStatus':1
-
-          });
-    } on Exception catch (e) {
-      // TODO
-    }
+    var id = sonuc1.id;
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update({'id': id, 'userStatus': 1});
   }
 }

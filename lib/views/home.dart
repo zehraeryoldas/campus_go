@@ -1,4 +1,5 @@
 import 'package:campusgo/utility/color.dart';
+import 'package:campusgo/views/allAdss.dart';
 import 'package:campusgo/views/productSearch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,7 +8,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import '../arayuz.dart';
-import 'allAds.dart';
+//import 'allAds.dart';
 
 class homePage extends StatefulWidget {
   const homePage({super.key});
@@ -61,7 +62,7 @@ class _homePageState extends State<homePage> {
         ],
       ),
       //body: conversationPage(),
-      body: ilanlarim2(),
+      body: allAds(),
 
      
     );
