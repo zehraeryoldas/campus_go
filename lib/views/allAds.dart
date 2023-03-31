@@ -1,10 +1,11 @@
-import 'package:campusgo/services/favourite_service.dart';
 import 'package:campusgo/utility/color.dart';
 import 'package:campusgo/views/allAdsDetail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../services/favourite_servicee.dart';
 
 class ilanlarim2 extends StatefulWidget {
   @override
