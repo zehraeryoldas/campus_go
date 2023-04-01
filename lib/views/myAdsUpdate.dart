@@ -131,35 +131,7 @@ class _MyAdsUpdateState extends State<MyAdsUpdate> {
       FirebaseFirestore.instance.collection("location");
   String? dropdownValue;
   String? dropdownValue1;
-  // late Map userData2;
-
-  //@override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   var product_model = widget.model;
-  //   descriptionController.text = product_model.description!;
-  //   imagesController.text = product_model.images!;
-  //   nameController.text = product_model.name!;
-  //   priceController.text = product_model.price!.toString();
-  //   statusController.text = product_model.status!;
-  //   CategoryIdController.text = product_model.categoryId!;
-  //   locationIdController.text = product_model.location!;
-  // }
-
-  // Future<void> update(String id,String name,String description,int price,String durum,String Kategori,String konum,String resim) async{
-  //   CollectionReference ref=FirebaseFirestore.instance.collection("productss");
-  //   var bilgi=Map<String,dynamic>();
-  //   bilgi['name']=name;
-  //   bilgi['description']=description;
-  //   bilgi['price']=price;
-  //   bilgi['status']=durum;
-  //   bilgi['category_id']=Kategori;
-  //   bilgi['location']=konum;
-  //   bilgi['images']=resim;
-  //   ref.doc(id).update(bilgi);
-
-  // }
+  
 
   @override
   void initState() {

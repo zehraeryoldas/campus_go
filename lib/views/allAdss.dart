@@ -1,12 +1,13 @@
+import 'package:campusgo/models/favourite_model.dart';
 import 'package:campusgo/utility/color.dart';
 import 'package:campusgo/views/allAdsDetail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../services/favourite_service.dart';
-
 
 class allAds extends StatefulWidget {
   @override
@@ -20,22 +21,29 @@ class _ilanlarimState extends State<allAds> {
       .where('user.userStatus', isEqualTo: 1)
       .snapshots();
   bool favMi = true;
-  var liste = [];
 
-  Future<void> favourite(
-    String postUserId,
-    String postId,
-  ) async {
-    var begeni = await FirebaseFirestore.instance
-        .collection("favourite")
-        .where("status")
-        .get();
-    var currentUserID = FirebaseAuth.instance.currentUser!.uid;
-
-    print("//////");
-    print(currentUserID);
-    print("//////");
+  void favouriteButton(){
+    setState(() {
+      favMi = !favMi;
+      
+    });
   }
+ 
+
+  // Future<void> favourite(
+  //   String postUserId,
+  //   String postId,
+  // ) async {
+  //   var begeni = await FirebaseFirestore.instance
+  //       .collection("favourite")
+  //       .where("status")
+  //       .get();
+  //   var currentUserID = FirebaseAuth.instance.currentUser!.uid;
+
+  //   print("//////");
+  //   print(currentUserID);
+  //   print("//////");
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +56,8 @@ class _ilanlarimState extends State<allAds> {
           gridDelegate:
               new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
           itemBuilder: (context, index) {
+            List favoriteList = [index];
+
             DocumentSnapshot data = snapshot.data!.docs[index];
             String postUserId = data['userId'].toString();
             String postId = data['id'].toString();
@@ -103,23 +113,23 @@ class _ilanlarimState extends State<allAds> {
                           child: favMi
                               ? IconButton(
                                   onPressed: () {
-                                    setState(() {
-                                      favMi = !favMi;
-                                      favouriteService().addFavourite(postId, postUserId, 1,FirebaseAuth.instance.currentUser!.uid);
+                                    favouriteButton();
+                                      favouriteService().addFavourite(
+                                          postId,
+                                          postUserId,
+                                          1,
+                                          FirebaseAuth
+                                              .instance.currentUser!.uid);
                                       // print("00000000");
                                       // print(data['id']);
                                       // print(data['user.name']);
                                       //  print("00000000");
                                       //favourite(postUserId, postId);
-                                    });
                                   },
                                   icon: Icon(Icons.favorite_border))
                               : IconButton(
                                   onPressed: () {
-                                    setState(() {
-                                      favMi = !favMi;
-                                     
-                                    });
+                                    favouriteButton();
                                   },
                                   icon: Icon(Icons.favorite),
                                 ),
@@ -142,38 +152,7 @@ class _ilanlarimState extends State<allAds> {
                     ],
                   ),
                 ),
-                // child: Stack(
-                //   children: <Widget>[
-
-                //     // Card(
-                //     //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0),side: BorderSide(color: Colors.white)),
-                //     //   child: Container(
-                //     //     //child:  Image.network("https://cdn.pixabay.com/photo/2022/10/10/14/13/lotus-7511897_1280.jpg",fit: BoxFit.cover,),
-                //     //     width: MediaQuery.of(context).size.height*0.20,
-                //     //     height: MediaQuery.of(context).size.height*0.80,
-                //     //     decoration: BoxDecoration(borderRadius: BorderRadius.circular(15.0),color: mainColor.color,
-                //     //      image: DecorationImage(image: NetworkImage(data['images'].toString()),fit: BoxFit.cover)
-                //     //     ),
-                //     //   ),
-                //     // ), //Container
-                //     // Positioned(
-                //     //   top: MediaQuery.of(context).size.height*0.12,
-                //     //   child: Card(
-                //     //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0),side: BorderSide(color: Colors.white)),
-                //     //     child: Container(
-                //     //       width:  MediaQuery.of(context).size.height*0.20,
-                //     //       height: MediaQuery.of(context).size.height*0.100,
-                //     //       child: Column(children: [
-                //     //         ListTile(
-                //     //           subtitle: Text(data['name']),
-                //     //           title: Text(data['price'].toString() + " TL"),
-                //     //         ),
-                //     //       ]),
-                //     //     ),
-                //     //   ),
-                //     // ) //Container)
-                //   ], //<Widget>[]
-                // ),
+               
               ),
             );
           },
