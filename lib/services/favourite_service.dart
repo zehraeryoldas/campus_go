@@ -2,7 +2,6 @@ import 'package:campusgo/models/favourite_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 class favouriteService {
   final FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
   Future<String?> addFavourite(
@@ -31,8 +30,6 @@ class favouriteService {
 
     // var idx = sonuc1.id;
     var ids = sonuc3.id;
-
-    
-
   }
+  
 }
