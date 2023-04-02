@@ -31,5 +31,7 @@ class favouriteService {
     // var idx = sonuc1.id;
     var ids = sonuc3.id;
   }
+
+  
   
 }
