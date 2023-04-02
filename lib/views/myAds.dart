@@ -14,7 +14,9 @@ class ilanlarim extends StatefulWidget {
 class _ilanlarimState extends State<ilanlarim> {
   final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
       .collection("productss")
-      .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid).where('productStatus',isEqualTo: 1).where('user.userStatus',isEqualTo: 1)
+      .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+      .where('productStatus', isEqualTo: 1)
+      .where('user.userStatus', isEqualTo: 1)
       .snapshots();
 //  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
 //       .collection("users")
@@ -51,14 +53,11 @@ class _ilanlarimState extends State<ilanlarim> {
             String durum = data['status'];
             String aciklama = data['description'];
             String konum = data['location'];
-                        String kategori = data['category_id'];
-
+            String kategori = data['category_id'];
 
             print("******");
             print(data['name']);
             print("******");
-
-        
 
             return GestureDetector(
               onTap: () {
@@ -119,17 +118,7 @@ class _ilanlarimState extends State<ilanlarim> {
                             if (menuItemValue == 1) {
                               print("silindi");
                               setState(() {
-                                // FirebaseFirestore.instance
-                                //     .collection('users')
-                                //     .doc(FirebaseAuth.instance.currentUser!.uid)
-                                //     .collection('products')
-                                //     .where('name', isEqualTo: data['name'])
-                                //     .get()
-                                //     .then((snapshot) {
-                                //   snapshot.docs.forEach((document) {
-                                //     document.reference.delete();
-                                //   });
-                                // });
+                          
 
                                 FirebaseFirestore.instance
                                     .collection("productss")
@@ -137,8 +126,8 @@ class _ilanlarimState extends State<ilanlarim> {
                                     .get()
                                     .then((snapshot) {
                                   snapshot.docs.forEach((document) {
-                                    document.reference.update({'productStatus':0});
-
+                                    document.reference
+                                        .update({'productStatus': 0});
                                   });
                                 });
                               });
@@ -149,8 +138,17 @@ class _ilanlarimState extends State<ilanlarim> {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            MyAdsUpdate(id: idx, name: name, aciklama: aciklama, durum: durum, idx: idx, konum: konum,kategori:kategori , price: price, resim: resim,)));
+                                        builder: (context) => MyAdsUpdate(
+                                              id: idx,
+                                              name: name,
+                                              aciklama: aciklama,
+                                              durum: durum,
+                                              idx: idx,
+                                              konum: konum,
+                                              kategori: kategori,
+                                              price: price,
+                                              resim: resim,
+                                            )));
                               });
                             }
                           },
