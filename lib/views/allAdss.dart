@@ -33,42 +33,7 @@ class _ilanlarimState extends State<allAds> {
     });
   }
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   setState(() {
-  //     var collection = FirebaseFirestore.instance
-  //         .collection("productts")
-  //         .where("numberOfLikes", isEqualTo: 1)
-  //         .get();
-  //     IconButton(
-  //       onPressed: () {
-  //         collection;
-  //       },
-  //       icon: Icon(
-  //         Icons.favorite,
-  //         color: Colors.red,
-  //       ),
-  //     );
-  //   });
-  // }
-
-  // Future<void> favourite(
-  //   String postUserId,
-  //   String postId,
-  // ) async {
-  //   var begeni = await FirebaseFirestore.instance
-  //       .collection("favourite")
-  //       .where("status")
-  //       .get();
-  //   var currentUserID = FirebaseAuth.instance.currentUser!.uid;
-
-  //   print("//////");
-  //   print(currentUserID);
-  //   print("//////");
-  // }
-
+ 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -147,18 +112,24 @@ class _ilanlarimState extends State<allAds> {
                                       });
                                     });
                                     favouritebutton();
-                                    favouriteService().addFavourite(
+                                   if(postUserId!=FirebaseAuth.instance.currentUser!.uid){
+                                     favouriteService().addFavourite(
                                         postId,
                                         postUserId,
                                         1,
                                         FirebaseAuth.instance.currentUser!.uid,
                                       
                                         );
+                                          print("00000000");
+                                        print(postId);
+                                          print("00000000");
                                     // print("00000000");
                                     // print(data['id']);
                                     // print(data['user.name']);
                                     //  print("00000000");
                                     //favourite(postUserId, postId);
+                                   }
+                                   
                                   },
                                   icon: Icon(Icons.favorite_border))
                               : IconButton(

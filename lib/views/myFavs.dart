@@ -12,13 +12,7 @@ class favorilerim extends StatefulWidget {
 }
 
 class _favorilerimState extends State<favorilerim> {
-  // final Stream<QuerySnapshot> _userStream = FirebaseFirestore.instance
-  //     .collection("productss")
-  //     .where('userId', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-  //     .where('productStatus', isEqualTo: 1)
-  //     .where('user.userStatus', isEqualTo: 1)
-  //     .where('numberOfLikes', isEqualTo: 1)
-  //     .snapshots();
+  
 
   final _userStream = FirebaseFirestore.instance
       .collection("favorite")
