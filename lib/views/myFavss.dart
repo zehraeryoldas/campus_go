@@ -19,6 +19,15 @@ class _favorilerimState extends State<favorilerim> {
       .where('user.userStatus', isEqualTo: 1)
       .where('numberOfLikes', isEqualTo: 1)
       .snapshots();
+
+  bool favMi = true;
+
+  void favouritebutton() {
+    setState(() {
+      favMi = !favMi;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -98,12 +107,20 @@ class _favorilerimState extends State<favorilerim> {
                               style: TextStyle(
                                   fontSize: 18.0,
                                   fontFamily: "RobotoCondensed")),
-                          trailing: IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.favorite,
-                                color: mainColor.color,
-                              )),
+                          trailing: favMi
+                              ? IconButton(
+                                  onPressed: () {
+                                    favouritebutton();
+                                  },
+                                  icon: Icon(
+                                    Icons.favorite,
+                                    color: mainColor.color,
+                                  ))
+                              : IconButton(
+                                  onPressed: () {
+                                    favouritebutton();
+                                  },
+                                  icon: Icon(Icons.favorite_border)),
                         ),
                       ),
                     ),

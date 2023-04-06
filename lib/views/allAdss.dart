@@ -151,7 +151,9 @@ class _ilanlarimState extends State<allAds> {
                                         postId,
                                         postUserId,
                                         1,
-                                        FirebaseAuth.instance.currentUser!.uid);
+                                        FirebaseAuth.instance.currentUser!.uid,
+                                      
+                                        );
                                     // print("00000000");
                                     // print(data['id']);
                                     // print(data['user.name']);

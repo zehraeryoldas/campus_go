@@ -30,6 +30,7 @@ class favouriteService {
 
     // var idx = sonuc1.id;
     var ids = sonuc3.id;
+    //öncelikle eklenecek belgenin bulunduğu koleksiyonun referansını alıyoruz.
     CollectionReference ref =
         FirebaseFirestore.instance.collection("productss");
     DocumentReference docRef =
