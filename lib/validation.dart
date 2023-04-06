@@ -60,13 +60,6 @@ class _userLoginState extends State<UserLogin> {
     return await auth.signOut();
   }
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   WidgetsBinding.instance.addPostFrameCallback((_)=>girisYap());
-  // }
-
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -79,10 +72,6 @@ class _userLoginState extends State<UserLogin> {
               topImageContainer(height, topImage),
               Column(
                 children: [
-                  // Padding(
-                  //   padding: const EdgeInsets.all(8.0),
-                  //   child: _photoContainer(url, 150, 150),
-                  // ),
                   Text(
                     "WELCOME, \nBACK!",
                     style: TextStyle(
@@ -102,7 +91,6 @@ class _userLoginState extends State<UserLogin> {
                         )),
                   ),
                   sifrecontainer(),
-
                   SizedBox(
                     height: 5,
                   ),
@@ -118,7 +106,6 @@ class _userLoginState extends State<UserLogin> {
                       ),
                     ),
                   ),
-
                   _elevatedButton(girisYap1, Icon(Icons.start), girisYap),
                   SizedBox(
                     height: 10,
@@ -198,15 +185,6 @@ class _userLoginState extends State<UserLogin> {
           label: Text(text)),
     );
   }
-
-  // Container _photoContainer(String url, double width, double height) {
-  //   return Container(
-  //     width: width,
-  //     height: height,
-  //     decoration:
-  //         BoxDecoration(image: DecorationImage(image: NetworkImage(url))),
-  //   );
-  // }
 
   Container _myContainers(String metin, TextEditingController controller,
       TextInputType type, Icon icon) {
