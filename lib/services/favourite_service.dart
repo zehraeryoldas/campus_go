@@ -30,8 +30,12 @@ class favouriteService {
 
     // var idx = sonuc1.id;
     var ids = sonuc3.id;
+    CollectionReference ref =
+        FirebaseFirestore.instance.collection("productss");
+    DocumentReference docRef =
+        FirebaseFirestore.instance.collection("favorite").doc(ids);
+    DocumentSnapshot snapshot =
+        await ref.doc(post_id).get();
+    docRef.update({'productss': snapshot.data()});
   }
-
-  
-  
 }
