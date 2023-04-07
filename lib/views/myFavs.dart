@@ -12,20 +12,13 @@ class favorilerim extends StatefulWidget {
 }
 
 class _favorilerimState extends State<favorilerim> {
-  
-
   final _userStream = FirebaseFirestore.instance
       .collection("favorite")
-      .where("user_id", isEqualTo: FirebaseAuth.instance.currentUser!.uid).where('status',isEqualTo: 1)
+      .where("user_id", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+      .where('status', isEqualTo: 1)
+      .where('productss.isFav', isEqualTo: true)
       //.where("productss.numberOfLikes", isEqualTo: 1)
       .snapshots();
-  bool favMi = true;
-
-  void favouritebutton() {
-    setState(() {
-      favMi = !favMi;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,22 +36,23 @@ class _favorilerimState extends State<favorilerim> {
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
               DocumentSnapshot data = snapshot.data!.docs[index];
-               String idx = data['post_id']!.toString();
+              String idx = data['post_id']!.toString();
 
               String postUserId = data['post_user_id']!;
               String resim = data['productss.images'].toString();
               String name = data['productss.name'].toString();
               int price = data['productss.price'];
               String durum = data['productss.status'];
-               String aciklama = data['productss.description'];
-               String konum = data['productss.location'];
-               String kategori = data['productss.category_id'];
-               String user = data['productss.user.name'].toString();
+              String aciklama = data['productss.description'];
+              String konum = data['productss.location'];
+              String kategori = data['productss.category_id'];
+              String user = data['productss.user.name'].toString();
+              bool isFav = data['productss.isFav'];
               // String userId = data['user_id'].toString();
               print("????????");
               print(data['productss.name']);
               print("******");
-               return GestureDetector(
+              return GestureDetector(
                 onTap: () {
                   Navigator.push(
                       context,
@@ -86,8 +80,7 @@ class _favorilerimState extends State<favorilerim> {
                         //color: Colors.red,
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                                image:
-                                    NetworkImage(resim.toString()))),
+                                image: NetworkImage(resim.toString()))),
                         width: MediaQuery.of(context).size.width * 0.40,
                         height: MediaQuery.of(context).size.height * 0.12,
                       ),
@@ -98,36 +91,50 @@ class _favorilerimState extends State<favorilerim> {
                         height: MediaQuery.of(context).size.height * 0.12,
                         child: ListTile(
                           title: Text(price.toString() + " \u20ba",
-                             style: TextStyle(
-                                 fontSize: 22.0,
-                                 fontFamily: "RobotoCondensed")),
+                              style: TextStyle(
+                                  fontSize: 22.0,
+                                  fontFamily: "RobotoCondensed")),
                           subtitle: Text(name,
                               style: TextStyle(
                                   fontSize: 18.0,
                                   fontFamily: "RobotoCondensed")),
-                          trailing: favMi
+                          trailing: isFav
                               ? IconButton(
                                   onPressed: () {
-                                    FirebaseFirestore.instance.collection("favorite")
-                                    .where('productss.name',isEqualTo: data['productss.name']).get()
-                                    .then((snapshot){
-                                      snapshot.docs.forEach((document) { 
-                                        document.reference.update({
-                                          "status":0
-                                        });
-                                      });
-                                    });
-                                    favouritebutton();
+                                    // FirebaseFirestore.instance.collection("favorite")
+                                    // .where('productss.name',isEqualTo: data['productss.name']).get()
+                                    // .then((snapshot){
+                                    //   snapshot.docs.forEach((document) {
+                                    //     document.reference.update({
+                                    //       "status":0
+                                    //     });
+                                    //   });
+                                    // });
+                                    print("123456");
+                                    print(data['productss.isFav']);
+                                    print("123456");
+                                    FirebaseFirestore.instance
+                                        .collection("favorite")
+                                        .doc(idx)
+                                        .update({'productss.isFav': false});
                                   },
                                   icon: Icon(
                                     Icons.favorite,
-                                    color: mainColor.color,
+                                     color: mainColor.color,
+                                    
                                   ))
                               : IconButton(
                                   onPressed: () {
-                                    favouritebutton();
+                                    FirebaseFirestore.instance
+                                        .collection("favorite")
+                                        .doc(idx)
+                                        .update({'productss.isFav': true});
                                   },
-                                  icon: Icon(Icons.favorite_border)),
+                                  icon: Icon(
+                                    Icons.favorite_border,
+                                    
+                                   
+                                  )),
                         ),
                       ),
                     ),
@@ -135,7 +142,6 @@ class _favorilerimState extends State<favorilerim> {
                 ),
               );
             },
-           
           );
         }));
   }
