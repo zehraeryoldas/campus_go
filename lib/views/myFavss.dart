@@ -42,7 +42,7 @@ class _favorilerimState extends State<favorilerim> {
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
               DocumentSnapshot data = snapshot.data!.docs[index];
-              String id=data['id'].toString();
+              String product_id=data['id'].toString();
               String post_id = data['post_id']!.toString();
 
               String postUserId = data['post_user_id']!;
@@ -55,7 +55,7 @@ class _favorilerimState extends State<favorilerim> {
               String kategori = data['productss.category_id'];
               String user = data['productss.user.name'].toString();
               bool isFav = data['productss.isFav'];
-              // String userId = data['user_id'].toString();
+               String userId = data['user_id'].toString();
               print("????????");
               print(data['productss.isFav']);
               print("******");
@@ -110,7 +110,7 @@ class _favorilerimState extends State<favorilerim> {
                                   onPressed: () async{
                                    await FirebaseFirestore.instance
                                         .collection("favorite")
-                                        .doc(id)
+                                        .doc(product_id)
                                         .update({'productss.isFav': false});
                                         FirebaseFirestore.instance.collection("products")
                                         .where('name',)
@@ -132,7 +132,7 @@ class _favorilerimState extends State<favorilerim> {
                                      print("0000000");
                                    await FirebaseFirestore.instance
                                         .collection("favorite")
-                                        .doc(id)
+                                        .doc(product_id)
                                         .update({'productss.isFav': true});
                                          FirebaseFirestore.instance.collection("products")
                                         .where('name',isEqualTo: data['name'])
