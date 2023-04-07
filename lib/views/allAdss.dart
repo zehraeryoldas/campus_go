@@ -25,15 +25,14 @@ class _ilanlarimState extends State<allAds> {
       .snapshots();
 
   int favouriteValue = 0;
-  bool favMi = true;
+  // bool favMi = true;
 
-  void favouritebutton() {
-    setState(() {
-      favMi = !favMi;
-    });
-  }
+  // void favouritebutton() {
+  //   setState(() {
+  //     favMi = !favMi;
+  //   });
+  // }
 
- 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -55,6 +54,7 @@ class _ilanlarimState extends State<allAds> {
             String aciklama = data['description'];
             String konum = data['location'];
             String user = data['user.name'].toString();
+            bool isFav = data['isFav'];
             //bool productStatus = data['productStatus'];
 
             return GestureDetector(
@@ -71,7 +71,6 @@ class _ilanlarimState extends State<allAds> {
                               aciklama: aciklama,
                               konum: konum,
                               user: user,
-                              
                             )));
               },
               child: Padding(
@@ -98,59 +97,41 @@ class _ilanlarimState extends State<allAds> {
                         Positioned(
                           left: 120,
                           bottom: 90,
-                          child: favMi
+                          child: isFav
                               ? IconButton(
                                   onPressed: () {
                                     FirebaseFirestore.instance
                                         .collection("productss")
-                                        .where('name', isEqualTo: data['name'])
-                                        .get()
-                                        .then((snapshot) {
-                                      snapshot.docs.forEach((document) {
-                                        document.reference
-                                            .update({'numberOfLikes': 1});
-                                      });
+                                        .doc(postId)
+                                        .update({
+                                      'isFav': false,
                                     });
-                                    favouritebutton();
-                                   if(postUserId!=FirebaseAuth.instance.currentUser!.uid){
-                                     favouriteService().addFavourite(
-                                        postId,
-                                        postUserId,
-                                        1,
-                                        FirebaseAuth.instance.currentUser!.uid,
-                                      
-                                        );
-                                          print("00000000");
-                                        print(postId);
-                                          print("00000000");
-                                    // print("00000000");
-                                    // print(data['id']);
-                                    // print(data['user.name']);
-                                    //  print("00000000");
-                                    //favourite(postUserId, postId);
-                                   }
-                                   
-                                  },
-                                  icon: Icon(Icons.favorite_border))
-                              : IconButton(
-                                  onPressed: () {
-                                    FirebaseFirestore.instance
-                                        .collection("productss")
-                                        .where('name', isEqualTo: data['name'])
-                                        .get()
-                                        .then((snapshot) {
-                                      snapshot.docs.forEach((document) {
-                                        document.reference
-                                            .update({'numberOfLikes': 0});
-                                      });
-                                    });
-
-                                    favouritebutton();
                                   },
                                   icon: Icon(
                                     Icons.favorite,
                                     color: mainColor.color,
-                                    
+                                  ))
+                              : IconButton(
+                                  onPressed: () {
+                                    FirebaseFirestore.instance
+                                        .collection("productss")
+                                        .doc(postId)
+                                        .update({
+                                      'isFav': true,
+                                    });
+                                    if (postUserId !=
+                                        FirebaseAuth
+                                            .instance.currentUser!.uid) {
+                                      favouriteService().addFavourite(
+                                        postId,
+                                        postUserId,
+                                        1,
+                                        FirebaseAuth.instance.currentUser!.uid,
+                                      );
+                                    }
+                                  },
+                                  icon: Icon(
+                                    Icons.favorite_border,
                                   ),
                                 ),
                         )
