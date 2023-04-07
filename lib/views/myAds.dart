@@ -18,11 +18,7 @@ class _ilanlarimState extends State<ilanlarim> {
       .where('productStatus', isEqualTo: 1)
       .where('user.userStatus', isEqualTo: 1)
       .snapshots();
-//  final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
-//       .collection("users")
-//       .doc(FirebaseAuth.instance.currentUser!.uid)
-//       .collection("products")
-//       .snapshots();
+
 
   String? dropdownValue = 'Sil';
 

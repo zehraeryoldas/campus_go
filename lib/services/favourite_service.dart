@@ -27,9 +27,15 @@ class favouriteService {
     DocumentReference sonuc3 = await FirebaseFirestore.instance
         .collection("favorite")
         .add(fmodel.toJson());
+ var ids = sonuc3.id;
+      FirebaseFirestore.instance.collection("favorite")
+      .doc(ids)
+      .update({
+        'id':ids,
+      });
 
     // var idx = sonuc1.id;
-    var ids = sonuc3.id;
+   
     //öncelikle eklenecek belgenin bulunduğu koleksiyonun referansını alıy
     CollectionReference ref =
         FirebaseFirestore.instance.collection("productss");
