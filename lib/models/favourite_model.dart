@@ -5,13 +5,15 @@ class favouriteModel {
   String? user_id;
   
   // ignore: non_constant_identifier_names
-  favouriteModel({this.post_id, this.post_user_id, this.status, this.user_id});
+  favouriteModel({this.post_id,this.post_user_id,this.status,this.user_id});
   favouriteModel.fromJson(Map<String, dynamic> json) {
     post_id = json['post_id'];
     post_user_id = json['post_user_id'];
     status = json['status'];
 
     user_id = json['user_id'];
+
+  
     
   }
 
@@ -24,5 +26,8 @@ class favouriteModel {
     data['user_id'] = this.user_id;
    
     return data;
+
+
+    
   }
 }

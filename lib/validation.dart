@@ -21,6 +21,16 @@ class _userLoginState extends State<UserLogin> {
       ),
     );
   }
+   void showMessage2(BuildContext context) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: const Text('Mail hesabına sıfırlama linki gönderildi!'),
+        action: SnackBarAction(
+            label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
+      ),
+    );
+  }
 
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController sifreController = TextEditingController();
@@ -39,6 +49,8 @@ class _userLoginState extends State<UserLogin> {
 
   Future<void> resetPassword(String email) async {
     await _auth.sendPasswordResetEmail(email: email);
+   showMessage2(context);
+
   }
 
   Future<void> girisYap() async {

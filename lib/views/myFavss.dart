@@ -28,17 +28,20 @@ class _favorilerimState extends State<favorilerim> {
 
   @override
   Widget build(BuildContext context) {
+    
     return StreamBuilder(
         stream: _userStream,
         builder:
             ((BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
+
             return const Text('hatalı işlem');
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Text("Loading");
           }
           return ListView.builder(
+            
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
               DocumentSnapshot data = snapshot.data!.docs[index];
@@ -112,15 +115,15 @@ class _favorilerimState extends State<favorilerim> {
                                         .collection("favorite")
                                         .doc(product_id)
                                         .update({'productss.isFav': false});
-                                        FirebaseFirestore.instance.collection("products")
-                                        .where('name',)
-                                        .get()
-                                        .then((value){
-                                          value.docs.forEach((document) {
-                                            document.reference
-                                            .update({'isFav':false});
-                                          });
-                                        });
+                                        // FirebaseFirestore.instance.collection("products")
+                                        // .where('name',)
+                                        // .get()
+                                        // .then((value){
+                                        //   value.docs.forEach((document) {
+                                        //     document.reference
+                                        //     .update({'isFav':false});
+                                        //   });
+                                        // });
                                   },
                                   icon: Icon(
                                     Icons.favorite,
@@ -134,15 +137,15 @@ class _favorilerimState extends State<favorilerim> {
                                         .collection("favorite")
                                         .doc(product_id)
                                         .update({'productss.isFav': true});
-                                         FirebaseFirestore.instance.collection("products")
-                                        .where('name',isEqualTo: data['name'])
-                                        .get()
-                                        .then((value){
-                                          value.docs.forEach((document) {
-                                            document.reference
-                                            .update({'isFav':true});
-                                          });
-                                        });
+                                        //  FirebaseFirestore.instance.collection("products")
+                                        // .where('name',isEqualTo: data['name'])
+                                        // .get()
+                                        // .then((value){
+                                        //   value.docs.forEach((document) {
+                                        //     document.reference
+                                        //     .update({'isFav':true});
+                                        //   });
+                                        // });
                                   },
                                   icon: Icon(
                                     Icons.favorite_border,
