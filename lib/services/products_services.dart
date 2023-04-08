@@ -73,70 +73,7 @@ class productService {
     //son olarak eklenecek belgeyi hedef belgenin veri alanına ekliyoruz.
     orderRef.update({'user': userSnapshot.data()});
 
-    // FirebaseFirestore.instance
-    //     .collection("users")
-    //     .doc(FirebaseAuth.instance.currentUser!.uid)
-    //     .collection("products")
-    //     .doc(idx)
-    //     .update({'id': idx, 'userId': userId});
   }
 
-  // gonderiBegen(
-  //   String? name,
-  //   String? status,
-  //   String? description,
-  //   String? images,
-  //   int? price,
-  //   //int? id,
-  //   String? categoryId,
-  //   //String? userId,
-
-  //   String? location,
-  // ) async {
-  //   productModel product_Model = productModel(
-  //     name: name,
-  //     status: status,
-  //     description: description,
-  //     price: price,
-  //     //id: id,
-  //     categoryId: categoryId,
-  //     location: location,
-  //     images: images,
-  //   );
-  //   DocumentReference sonuc2 = FirebaseFirestore.instance
-  //       .collection("users")
-  //       .doc(FirebaseAuth.instance.currentUser!.uid);
-  //   DocumentReference sonuc3 = await FirebaseFirestore.instance
-  //       .collection("productss")
-  //       .add(product_Model.toJson());
-  //   var ids = sonuc3.id;
-
-
-  //   var userId = sonuc2.id;
-  //   DocumentSnapshot doc =
-  //       await FirebaseFirestore.instance.collection("productss").doc(ids).get();
-  //   if (doc.exists) {
-  //     productModel pmodel = productModel.dokumandanUret(doc);
-  //     int yenibegeniSayisi = pmodel.numberOfLikes!+1;
-  //     var userId = sonuc2.id;
-  //     FirebaseFirestore.instance.collection("productss").doc(userId).update({
-  //       'id': ids,
-  //       'userId': userId,
-  //       'productStatus': 1,
-  //       'numberOfLikes': yenibegeniSayisi,
-  //     });
-  //   }
-
-  //   //öncelikle eklenecek belgenin bulunduğu koleksiyonun referansını alıyoruz
-  //   CollectionReference usersRef =
-  //       FirebaseFirestore.instance.collection('users');
-  //   //ekleneck belgenin referansını alıyoruz. Ve eklenecek dokumanının adını belirtiyoruz.
-  //   DocumentReference orderRef =
-  //       FirebaseFirestore.instance.collection('productss').doc(ids);
-  //   //eklenecek belgeyi önce alınan koleksiyon referansından getiriyoruz
-  //   DocumentSnapshot userSnapshot =
-  //       await usersRef.doc(FirebaseAuth.instance.currentUser!.uid).get();
-  //   //son olarak eklenecek belgeyi hedef belgenin veri alanına ekliyoruz.
-  //   orderRef.update({'user': userSnapshot.data()});
-  // }
+  
 }
