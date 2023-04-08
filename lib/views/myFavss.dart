@@ -25,6 +25,69 @@ class _favorilerimState extends State<favorilerim> {
       //.where("productss.numberOfLikes", isEqualTo: 1)
       .snapshots();
 
+      
+
+ FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    super.initState();
+
+    getFavorites();
+  }
+
+  Future<void> getFavorites() async {
+    print("sajdksnödksö");
+    firestore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .collection('favorites')
+        .get()
+        .then((value) {
+      print('value length  ' + value.docs.length.toString());
+      value.docs.forEach((element) {
+        setState(() {
+          favorites.add(element.get('post_id'));
+        });
+        // print(element.get('post_id'));
+      });
+    });
+
+    // favorites.forEach((element) {
+    //   print('element : ' + element);
+    // });
+  }
+
+  var favorites = <String>[];
+
+  // Future<void> addToFavoritesCollection(String postId) async {
+  //   var data = <String, dynamic>{'post_id': postId};
+  //   firestore
+  //       .collection('users')
+  //       .doc(auth.currentUser!.uid)
+  //       .collection('favorites')
+  //       .doc(postId)
+  //       .set(data)
+  //       .then((value) {
+  //     setState(() {
+  //       favorites.add(postId);
+  //     });
+  //   });
+  // }
+Future<void> removeFromFavoritesCollection(String postId) async {
+    firestore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .collection('favorites')
+        .doc(postId)
+        .delete()
+        .then((value) {
+      setState(() {
+        favorites.remove(postId);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,13 +171,13 @@ class _favorilerimState extends State<favorilerim> {
                               style: TextStyle(
                                   fontSize: 18.0,
                                   fontFamily: "RobotoCondensed")),
-                          trailing: isFav
+                          trailing: favorites.contains(post_id)
                               ? IconButton(
                                   onPressed: () async{
-                                   await FirebaseFirestore.instance
-                                        .collection("favorite")
-                                        .doc(product_id)
-                                        .update({'productss.isFav': false});
+                                  //  await FirebaseFirestore.instance
+                                  //       .collection("favorite")
+                                  //       .doc(product_id)
+                                  //       .update({'productss.isFav': false});
                                         // FirebaseFirestore.instance.collection("products")
                                         // .where('name',)
                                         // .get()
@@ -124,6 +187,7 @@ class _favorilerimState extends State<favorilerim> {
                                         //     .update({'isFav':false});
                                         //   });
                                         // });
+                                         removeFromFavoritesCollection(post_id);
                                   },
                                   icon: Icon(
                                     Icons.favorite,
@@ -133,10 +197,10 @@ class _favorilerimState extends State<favorilerim> {
                                   onPressed: () async {
                                     print("0000000");
                                      print("0000000");
-                                   await FirebaseFirestore.instance
-                                        .collection("favorite")
-                                        .doc(product_id)
-                                        .update({'productss.isFav': true});
+                                  //  await FirebaseFirestore.instance
+                                  //       .collection("favorite")
+                                  //       .doc(product_id)
+                                  //       .update({'productss.isFav': true});
                                         //  FirebaseFirestore.instance.collection("products")
                                         // .where('name',isEqualTo: data['name'])
                                         // .get()
@@ -146,6 +210,7 @@ class _favorilerimState extends State<favorilerim> {
                                         //     .update({'isFav':true});
                                         //   });
                                         // });
+                                         //addToFavoritesCollection(post_id);
                                   },
                                   icon: Icon(
                                     Icons.favorite_border,

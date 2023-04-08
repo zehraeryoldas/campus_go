@@ -1,4 +1,5 @@
 import 'package:campusgo/models/favourite_model.dart';
+import 'package:campusgo/services/fav_service2.dart';
 import 'package:campusgo/utility/color.dart';
 import 'package:campusgo/views/allAdsDetail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,6 +19,8 @@ class allAds extends StatefulWidget {
 }
 
 class _ilanlarimState extends State<allAds> {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
   final Stream<QuerySnapshot> _usersStream = FirebaseFirestore.instance
       .collection('productss')
       .where("productStatus", isEqualTo: 1)
@@ -26,6 +29,65 @@ class _ilanlarimState extends State<allAds> {
 
   int favouriteValue = 0;
 
+  @override
+  void initState() {
+    super.initState();
+
+    getFavorites();
+  }
+
+  Future<void> getFavorites() async {
+    print("sajdksnödksö");
+    firestore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .collection('favorites')
+        .get()
+        .then((value) {
+      print('value length  ' + value.docs.length.toString());
+      value.docs.forEach((element) {
+        setState(() {
+          favorites.add(element.get('post_id'));
+        });
+        // print(element.get('post_id'));
+      });
+    });
+
+    // favorites.forEach((element) {
+    //   print('element : ' + element);
+    // });
+  }
+
+  var favorites = <String>[];
+
+  Future<void> addToFavoritesCollection(String postId) async {
+    var data = <String, dynamic>{'post_id': postId};
+    firestore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .collection('favorites')
+        .doc(postId)
+        .set(data)
+        .then((value) {
+      setState(() {
+        favorites.add(postId);
+      });
+    });
+  }
+
+  Future<void> removeFromFavoritesCollection(String postId) async {
+    firestore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .collection('favorites')
+        .doc(postId)
+        .delete()
+        .then((value) {
+      setState(() {
+        favorites.remove(postId);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,15 +153,16 @@ class _ilanlarimState extends State<allAds> {
                         Positioned(
                           left: 120,
                           bottom: 90,
-                          child: isFav
+                          child: favorites.contains(postId)
                               ? IconButton(
                                   onPressed: () {
-                                    FirebaseFirestore.instance
-                                        .collection("productss")
-                                        .doc(postId)
-                                        .update({
-                                      'isFav': false,
-                                    });
+                                    // FirebaseFirestore.instance
+                                    //     .collection("productss")
+                                    //     .doc(postId)
+                                    //     .update({
+                                    //   'isFav': false,
+                                    // });
+                                    removeFromFavoritesCollection(postId);
                                   },
                                   icon: Icon(
                                     Icons.favorite,
@@ -107,22 +170,24 @@ class _ilanlarimState extends State<allAds> {
                                   ))
                               : IconButton(
                                   onPressed: () {
-                                    FirebaseFirestore.instance
-                                        .collection("productss")
-                                        .doc(postId)
-                                        .update({
-                                      'isFav': true,
-                                    });
-                                    if (postUserId !=
-                                        FirebaseAuth
-                                            .instance.currentUser!.uid) {
-                                      favouriteService().addFavourite(
-                                        postId,
-                                        postUserId,
-                                        1,
-                                        FirebaseAuth.instance.currentUser!.uid,
-                                      );
-                                    }
+                                    // FirebaseFirestore.instance
+                                    //     .collection("productss")
+                                    //     .doc(postId)
+                                    //     .update({
+                                    //   'isFav': true,
+                                    // });
+                                    addToFavoritesCollection(postId);
+                                    //favservice().addFavourite(postId);
+                                    // if (postUserId !=
+                                    //     FirebaseAuth
+                                    //         .instance.currentUser!.uid) {
+                                    //   favouriteService().addFavourite(
+                                    //     postId,
+                                    //     postUserId,
+                                    //     1,
+                                    //     FirebaseAuth.instance.currentUser!.uid,
+                                    //   );
+                                    // }
                                   },
                                   icon: Icon(
                                     Icons.favorite_border,
@@ -154,6 +219,4 @@ class _ilanlarimState extends State<allAds> {
       },
     );
   }
-
-
 }
