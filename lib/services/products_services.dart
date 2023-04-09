@@ -58,7 +58,7 @@ class productService {
       'id': ids,
       'userId': userId,
       'productStatus': 1,
-      'numberOfLikes': 0,
+      
     });
 
     //öncelikle eklenecek belgenin bulunduğu koleksiyonun referansını alıyoruz
