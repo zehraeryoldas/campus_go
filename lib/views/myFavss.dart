@@ -18,10 +18,12 @@ class favorilerim extends StatefulWidget {
 
 class _favorilerimState extends State<favorilerim> {
   final _userStream = FirebaseFirestore.instance
-      .collection("favorite")
-      .where("user_id", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+      .collection("productss")
+      .where("userId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+      .where('productStatus',isEqualTo: 1)
+      .where('user.userStatus',isEqualTo: 1)
       // .where('status', isEqualTo: 1)
-      .where('productss.isFav', isEqualTo: true)
+      //.where('productss.isFav', isEqualTo: true)
       //.where("productss.numberOfLikes", isEqualTo: 1)
       .snapshots();
 
@@ -61,20 +63,7 @@ class _favorilerimState extends State<favorilerim> {
 
   var favorites = <String>[];
 
-  // Future<void> addToFavoritesCollection(String postId) async {
-  //   var data = <String, dynamic>{'post_id': postId};
-  //   firestore
-  //       .collection('users')
-  //       .doc(auth.currentUser!.uid)
-  //       .collection('favorites')
-  //       .doc(postId)
-  //       .set(data)
-  //       .then((value) {
-  //     setState(() {
-  //       favorites.add(postId);
-  //     });
-  //   });
-  // }
+ 
 Future<void> removeFromFavoritesCollection(String postId) async {
     firestore
         .collection('users')
@@ -120,10 +109,10 @@ Future<void> removeFromFavoritesCollection(String postId) async {
               String konum = data['productss.location'];
               String kategori = data['productss.category_id'];
               String user = data['productss.user.name'].toString();
-              bool isFav = data['productss.isFav'];
+              //bool isFav = data['productss.isFav'];
                String userId = data['user_id'].toString();
               print("????????");
-              print(data['productss.isFav']);
+             // print(data['productss.isFav']);
               print("******");
               return GestureDetector(
                 onTap: () {
