@@ -110,8 +110,7 @@ class _ilanlarimState extends State<allAds> {
             String aciklama = data['description'];
             String konum = data['location'];
             String user = data['user.name'].toString();
-            bool isFav = data['isFav'];
-            //bool productStatus = data['productStatus'];
+            
 
             return GestureDetector(
               onTap: () {
@@ -156,12 +155,6 @@ class _ilanlarimState extends State<allAds> {
                           child: favorites.contains(postId)
                               ? IconButton(
                                   onPressed: () {
-                                    // FirebaseFirestore.instance
-                                    //     .collection("productss")
-                                    //     .doc(postId)
-                                    //     .update({
-                                    //   'isFav': false,
-                                    // });
                                     removeFromFavoritesCollection(postId);
                                   },
                                   icon: Icon(
@@ -170,24 +163,7 @@ class _ilanlarimState extends State<allAds> {
                                   ))
                               : IconButton(
                                   onPressed: () {
-                                    // FirebaseFirestore.instance
-                                    //     .collection("productss")
-                                    //     .doc(postId)
-                                    //     .update({
-                                    //   'isFav': true,
-                                    // });
                                     addToFavoritesCollection(postId);
-                                    //favservice().addFavourite(postId);
-                                    // if (postUserId !=
-                                    //     FirebaseAuth
-                                    //         .instance.currentUser!.uid) {
-                                    //   favouriteService().addFavourite(
-                                    //     postId,
-                                    //     postUserId,
-                                    //     1,
-                                    //     FirebaseAuth.instance.currentUser!.uid,
-                                    //   );
-                                    // }
                                   },
                                   icon: Icon(
                                     Icons.favorite_border,
