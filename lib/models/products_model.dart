@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 
 class productModel {
@@ -54,5 +55,17 @@ class productModel {
     data['images'] = this.images;
     //data['productsStatus'] = this.productsStatus;
     return data;
+  }
+  factory productModel.fromDocumentSnapshot(DocumentSnapshot snapshot) {
+    final data = snapshot.data() as Map<String, dynamic>;
+    return productModel(
+      id: snapshot.id,
+      name: data['name'],
+      description: data['description'],
+      price: data['price'],
+      status: data['status'],
+      location:data['location'],
+      images:data['images']
+    );
   }
 }
