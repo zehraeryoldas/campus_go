@@ -75,9 +75,9 @@ class _profilePageState extends State<profilePagee> {
         FirebaseFirestore.instance
             .collection("users")
             .doc(FirebaseAuth.instance.currentUser!.uid)
-            .update({'images': imagesController.text=url as String});
-       
-       //imagesController.text = url as String;
+            .update({'images': imagesController.text = url as String});
+
+        //imagesController.text = url as String;
       });
     } catch (e) {
       print('error occured');
@@ -97,9 +97,7 @@ class _profilePageState extends State<profilePagee> {
     // Kullanıcı hesabı silindi
   }
 
-  Future<void> profilInfo() async {
-    
-  }
+  Future<void> profilInfo() async {}
   Future<void> cikisYap() async {
     await Navigator.pushReplacement(
         context, (MaterialPageRoute(builder: (context) => const UserLogin())));
@@ -207,25 +205,11 @@ class _profilePageState extends State<profilePagee> {
                                     width: 120,
                                     height: 120,
                                     child: GestureDetector(
-                                        onTap: () {
-                                          // FirebaseFirestore.instance
-                                          //     .collection("users")
-                                          //     .doc(FirebaseAuth
-                                          //         .instance.currentUser!.uid)
-                                          //     .update({
-                                          //   'images': imagesController.text
-                                          // });
-                                        },
+                                        onTap: () {},
                                         child: CircleAvatar(
                                           backgroundColor: mainColor.color,
                                           backgroundImage: FileImage(_photo!),
                                         ))),
-                            // backgroundImage: NetworkImage(
-                            //   "https://cdn.pixabay.com/photo/2022/08/17/07/10/strawberries-7391738_1280.jpg",
-                            // ),
-
-                            // backgroundImage:FileImage(_photo!),
-                            //child:_photo!=null ? Image.file(_photo!,fit: BoxFit.cover,):Image.network("https://cdn.pixabay.com/photo/2022/08/17/07/10/strawberries-7391738_1280.jpg"),
                             backgroundColor: Colors.black,
                           )),
                     ),
