@@ -18,7 +18,8 @@ class MyFavsDEtailPage extends StatefulWidget {
       required this.durum,
       required this.aciklama,
       required this.konum,
-      required this.user});
+      //required this.user
+      });
   final String id;
   final String idx;
   final String resim;
@@ -27,7 +28,7 @@ class MyFavsDEtailPage extends StatefulWidget {
   final String durum;
   final String aciklama;
   final String konum;
-  final String user;
+ // final String user;
 
   @override
   State<MyFavsDEtailPage> createState() => _MyFavsDEtailPageState();
@@ -123,12 +124,12 @@ class _MyFavsDEtailPageState extends State<MyFavsDEtailPage> {
                       ))),
               title: const Text("Profil Bilgileri",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              subtitle: Text(
-                "${widget.user}",
-                style: TextStyle(
-                  color: Colors.grey.shade800,
-                ),
-              ),
+              // subtitle: Text(
+              //   "${widget.user}",
+              //   style: TextStyle(
+              //     color: Colors.grey.shade800,
+              //   ),
+              // ),
             ),
             _myDivider(),
             Container(
