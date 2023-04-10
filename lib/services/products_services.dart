@@ -38,12 +38,6 @@ class productService {
 
     var userId = sonuc2.id;
 
-    // DocumentReference sonuc1 = await FirebaseFirestore.instance
-    //     .collection("users")
-    //     .doc(FirebaseAuth.instance.currentUser!.uid)
-    //     .collection("products")
-    //     .add(product_Model.toJson());
-
     DocumentReference sonuc3 = await FirebaseFirestore.instance
         .collection("productss")
         .add(product_Model.toJson());
@@ -58,7 +52,6 @@ class productService {
       'id': ids,
       'userId': userId,
       'productStatus': 1,
-      
     });
 
     //öncelikle eklenecek belgenin bulunduğu koleksiyonun referansını alıyoruz
@@ -72,8 +65,5 @@ class productService {
         await usersRef.doc(FirebaseAuth.instance.currentUser!.uid).get();
     //son olarak eklenecek belgeyi hedef belgenin veri alanına ekliyoruz.
     orderRef.update({'user': userSnapshot.data()});
-
   }
-
-  
 }
