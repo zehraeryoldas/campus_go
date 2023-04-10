@@ -11,34 +11,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 
-// Future<void> main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-
-//   if (kIsWeb) {
-//     await Firebase.initializeApp(
-//         options: const FirebaseOptions(
-//       apiKey: "AIzaSyCjkrK5yQx7JibDDh33sHkhgC8vqGsr9E8",
-//       projectId: "campusgo-fc19b",
-//       messagingSenderId: "632531570660",
-//       appId: "1:632531570660:web:331e3e352d88fab6d201f1",
-//     ));
-//   } else {
-//     await Firebase.initializeApp();
-//   }
-//   runApp(MyApp());
-// }
-
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb || Platform.isAndroid || Platform.isIOS) {
     await Firebase.initializeApp(
-      //   options: const FirebaseOptions(
-      //   apiKey: 'AIzaSyAjqBHlBRhxUYpMq92kfMk8zsxzW7xFDcY',
-      //  projectId: 'campusgo-6eec2',
-      //   storageBucket: 'campusgo-6eec2.appspot.com',
-      //   messagingSenderId: '898695960774',
-      //   appId: '1:898695960774:web:a7a21c5caf34fabb331fc7',
-      // )
       options: DefaultFirebaseOptions.currentPlatform,
     );
   }
@@ -55,7 +31,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        
           scaffoldBackgroundColor: Colors.white,
           tabBarTheme: TabBarTheme(
             labelColor: Colors.pink,
