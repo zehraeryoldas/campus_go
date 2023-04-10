@@ -201,7 +201,7 @@ class _userLoginState extends State<UserLogin> {
   Container _myContainers(String metin, TextEditingController controller,
       TextInputType type, Icon icon) {
     return Container(
-      //decoration: BoxDecoration(color: Colors.transparent),
+     
       width: 273,
       height: 54,
       child: TextField(
