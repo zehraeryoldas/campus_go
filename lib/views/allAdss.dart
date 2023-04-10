@@ -1,4 +1,4 @@
-import 'package:campusgo/models/favourite_model.dart';
+
 import 'package:campusgo/utility/color.dart';
 import 'package:campusgo/views/allAdsDetail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../services/favourite_service.dart';
+
 
 class allAds extends StatefulWidget {
   const allAds({
