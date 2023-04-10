@@ -1,5 +1,4 @@
 import 'package:campusgo/models/products_model.dart';
-import 'package:campusgo/services/favourite_service.dart';
 import 'package:campusgo/utility/color.dart';
 import 'package:campusgo/views/allAdsDetail.dart';
 import 'package:campusgo/views/myFavsDEtailPage.dart';
@@ -17,16 +16,13 @@ class favorilerim extends StatefulWidget {
 }
 
 class _favorilerimState extends State<favorilerim> {
-
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
   final Stream<QuerySnapshot> _favStream = FirebaseFirestore.instance
       .collection('productss')
-      
       .where("productStatus", isEqualTo: 1)
       .where('user.userStatus', isEqualTo: 1)
       .snapshots();
-
 
   Future<List<productModel>> getFavoriteProducts() async {
     final favoritesSnapshot = await FirebaseFirestore.instance
@@ -57,13 +53,11 @@ class _favorilerimState extends State<favorilerim> {
     super.initState();
     print("hello");
     getFavorites();
-    print("hello");
   }
 
   Future<void> getFavorites() async {
-    print("merhaba");
     print("sajdksnödksö");
-    print("merhaba");
+
     firestore
         .collection('users')
         .doc(auth.currentUser!.uid)
@@ -78,10 +72,6 @@ class _favorilerimState extends State<favorilerim> {
         // print(element.get('post_id'));
       });
     });
-
-    // favorites.forEach((element) {
-    //   print('element : ' + element);
-    // });
   }
 
   var favorites = <String>[];
@@ -103,11 +93,11 @@ class _favorilerimState extends State<favorilerim> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-   
       body: Center(
         child: FutureBuilder<List<productModel>>(
           future: getFavoriteProducts(),
-          builder: (BuildContext context, AsyncSnapshot<List<productModel>> snapshot) {
+          builder: (BuildContext context,
+              AsyncSnapshot<List<productModel>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return CircularProgressIndicator(); // veri bekleniyor göstergesi
             } else if (snapshot.hasError) {
@@ -119,97 +109,95 @@ class _favorilerimState extends State<favorilerim> {
                 return Text('Favori ürün yok.');
               } else {
                 return ListView.builder(
-            itemCount: favoriteProducts.length,
-            itemBuilder: (context, index) {
-               final product = favoriteProducts[index];
-              String postId = product.id.toString();
-               String postUserId =product.userId.toString();
-                String images =product.images.toString();
-                 int price =product.price!.toInt();
-                 String name =product.name.toString();
-                 String description =product.description.toString();
-                  String status =product.status.toString();
-                   String location =product.location.toString();
-
-           
+                  itemCount: favoriteProducts.length,
+                  itemBuilder: (context, index) {
+                    final product = favoriteProducts[index];
+                    String postId = product.id.toString();
+                    String postUserId = product.userId.toString();
+                    String images = product.images.toString();
+                    int price = product.price!.toInt();
+                    String name = product.name.toString();
+                    String description = product.description.toString();
+                    String status = product.status.toString();
+                    String location = product.location.toString();
 
 
-              print("????????");
-              print("******");
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => MyFavsDEtailPage(
-                              id: postUserId,
-                              idx: postId,
-                              resim: images,
-                              name: name,
-                              price: price,
-                              durum: status,
-                              aciklama: description,
-                              konum: location,
-                              //user: userInfo
-                              )));
-                },
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      10.0,
-                    ),
-                  ),
-                  child: Row(children: [
-                    Card(
-                      child: Container(
-                        //color: Colors.red,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: NetworkImage(product.images.toString()))),
-                        width: MediaQuery.of(context).size.width * 0.40,
-                        height: MediaQuery.of(context).size.height * 0.12,
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        width: 40,
-                        height: MediaQuery.of(context).size.height * 0.12,
-                        child: ListTile(
-                          title: Text(product.price.toString() + " \u20ba",
-                              style: TextStyle(
-                                  fontSize: 22.0,
-                                  fontFamily: "RobotoCondensed")),
-                          subtitle: Text(product.name.toString(),
-                              style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontFamily: "RobotoCondensed")),
-                          trailing: favorites.contains(postId)
-                              ? IconButton(
-                                  onPressed: () async {
-                               
-                                    removeFromFavoritesCollection(postId);
-                                  },
-                                  icon: Icon(
-                                    Icons.favorite,
-                                    color: mainColor.color,
-                                  ))
-                              : IconButton(
-                                  onPressed: () async {
-                                    print("0000000");
-                                    print("0000000");
-                                
-                                  },
-                                  icon: Icon(
-                                    Icons.favorite_border,
-                                  )),
+                    print("????????");
+                    print("******");
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MyFavsDEtailPage(
+                                      id: postUserId,
+                                      idx: postId,
+                                      resim: images,
+                                      name: name,
+                                      price: price,
+                                      durum: status,
+                                      aciklama: description,
+                                      konum: location,
+                                      //user: userInfo
+                                    )));
+                      },
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                            10.0,
+                          ),
                         ),
+                        child: Row(children: [
+                          Card(
+                            child: Container(
+                              //color: Colors.red,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: NetworkImage(
+                                          product.images.toString()))),
+                              width: MediaQuery.of(context).size.width * 0.40,
+                              height: MediaQuery.of(context).size.height * 0.12,
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              width: 40,
+                              height: MediaQuery.of(context).size.height * 0.12,
+                              child: ListTile(
+                                title: Text(
+                                    product.price.toString() + " \u20ba",
+                                    style: TextStyle(
+                                        fontSize: 22.0,
+                                        fontFamily: "RobotoCondensed")),
+                                subtitle: Text(product.name.toString(),
+                                    style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontFamily: "RobotoCondensed")),
+                                trailing: favorites.contains(postId)
+                                    ? IconButton(
+                                        onPressed: () async {
+                                          removeFromFavoritesCollection(postId);
+                                        },
+                                        icon: Icon(
+                                          Icons.favorite,
+                                          color: mainColor.color,
+                                        ))
+                                    : IconButton(
+                                        onPressed: () async {
+                                          print("0000000");
+                                          print("0000000");
+                                        },
+                                        icon: Icon(
+                                          Icons.favorite_border,
+                                        )),
+                              ),
+                            ),
+                          ),
+                        ]),
                       ),
-                    ),
-                  ]),
-                ),
-              );
-            },
-          );
+                    );
+                  },
+                );
               }
             } else {
               return Text('Bir şeyler ters gitti.');
