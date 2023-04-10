@@ -22,13 +22,12 @@ class _LoginState extends State<Login> {
 
   TextEditingController sifreController = TextEditingController();
   TextEditingController sifretekrarController = TextEditingController();
-    TextEditingController imagesController = TextEditingController();
-
+  TextEditingController imagesController = TextEditingController();
 
   FirebaseAuth auth = FirebaseAuth.instance;
   String name = "kullanıcı adı";
   String email = "email";
-    String telefonno = "telefon";
+  String telefonno = "telefon";
 
   String sifre = "şifre";
   String sifreTekrar = "şifre doğrula";
@@ -46,7 +45,8 @@ class _LoginState extends State<Login> {
       ),
     );
   }
- void showMessage2(BuildContext context) {
+
+  void showMessage2(BuildContext context) {
     final scaffold = ScaffoldMessenger.of(context);
     scaffold.showSnackBar(
       SnackBar(
@@ -56,7 +56,6 @@ class _LoginState extends State<Login> {
       ),
     );
   }
- 
 
   signOut() async {
     return await auth.signOut();
@@ -97,7 +96,7 @@ class _LoginState extends State<Login> {
                         Icons.email,
                         color: Colors.white,
                       )),
-                      _myContainers(
+                  _myContainers(
                       telefonno,
                       telefonNocontroller,
                       TextInputType.phone,
@@ -121,9 +120,7 @@ class _LoginState extends State<Login> {
                         Icons.password,
                         color: Colors.white,
                       )),
-                  //  _elevatedButton(kayitOl1, Icon(Icons.start), kayitOl),
                   _elevatedButton(kayitOl1, Icon(Icons.start)),
-
                   SizedBox(
                     height: 10,
                   ),
@@ -174,13 +171,11 @@ class _LoginState extends State<Login> {
               showMessage(context);
             }
             userService().addHedef2(
-                emailcontroller.text,
-                namecontroller.text,
-                int.tryParse(telefonNocontroller.text),
-                // sifreController.text,
-                //sifretekrarController.text
-                imagesController.text,
-                );
+              emailcontroller.text,
+              namecontroller.text,
+              int.tryParse(telefonNocontroller.text),
+              imagesController.text,
+            );
           },
           label: Text(text)),
     );
@@ -189,7 +184,6 @@ class _LoginState extends State<Login> {
   Container _myContainers(String metin, TextEditingController controller,
       TextInputType type, Icon icon) {
     return Container(
-      //decoration: BoxDecoration(color: Colors.transparent),
       width: 273,
       height: 50,
       child: TextField(
