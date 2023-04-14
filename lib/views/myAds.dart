@@ -28,6 +28,7 @@ class _ilanlarimState extends State<ilanlarim> {
     return StreamBuilder<QuerySnapshot>(
         stream: _usersStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          
           if (snapshot.hasError) {
             return const Text('hatalı işlem');
           }
