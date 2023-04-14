@@ -85,7 +85,7 @@ class _userLoginState extends State<UserLogin> {
               Column(
                 children: [
                   Text(
-                    "WELCOME, \nBACK!",
+                    "CAMPUS, \nGO!",
                     style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
