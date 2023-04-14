@@ -18,11 +18,6 @@ class favorilerim extends StatefulWidget {
 class _favorilerimState extends State<favorilerim> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
-  final Stream<QuerySnapshot> _favStream = FirebaseFirestore.instance
-      .collection('productss')
-      .where("productStatus", isEqualTo: 1)
-      .where('user.userStatus', isEqualTo: 1)
-      .snapshots();
 
   Future<List<productModel>> getFavoriteProducts() async {
     final favoritesSnapshot = await FirebaseFirestore.instance
@@ -30,6 +25,9 @@ class _favorilerimState extends State<favorilerim> {
         .doc(auth.currentUser!.uid)
         .collection("favorites")
         .get();
+    // favoritesSnapshot nesnesinin belgelerinin
+    //post_id alanlarını içeren bir liste oluşturuldu
+    // ve favoritesList değişkenine atandı.
     final favoritesList =
         favoritesSnapshot.docs.map((doc) => doc.data()['post_id']).toList();
 
@@ -45,8 +43,6 @@ class _favorilerimState extends State<favorilerim> {
 
     return favoriteProducts;
   }
-
-  Future<void> urunleril() async {}
 
   @override
   void initState() {
@@ -120,7 +116,6 @@ class _favorilerimState extends State<favorilerim> {
                     String description = product.description.toString();
                     String status = product.status.toString();
                     String location = product.location.toString();
-
 
                     print("????????");
                     print("******");
