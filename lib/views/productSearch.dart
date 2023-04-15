@@ -100,7 +100,7 @@ class searchDelegate extends SearchDelegate {
                       context,
                       MaterialPageRoute(
                           builder: (context) => AllAdsDetailPage(
-                                id: id,
+                                postUserId: id,
                                 price: price,
                                 name: name,
                                 resim: resim,
