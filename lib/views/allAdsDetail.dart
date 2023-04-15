@@ -13,7 +13,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class AllAdsDetailPage extends StatefulWidget {
-  final String id;
+  final String postUserId;
 
   final String resim;
   final String name;
@@ -25,7 +25,7 @@ class AllAdsDetailPage extends StatefulWidget {
 
   AllAdsDetailPage({
     super.key,
-    required this.id,
+    required this.postUserId,
     required this.resim,
     required this.name,
     required this.price,
@@ -150,13 +150,14 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
                     child: ElevatedButton.icon(
                       onPressed: () {
                         print("000000000");
-                        print(widget.id);
+                        print(widget.postUserId);
                         print("000000000");
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: ((context) => ConversationPage(
-                                      userId: widget.id,
+
+                                      userId: widget.postUserId,
                                     ))));
                       },
                       icon: Icon(Icons.message),
