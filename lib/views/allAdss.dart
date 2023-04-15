@@ -116,7 +116,7 @@ class _ilanlarimState extends State<allAds> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => AllAdsDetailPage(
-                              id: postUserId,
+                              postUserId: postUserId,
                               price: price,
                               name: name,
                               resim: resim,
