@@ -30,6 +30,7 @@ class _ConversationPageState extends State<ConversationPage> {
       body: Card(
         child: ListView(
           children: [
+            
             Card(
               child: Row(
                 children: [
@@ -69,16 +70,11 @@ class _ConversationPageState extends State<ConversationPage> {
               child: TextField(
                   controller: messageController,
                   decoration: InputDecoration(
-                      label: Row(
-                    children: [
-                      Text("mesaj"),
-                      Spacer(),
-                      IconButton(
-                          onPressed: () {},
-                          icon: IconButton(
-                              onPressed: (){}, icon: Icon(Icons.send)))
-                    ],
-                  ))),
+                      label: Text("Mesaj"),
+                      
+                      suffixIcon: IconButton(onPressed: (){
+                        
+                      }, icon: Icon(Icons.send)))),
             ),
           ],
         ),
