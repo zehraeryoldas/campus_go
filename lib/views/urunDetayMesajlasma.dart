@@ -34,39 +34,45 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Row(
-          children: [
-            IconButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AllAdsDetailPage(
-                                resim: widget.resim,
-                                name: widget.name,
-                                price: widget.price,
-                                durum: widget.durum,
-                                aciklama: widget.aciklama,
-                                konum: widget.konum,
-                                user: widget.user,
-                              )));
-                },
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.black,
-                )),
-          ],
-        ),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AllAdsDetailPage(
+                            resim: widget.resim,
+                            name: widget.name,
+                            price: widget.price,
+                            durum: widget.durum,
+                            aciklama: widget.aciklama,
+                            konum: widget.konum,
+                            user: widget.user,
+                          )));
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            )),
         title: Row(
           children: [
             SizedBox(
                 width: 50,
                 height: 50,
                 child: Image.network(widget.resim.toString())),
-            Text(
-              widget.user.toString(),
-              style: TextStyle(color: Colors.black),
-            )
+            Expanded(
+                child: ListTile(
+              title: Text(
+                widget.user.toString(),
+                style: TextStyle(color: Colors.black),
+              ),
+              subtitle: Text(
+                widget.name.toString(),
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+            ))
           ],
         ),
         actions: [
@@ -88,6 +94,12 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
           )
         ],
       ),
+    body: ListView(
+      children: [
+        
+      ],
+    ),
+    
     );
   }
 }
