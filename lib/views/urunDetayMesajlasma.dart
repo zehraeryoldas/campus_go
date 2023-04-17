@@ -1,5 +1,8 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 import 'package:campusgo/utility/color.dart';
 import 'package:campusgo/views/allAdsDetail.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -15,6 +18,7 @@ class urunDetayMesajlasma extends StatefulWidget {
     this.durum,
     this.aciklama,
     this.konum,
+    this.conversationId,
   });
   final String? postUserId;
   final String? user;
@@ -24,44 +28,53 @@ class urunDetayMesajlasma extends StatefulWidget {
   final String? durum;
   final String? aciklama;
   final String? konum;
+  final String? conversationId;
 
   @override
   State<urunDetayMesajlasma> createState() => _urunDetayMesajlasmaState();
 }
 
 class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
-   TextEditingController messageController = TextEditingController();
+  TextEditingController messageController = TextEditingController();
   // ignore: non_constant_identifier_names
 
-var mesajlarListesi=<String>[];
+  var mesajlarListesi = <String>[];
 
-  void _handleSubmitted(String text){
+  void _handleSubmitted(String text) {
     messageController.clear();
+    mesajlarListesi.add(text);
   }
-  Widget _buildTextComposer(){
+
+  Widget _buildTextComposer() {
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          
           Flexible(
             child: TextField(
               controller: messageController,
-              onSubmitted:_handleSubmitted ,
+              onSubmitted: _handleSubmitted,
               decoration: InputDecoration.collapsed(hintText: 'Send'),
             ),
           ),
-
-          IconButton(onPressed: (){
-            _handleSubmitted(messageController.text);
-          }, icon: Icon(Icons.send))
+          IconButton(
+              onPressed: () {
+                _handleSubmitted(messageController.text);
+              },
+              icon: Icon(Icons.send))
         ],
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
-
+    CollectionReference<Object> _ref;
+    @override
+    void initState(){
+      _ref=FirebaseFirestore.instance.collection('conversations/${widget.conversationId}/messages');
+    }
+    final String userId="pceXDyA3HagfmzQ8vyXw8vokOaz1";
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -124,9 +137,77 @@ var mesajlarListesi=<String>[];
           )
         ],
       ),
-    
-    body: _buildTextComposer(),
-    
+      body: Column(
+        children: [
+          Expanded(
+            child: StreamBuilder<Object>(
+              stream:_ref.snapshots() ,
+              builder: (context, snapshot){return ListView.builder(
+                  itemCount: 10,
+                  itemBuilder: ((context, index) {
+                    return ListTile(
+                      title: Align(
+                          alignment: index % 2 == 0
+                              ? Alignment.centerLeft
+                              : Alignment.centerRight,
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                                color: Colors.yellow,
+                                borderRadius: BorderRadius.horizontal(
+                                    left: Radius.circular(10),
+                                    right: Radius.circular(10))),
+                            child: Text("Deneme mesajı"),
+                          )),
+                    );
+                  }));}
+            ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                  child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.horizontal(
+                              left: Radius.circular(25),
+                              right: Radius.circular(25))),
+                      child: Row(
+                        children: [
+                         
+                          Expanded(
+                            child: TextField(
+                              decoration: InputDecoration(hintText: "Mesaj"),
+                            ),
+                          ),
+                           InkWell(
+                            child: Icon(Icons.send),
+                          ),
+                        ],
+                      )))
+            ],
+          )
+        ],
+      ),
+
+      // body: StreamBuilder(
+      //     stream: FirebaseFirestore.instance.collection('conversations').where('members',
+      //     arrayContains: userId
+      //     ).snapshots(),
+      //     builder:
+      //         (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      //       if (snapshot.hasError) {
+      //         return Text('Error : ${snapshot.error}');
+      //       }
+      //       if (snapshot.connectionState == ConnectionState.waiting) {
+      //         return Text("Loading...");
+      //       }
+      //       return ListView(
+      //         children: snapshot.data!.docs.map((doc) => ListTile(
+      //           title: Text('dali'),
+      //           subtitle: Text(doc['displayMessage']),
+      //         )).toList(),
+      //       );
+      //     }),
     );
   }
 }
