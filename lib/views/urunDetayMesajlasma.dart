@@ -34,14 +34,34 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
   // ignore: non_constant_identifier_names
 
 var mesajlarListesi=<String>[];
-@override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    mesajlarListesi.add(messageController.text);
+
+  void _handleSubmitted(String text){
+    messageController.clear();
+  }
+  Widget _buildTextComposer(){
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          
+          Flexible(
+            child: TextField(
+              controller: messageController,
+              onSubmitted:_handleSubmitted ,
+              decoration: InputDecoration.collapsed(hintText: 'Send'),
+            ),
+          ),
+
+          IconButton(onPressed: (){
+            _handleSubmitted(messageController.text);
+          }, icon: Icon(Icons.send))
+        ],
+      ),
+    );
   }
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -104,24 +124,8 @@ var mesajlarListesi=<String>[];
           )
         ],
       ),
-    body: Column(
-      children: [
-        Container(width: double.infinity,height: 620,color: Colors.red,),
-               TextField(
-                controller: messageController,
-                decoration: InputDecoration(
-                  label: Text("Mesaj"),
-                  suffixIcon: IconButton(
-                    onPressed: () {
-                     
-                    },
-                    icon: Icon(
-                      Icons.send,
-                    ),
-                  ),
-                )),
-      ],
-    ),
+    
+    body: _buildTextComposer(),
     
     );
   }
