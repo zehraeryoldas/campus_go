@@ -2,6 +2,7 @@ import 'package:campusgo/arayuz.dart';
 import 'package:campusgo/utility/color.dart';
 import 'package:campusgo/views/ads.dart';
 import 'package:campusgo/views/conversation.dart';
+import 'package:campusgo/views/urunDetayMesajlasma.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -18,7 +19,6 @@ class MyFavsDEtailPage extends StatefulWidget {
       required this.durum,
       required this.aciklama,
       required this.konum,
-      //required this.user
       });
   final String id;
   final String idx;
@@ -28,7 +28,7 @@ class MyFavsDEtailPage extends StatefulWidget {
   final String durum;
   final String aciklama;
   final String konum;
- // final String user;
+ 
 
   @override
   State<MyFavsDEtailPage> createState() => _MyFavsDEtailPageState();
@@ -146,8 +146,8 @@ class _MyFavsDEtailPageState extends State<MyFavsDEtailPage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: ((context) => ConversationPage(
-                                      userId: widget.id,
+                                builder: ((context) => urunDetayMesajlasma(
+                                      postUserId: widget.id, price: widget.price, name: widget.name, resim: widget.resim,
                                     ))));
                       },
                       icon: Icon(Icons.message),

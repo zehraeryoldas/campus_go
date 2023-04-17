@@ -28,7 +28,7 @@ class _AnaSayfaState extends State<Arayuz> {
       //ImageUploads(),
 
       const homePage(),
-      ConversationPage(userId: FirebaseAuth.instance.currentUser!.uid,),
+      ConversationPage(),
       const payPage(),
       adsPage(),
 

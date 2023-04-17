@@ -6,6 +6,7 @@ import 'package:campusgo/services/products_services.dart';
 import 'package:campusgo/utility/color.dart';
 import 'package:campusgo/views/conversation.dart';
 import 'package:campusgo/views/home.dart';
+import 'package:campusgo/views/urunDetayMesajlasma.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,26 +14,25 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class AllAdsDetailPage extends StatefulWidget {
-  final String postUserId;
-
-  final String resim;
-  final String name;
-  final int price;
-  final String durum;
-  final String aciklama;
-  final String konum;
-  final String user;
+  final String? postUserId;
+  final String? user;
+  final String? resim;
+  final String? name;
+  final int? price;
+  final String? durum;
+  final String? aciklama;
+  final String? konum;
 
   AllAdsDetailPage({
     super.key,
-    required this.postUserId,
-    required this.resim,
-    required this.name,
-    required this.price,
-    required this.durum,
-    required this.aciklama,
-    required this.konum,
-    required this.user,
+     this.postUserId,
+     this.resim,
+     this.name,
+     this.price,
+     this.durum,
+     this.aciklama,
+     this.konum,
+     this.user,
   });
 
   @override
@@ -45,7 +45,7 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            widget.name,
+            widget.name.toString(),
             style: const TextStyle(color: Colors.black),
           ),
           leading: IconButton(
@@ -155,9 +155,15 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: ((context) => ConversationPage(
-
-                                      userId: widget.postUserId,
+                                builder: ((context) => urunDetayMesajlasma(
+                                      postUserId: widget.postUserId.toString(),
+                                      name: widget.name.toString(),
+                                      price: widget.price!.toInt(),
+                                      resim: widget.resim.toString(),
+                                      konum: widget.konum.toString(),
+                                      durum: widget.durum.toString(),
+                                      user: widget.user.toString(),
+                                      aciklama: widget.aciklama.toString(),
                                     ))));
                       },
                       icon: Icon(Icons.message),

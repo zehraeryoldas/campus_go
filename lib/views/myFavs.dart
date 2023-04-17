@@ -116,6 +116,7 @@ class _favorilerimState extends State<favorilerim> {
                     String description = product.description.toString();
                     String status = product.status.toString();
                     String location = product.location.toString();
+                    
 
                     print("????????");
                     print("******");
