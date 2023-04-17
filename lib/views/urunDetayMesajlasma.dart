@@ -30,6 +30,16 @@ class urunDetayMesajlasma extends StatefulWidget {
 }
 
 class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
+   TextEditingController messageController = TextEditingController();
+  // ignore: non_constant_identifier_names
+
+var mesajlarListesi=<String>[];
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    mesajlarListesi.add(messageController.text);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,9 +104,22 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
           )
         ],
       ),
-    body: ListView(
+    body: Column(
       children: [
-        
+        Container(width: double.infinity,height: 620,color: Colors.red,),
+               TextField(
+                controller: messageController,
+                decoration: InputDecoration(
+                  label: Text("Mesaj"),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                     
+                    },
+                    icon: Icon(
+                      Icons.send,
+                    ),
+                  ),
+                )),
       ],
     ),
     
