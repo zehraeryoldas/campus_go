@@ -151,7 +151,7 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
                       onPressed: () {
                         print("000000000");
                         print(widget.postUserId);
-                        print("000000000");
+                        print("999999");
                         Navigator.push(
                             context,
                             MaterialPageRoute(
