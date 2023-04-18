@@ -18,7 +18,6 @@ class urunDetayMesajlasma extends StatefulWidget {
     this.durum,
     this.aciklama,
     this.konum,
-    this.conversationId,
   });
   final String? postUserId;
   final String? user;
@@ -28,7 +27,6 @@ class urunDetayMesajlasma extends StatefulWidget {
   final String? durum;
   final String? aciklama;
   final String? konum;
-  final String? conversationId;
 
   @override
   State<urunDetayMesajlasma> createState() => _urunDetayMesajlasmaState();
@@ -38,43 +36,38 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
   TextEditingController messageController = TextEditingController();
   // ignore: non_constant_identifier_names
 
-  var mesajlarListesi = <String>[];
+  // var mesajlarListesi = <String>[];
 
-  void _handleSubmitted(String text) {
-    messageController.clear();
-    mesajlarListesi.add(text);
-  }
+  // void _handleSubmitted(String text) {
+  //   messageController.clear();
+  //   mesajlarListesi.add(text);
+  // }
 
-  Widget _buildTextComposer() {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Flexible(
-            child: TextField(
-              controller: messageController,
-              onSubmitted: _handleSubmitted,
-              decoration: InputDecoration.collapsed(hintText: 'Send'),
-            ),
-          ),
-          IconButton(
-              onPressed: () {
-                _handleSubmitted(messageController.text);
-              },
-              icon: Icon(Icons.send))
-        ],
-      ),
-    );
-  }
+  // Widget _buildTextComposer() {
+  //   return Container(
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //       children: [
+  //         Flexible(
+  //           child: TextField(
+  //             controller: messageController,
+  //             onSubmitted: _handleSubmitted,
+  //             decoration: InputDecoration.collapsed(hintText: 'Send'),
+  //           ),
+  //         ),
+  //         IconButton(
+  //             onPressed: () {
+  //               _handleSubmitted(messageController.text);
+  //             },
+  //             icon: Icon(Icons.send))
+  //       ],
+  //     ),
+  //   );
+  //}
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference<Object> _ref;
-    @override
-    void initState(){
-      _ref=FirebaseFirestore.instance.collection('conversations/${widget.conversationId}/messages');
-    }
-    final String userId="pceXDyA3HagfmzQ8vyXw8vokOaz1";
+    final String userId = "pceXDyA3HagfmzQ8vyXw8vokOaz1";
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -140,28 +133,25 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
       body: Column(
         children: [
           Expanded(
-            child: StreamBuilder<Object>(
-              stream:_ref.snapshots() ,
-              builder: (context, snapshot){return ListView.builder(
-                  itemCount: 10,
-                  itemBuilder: ((context, index) {
-                    return ListTile(
-                      title: Align(
-                          alignment: index % 2 == 0
-                              ? Alignment.centerLeft
-                              : Alignment.centerRight,
-                          child: Container(
-                            padding: EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                                color: Colors.yellow,
-                                borderRadius: BorderRadius.horizontal(
-                                    left: Radius.circular(10),
-                                    right: Radius.circular(10))),
-                            child: Text("Deneme mesajı"),
-                          )),
-                    );
-                  }));}
-            ),
+            child: ListView.builder(
+                itemCount: 10,
+                itemBuilder: ((context, index) {
+                  return ListTile(
+                    title: Align(
+                        alignment: index % 2 == 0
+                            ? Alignment.centerLeft
+                            : Alignment.centerRight,
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              color: Colors.yellow,
+                              borderRadius: BorderRadius.horizontal(
+                                  left: Radius.circular(10),
+                                  right: Radius.circular(10))),
+                          child: Text("Deneme mesajı"),
+                        )),
+                  );
+                })),
           ),
           Row(
             children: [
@@ -173,13 +163,12 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
                               right: Radius.circular(25))),
                       child: Row(
                         children: [
-                         
                           Expanded(
                             child: TextField(
                               decoration: InputDecoration(hintText: "Mesaj"),
                             ),
                           ),
-                           InkWell(
+                          InkWell(
                             child: Icon(Icons.send),
                           ),
                         ],
