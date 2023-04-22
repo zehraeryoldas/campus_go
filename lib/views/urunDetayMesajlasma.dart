@@ -3,6 +3,7 @@
 import 'package:campusgo/utility/color.dart';
 import 'package:campusgo/views/allAdsDetail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -11,7 +12,6 @@ class urunDetayMesajlasma extends StatefulWidget {
   urunDetayMesajlasma({
     super.key,
     this.postUserId,
-    
     this.user,
     this.resim,
     this.name,
@@ -131,72 +131,108 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
           )
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: ((context, index) {
-                  return ListTile(
-                    title: Align(
-                        alignment: index % 2 == 0
-                            ? Alignment.centerLeft
-                            : Alignment.centerRight,
-                        child: Container(
-                          padding: EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                              color: Colors.yellow,
-                              borderRadius: BorderRadius.horizontal(
-                                  left: Radius.circular(10),
-                                  right: Radius.circular(10))),
-                          child: Text("Deneme mesajı"),
-                        )),
-                  );
-                })),
-          ),
-          Row(
-            children: [
-              Expanded(
-                  child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.horizontal(
-                              left: Radius.circular(25),
-                              right: Radius.circular(25))),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              decoration: InputDecoration(hintText: "Mesaj"),
-                            ),
-                          ),
-                         IconButton(onPressed: (){}, icon: Icon(Icons.send))
-                        ],
-                      )))
-            ],
-          )
-        ],
-      ),
-      
+      // body: Column(
+      //   children: [
+      //     Expanded(
+      //       child: ListView.builder(
+      //           itemCount: 10,
+      //           itemBuilder: ((context, index) {
+      //             return ListTile(
+      //               title: Align(
+      //                   alignment: index % 2 == 0
+      //                       ? Alignment.centerLeft
+      //                       : Alignment.centerRight,
+      //                   child: Container(
+      //                     padding: EdgeInsets.all(8),
+      //                     decoration: BoxDecoration(
+      //                         color: Colors.yellow,
+      //                         borderRadius: BorderRadius.horizontal(
+      //                             left: Radius.circular(10),
+      //                             right: Radius.circular(10))),
+      //                     child: Text("Deneme mesajı"),
+      //                   )),
+      //             );
+      //           })),
+      //     ),
+      //     Row(
+      //       children: [
+      //         Expanded(
+      //             child: Container(
+      //                 decoration: BoxDecoration(
+      //                     borderRadius: BorderRadius.horizontal(
+      //                         left: Radius.circular(25),
+      //                         right: Radius.circular(25))),
+      //                 child: Row(
+      //                   children: [
+      //                     Expanded(
+      //                       child: TextField(
+      //                         decoration: InputDecoration(hintText: "Mesaj"),
+      //                       ),
+      //                     ),
+      //                    IconButton(onPressed: (){}, icon: Icon(Icons.send))
+      //                   ],
+      //                 )))
+      //       ],
+      //     )
+      //   ],
+      // ),
 
-      // body: StreamBuilder(
-      //     stream: FirebaseFirestore.instance.collection('conversations').where('members',
-      //     arrayContains: userId
-      //     ).snapshots(),
-      //     builder:
-      //         (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-      //       if (snapshot.hasError) {
-      //         return Text('Error : ${snapshot.error}');
-      //       }
-      //       if (snapshot.connectionState == ConnectionState.waiting) {
-      //         return Text("Loading...");
-      //       }
-      //       return ListView(
-      //         children: snapshot.data!.docs.map((doc) => ListTile(
-      //           title: Text('dali'),
-      //           subtitle: Text(doc['displayMessage']),
-      //         )).toList(),
-      //       );
-      //     }),
+      body: StreamBuilder(
+          stream: FirebaseFirestore.instance.collection('chats').snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return Text('Error : ${snapshot.error}');
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text("Loading...");
+            }
+            return Column(children: [
+              Expanded(
+                child: ListView(
+                  children: snapshot.data!.docs
+                      .map((doc) => ListTile(
+                            title: Text(doc['message']),
+                          ))
+                      .toList(),
+                ),
+              ),
+              Divider(thickness: 3,),
+              Row(
+                children: [
+                  Expanded(
+                      child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.horizontal(
+                                  left: Radius.circular(25),
+                                  right: Radius.circular(25))),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  
+                                  decoration:
+                                      InputDecoration(hintText: "Mesaj"),
+                                      controller: messageController,
+                                ),
+                              ),
+                              IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      FirebaseFirestore.instance.collection("chats")
+                                      .doc(FirebaseAuth.instance.currentUser!.uid)
+                                      .set({'message':messageController.text,
+                                      'timeStamp':DateTime.now(),
+                                      'senderId':FirebaseAuth.instance.currentUser!.uid});
+                                    });
+                                    messageController.text="";
+                                  }, icon: Icon(Icons.send))
+                            ],
+                          )))
+                ],
+              )
+            ]);
+          }),
     );
   }
 }
