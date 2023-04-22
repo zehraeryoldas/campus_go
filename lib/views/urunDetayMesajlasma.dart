@@ -178,7 +178,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
       // ),
 
       body: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('chats').snapshots(),
+          stream: FirebaseFirestore.instance.collection('chats').where("senderId",isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
