@@ -1,4 +1,4 @@
-package com.example.campusgo
+package com.examplecampusgo.campusgo
 
 import io.flutter.embedding.android.FlutterActivity
 
