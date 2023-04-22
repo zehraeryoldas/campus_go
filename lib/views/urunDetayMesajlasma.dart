@@ -178,7 +178,11 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
       // ),
 
       body: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('chats').where("senderId",isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots(),
+          stream: FirebaseFirestore.instance
+              .collection('chats')
+              .where("senderId",
+                  isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+              .snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
@@ -197,7 +201,9 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
                       .toList(),
                 ),
               ),
-              Divider(thickness: 3,),
+              Divider(
+                thickness: 3,
+              ),
               Row(
                 children: [
                   Expanded(
@@ -210,23 +216,28 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
                             children: [
                               Expanded(
                                 child: TextField(
-                                  
                                   decoration:
                                       InputDecoration(hintText: "Mesaj"),
-                                      controller: messageController,
+                                  controller: messageController,
                                 ),
                               ),
                               IconButton(
                                   onPressed: () {
                                     setState(() {
-                                      FirebaseFirestore.instance.collection("chats")
-                                      .doc(FirebaseAuth.instance.currentUser!.uid)
-                                      .set({'message':messageController.text,
-                                      'timeStamp':DateTime.now(),
-                                      'senderId':FirebaseAuth.instance.currentUser!.uid});
+                                      FirebaseFirestore.instance
+                                          .collection("chats")
+                                          .doc(FirebaseAuth
+                                              .instance.currentUser!.uid)
+                                          .set({
+                                        'message': messageController.text,
+                                        'timeStamp': DateTime.now(),
+                                        'senderId': FirebaseAuth
+                                            .instance.currentUser!.uid
+                                      });
                                     });
-                                    messageController.text="";
-                                  }, icon: Icon(Icons.send))
+                                    messageController.text = "";
+                                  },
+                                  icon: Icon(Icons.send))
                             ],
                           )))
                 ],
