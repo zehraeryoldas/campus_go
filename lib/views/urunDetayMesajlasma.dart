@@ -3,7 +3,6 @@
 import 'package:campusgo/utility/color.dart';
 import 'package:campusgo/views/allAdsDetail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -12,6 +11,7 @@ class urunDetayMesajlasma extends StatefulWidget {
   urunDetayMesajlasma({
     super.key,
     this.postUserId,
+    
     this.user,
     this.resim,
     this.name,
@@ -70,189 +70,133 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
   Widget build(BuildContext context) {
     final String userId = "pceXDyA3HagfmzQ8vyXw8vokOaz1";
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AllAdsDetailPage(
-                              resim: widget.resim,
-                              name: widget.name,
-                              price: widget.price,
-                              durum: widget.durum,
-                              aciklama: widget.aciklama,
-                              konum: widget.konum,
-                              user: widget.user,
-                            )));
-              },
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.black,
-              )),
-          title: Row(
-            children: [
-              SizedBox(
-                  width: 50,
-                  height: 50,
-                  child: Image.network(widget.resim.toString())),
-              Expanded(
-                  child: ListTile(
-                title: Text(
-                  widget.user.toString(),
-                  style: TextStyle(color: Colors.black),
-                ),
-                subtitle: Text(
-                  widget.name.toString(),
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                ),
-              ))
-            ],
-          ),
-          actions: [
-            Row(
-              children: [
-                IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.call,
-                      color: Colors.black,
-                    )),
-                IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.more_vert,
-                      color: Colors.black,
-                    ))
-              ],
-            )
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AllAdsDetailPage(
+                            resim: widget.resim,
+                            name: widget.name,
+                            price: widget.price,
+                            durum: widget.durum,
+                            aciklama: widget.aciklama,
+                            konum: widget.konum,
+                            user: widget.user,
+                          )));
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            )),
+        title: Row(
+          children: [
+            SizedBox(
+                width: 50,
+                height: 50,
+                child: Image.network(widget.resim.toString())),
+            Expanded(
+                child: ListTile(
+              title: Text(
+                widget.user.toString(),
+                style: TextStyle(color: Colors.black),
+              ),
+              subtitle: Text(
+                widget.name.toString(),
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+            ))
           ],
         ),
-        // body: Column(
-        //   children: [
-        //     Expanded(
-        //       child: ListView.builder(
-        //           itemCount: 10,
-        //           itemBuilder: ((context, index) {
-        //             return ListTile(
-        //               title: Align(
-        //                   alignment: index % 2 == 0
-        //                       ? Alignment.centerLeft
-        //                       : Alignment.centerRight,
-        //                   child: Container(
-        //                     padding: EdgeInsets.all(8),
-        //                     decoration: BoxDecoration(
-        //                         color: Colors.yellow,
-        //                         borderRadius: BorderRadius.horizontal(
-        //                             left: Radius.circular(10),
-        //                             right: Radius.circular(10))),
-        //                     child: Text("Deneme mesajı"),
-        //                   )),
-        //             );
-        //           })),
-        //     ),
-        //     Row(
-        //       children: [
-        //         Expanded(
-        //             child: Container(
-        //                 decoration: BoxDecoration(
-        //                     borderRadius: BorderRadius.horizontal(
-        //                         left: Radius.circular(25),
-        //                         right: Radius.circular(25))),
-        //                 child: Row(
-        //                   children: [
-        //                     Expanded(
-        //                       child: TextField(
-        //                         decoration: InputDecoration(hintText: "Mesaj"),
-        //                       ),
-        //                     ),
-        //                    IconButton(onPressed: (){}, icon: Icon(Icons.send))
-        //                   ],
-        //                 )))
-        //       ],
-        //     )
-        //   ],
-        // ),
+        actions: [
+          Row(
+            children: [
+              IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.call,
+                    color: Colors.black,
+                  )),
+              IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.more_vert,
+                    color: Colors.black,
+                  ))
+            ],
+          )
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+                itemCount: 10,
+                itemBuilder: ((context, index) {
+                  return ListTile(
+                    title: Align(
+                        alignment: index % 2 == 0
+                            ? Alignment.centerLeft
+                            : Alignment.centerRight,
+                        child: Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              color: Colors.yellow,
+                              borderRadius: BorderRadius.horizontal(
+                                  left: Radius.circular(10),
+                                  right: Radius.circular(10))),
+                          child: Text("Deneme mesajı"),
+                        )),
+                  );
+                })),
+          ),
+          Row(
+            children: [
+              Expanded(
+                  child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.horizontal(
+                              left: Radius.circular(25),
+                              right: Radius.circular(25))),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              decoration: InputDecoration(hintText: "Mesaj"),
+                            ),
+                          ),
+                         IconButton(onPressed: (){}, icon: Icon(Icons.send))
+                        ],
+                      )))
+            ],
+          )
+        ],
+      ),
+      
 
-        body: StreamBuilder(
-            stream: FirebaseFirestore.instance.collection("chats").snapshots(),
-            builder: ((context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData) {
-                return Text("Loading....");
-              }
-              var data = snapshot.data;
-              return ListView.builder(
-                  itemCount: snapshot.data!.docs.length,
-                  itemBuilder: ((context, index) {
-                    DocumentSnapshot data = snapshot.data!.docs[index];
-                    return Column(
-                      children: [
-                        ListTile(
-                          title: Align(
-                              alignment: data['senderId'] ==
-                                      FirebaseAuth.instance.currentUser!.uid
-                                  ? Alignment.centerLeft
-                                  : Alignment.centerRight,
-                              child: Container(
-                                padding: EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                    color: Colors.yellow,
-                                    borderRadius: BorderRadius.horizontal(
-                                        left: Radius.circular(10),
-                                        right: Radius.circular(10))),
-                                child: data['message'],
-                              )),
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                                child: Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.horizontal(
-                                            left: Radius.circular(25),
-                                            right: Radius.circular(25))),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                                hintText: "Mesaj"),
-                                          ),
-                                        ),
-                                        IconButton(
-                                            onPressed: () {},
-                                            icon: Icon(Icons.send))
-                                      ],
-                                    )))
-                          ],
-                        )
-                      ],
-                    );
-                  }));
-            }))
-
-        // body: StreamBuilder(
-        //     stream: FirebaseFirestore.instance.collection('conversations').where('members',
-        //     arrayContains: userId
-        //     ).snapshots(),
-        //     builder:
-        //         (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        //       if (snapshot.hasError) {
-        //         return Text('Error : ${snapshot.error}');
-        //       }
-        //       if (snapshot.connectionState == ConnectionState.waiting) {
-        //         return Text("Loading...");
-        //       }
-        //       return ListView(
-        //         children: snapshot.data!.docs.map((doc) => ListTile(
-        //           title: Text('dali'),
-        //           subtitle: Text(doc['displayMessage']),
-        //         )).toList(),
-        //       );
-        //     }),
-        );
+      // body: StreamBuilder(
+      //     stream: FirebaseFirestore.instance.collection('conversations').where('members',
+      //     arrayContains: userId
+      //     ).snapshots(),
+      //     builder:
+      //         (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+      //       if (snapshot.hasError) {
+      //         return Text('Error : ${snapshot.error}');
+      //       }
+      //       if (snapshot.connectionState == ConnectionState.waiting) {
+      //         return Text("Loading...");
+      //       }
+      //       return ListView(
+      //         children: snapshot.data!.docs.map((doc) => ListTile(
+      //           title: Text('dali'),
+      //           subtitle: Text(doc['displayMessage']),
+      //         )).toList(),
+      //       );
+      //     }),
+    );
   }
 }
