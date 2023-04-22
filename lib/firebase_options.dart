@@ -68,7 +68,7 @@ class DefaultFirebaseOptions {
     projectId: 'campusgo-6eec2',
     storageBucket: 'campusgo-6eec2.appspot.com',
     iosClientId: '898695960774-8p0oth105le9g78ta7p0qsfn3asfmfd6.apps.googleusercontent.com',
-    iosBundleId: 'com.example.campusgo',
+    iosBundleId: 'com.examplecampusgo.campusgo',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -78,6 +78,6 @@ class DefaultFirebaseOptions {
     projectId: 'campusgo-6eec2',
     storageBucket: 'campusgo-6eec2.appspot.com',
     iosClientId: '898695960774-8p0oth105le9g78ta7p0qsfn3asfmfd6.apps.googleusercontent.com',
-    iosBundleId: 'com.example.campusgo',
+    iosBundleId: 'com.examplecampusgo.campusgo',
   );
 }
