@@ -1,12 +1,9 @@
-
 import 'package:campusgo/utility/color.dart';
 import 'package:campusgo/views/allAdsDetail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-
 
 class allAds extends StatefulWidget {
   const allAds({
@@ -24,8 +21,6 @@ class _ilanlarimState extends State<allAds> {
       .where("productStatus", isEqualTo: 1)
       .where('user.userStatus', isEqualTo: 1)
       .snapshots();
-
-  
 
   @override
   void initState() {
@@ -45,7 +40,7 @@ class _ilanlarimState extends State<allAds> {
       print('value length  ' + value.docs.length.toString());
       value.docs.forEach((element) {
         setState(() {
-         favorites.add(element.get('post_id'));
+          favorites.add(element.get('post_id'));
         });
         // print(element.get('post_id'));
       });
@@ -108,7 +103,6 @@ class _ilanlarimState extends State<allAds> {
             String aciklama = data['description'];
             String konum = data['location'];
             String user = data['user.name'].toString();
-            
 
             return GestureDetector(
               onTap: () {
@@ -116,6 +110,7 @@ class _ilanlarimState extends State<allAds> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => AllAdsDetailPage(
+                              postId: postId,
                               postUserId: postUserId,
                               price: price,
                               name: name,
