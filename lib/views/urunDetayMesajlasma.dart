@@ -11,6 +11,7 @@ import 'package:flutter/src/widgets/framework.dart';
 class urunDetayMesajlasma extends StatefulWidget {
   urunDetayMesajlasma({
     super.key,
+    this.postId,
     this.postUserId,
     this.user,
     this.resim,
@@ -20,6 +21,7 @@ class urunDetayMesajlasma extends StatefulWidget {
     this.aciklama,
     this.konum,
   });
+  final String? postId;
   final String? postUserId;
   final String? user;
   final String? resim;
@@ -38,7 +40,11 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
 
   void messageAdded(String text) {
     setState(() {
-      FirebaseFirestore.instance.collection("chats").add({
+      FirebaseFirestore.instance
+          .collection("productss")
+          .doc(widget.postId)
+          .collection("chats")
+          .add({
         'message': text,
         'timeStamp': DateTime.now(),
         'senderId': FirebaseAuth.instance.currentUser!.uid,
@@ -90,6 +96,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => AllAdsDetailPage(
+                            postId: widget.postId,
                             resim: widget.resim,
                             name: widget.name,
                             price: widget.price,
@@ -192,6 +199,8 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
 
       body: StreamBuilder(
           stream: FirebaseFirestore.instance
+              .collection("productss")
+              .doc(widget.postId)
               .collection('chats')
               .where("senderId",
                   isEqualTo: FirebaseAuth.instance.currentUser!.uid)
