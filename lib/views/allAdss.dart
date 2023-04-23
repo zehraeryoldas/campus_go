@@ -25,7 +25,7 @@ class _ilanlarimState extends State<allAds> {
       .where('user.userStatus', isEqualTo: 1)
       .snapshots();
 
-  int favouriteValue = 0;
+  
 
   @override
   void initState() {
@@ -45,7 +45,7 @@ class _ilanlarimState extends State<allAds> {
       print('value length  ' + value.docs.length.toString());
       value.docs.forEach((element) {
         setState(() {
-          favorites.add(element.get('post_id'));
+         favorites.add(element.get('post_id'));
         });
         // print(element.get('post_id'));
       });
