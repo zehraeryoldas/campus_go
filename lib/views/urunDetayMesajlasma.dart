@@ -54,36 +54,6 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
       messageController.text = "";
     });
   }
-  // ignore: non_constant_identifier_names
-
-  // var mesajlarListesi = <String>[];
-
-  // void _handleSubmitted(String text) {
-  //   messageController.clear();
-  //   mesajlarListesi.add(text);
-  // }
-
-  // Widget _buildTextComposer() {
-  //   return Container(
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //       children: [
-  //         Flexible(
-  //           child: TextField(
-  //             controller: messageController,
-  //             onSubmitted: _handleSubmitted,
-  //             decoration: InputDecoration.collapsed(hintText: 'Send'),
-  //           ),
-  //         ),
-  //         IconButton(
-  //             onPressed: () {
-  //               _handleSubmitted(messageController.text);
-  //             },
-  //             icon: Icon(Icons.send))
-  //       ],
-  //     ),
-  //   );
-  //}
 
   @override
   Widget build(BuildContext context) {
