@@ -35,6 +35,19 @@ class urunDetayMesajlasma extends StatefulWidget {
 
 class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
   TextEditingController messageController = TextEditingController();
+
+  void messageAdded(String text) {
+    setState(() {
+      FirebaseFirestore.instance.collection("chats").add({
+        'message': text,
+        'timeStamp': DateTime.now(),
+        'senderId': FirebaseAuth.instance.currentUser!.uid,
+        'user_name': widget.user,
+        'receiverId': widget.postUserId
+      });
+      messageController.text = "";
+    });
+  }
   // ignore: non_constant_identifier_names
 
   // var mesajlarListesi = <String>[];
@@ -216,6 +229,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
                             children: [
                               Expanded(
                                 child: TextField(
+                                  onSubmitted: messageAdded,
                                   decoration:
                                       InputDecoration(hintText: "Mesaj"),
                                   controller: messageController,
@@ -223,20 +237,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
                               ),
                               IconButton(
                                   onPressed: () {
-                                    setState(() {
-                                      FirebaseFirestore.instance
-                                          .collection("chats")
-                                        
-                                          .add({
-                                        'message': messageController.text,
-                                        'timeStamp': DateTime.now(),
-                                        'senderId': FirebaseAuth
-                                            .instance.currentUser!.uid,
-                                        'user_name':widget.user,
-                                        'receiverId':widget.postUserId
-                                      });
-                                    });
-                                    messageController.text = "";
+                                    messageAdded(messageController.text);
                                   },
                                   icon: Icon(Icons.send))
                             ],
