@@ -14,6 +14,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 class AllAdsDetailPage extends StatefulWidget {
+  final String? postId;
   final String? postUserId;
   final String? user;
   final String? resim;
@@ -25,14 +26,15 @@ class AllAdsDetailPage extends StatefulWidget {
 
   AllAdsDetailPage({
     super.key,
-     this.postUserId,
-     this.resim,
-     this.name,
-     this.price,
-     this.durum,
-     this.aciklama,
-     this.konum,
-     this.user,
+    this.postId,
+    this.postUserId,
+    this.resim,
+    this.name,
+    this.price,
+    this.durum,
+    this.aciklama,
+    this.konum,
+    this.user,
   });
 
   @override
@@ -156,6 +158,7 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
                             context,
                             MaterialPageRoute(
                                 builder: ((context) => urunDetayMesajlasma(
+                                      postId: widget.postId.toString(),
                                       postUserId: widget.postUserId.toString(),
                                       name: widget.name.toString(),
                                       price: widget.price!.toInt(),
