@@ -187,8 +187,17 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
               Expanded(
                 child: ListView(
                   children: snapshot.data!.docs
-                      .map((doc) => ListTile(
-                            title: Text(doc['message']),
+                      .map((doc) => Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.yellow,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: Colors.yellow)),
+                              child: ListTile(
+                                title: Text(doc['message']),
+                              ),
+                            ),
                           ))
                       .toList(),
                 ),
