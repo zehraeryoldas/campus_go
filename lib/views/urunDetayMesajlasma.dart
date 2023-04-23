@@ -226,13 +226,14 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
                                     setState(() {
                                       FirebaseFirestore.instance
                                           .collection("chats")
-                                          .doc(FirebaseAuth
-                                              .instance.currentUser!.uid)
-                                          .set({
+                                        
+                                          .add({
                                         'message': messageController.text,
                                         'timeStamp': DateTime.now(),
                                         'senderId': FirebaseAuth
-                                            .instance.currentUser!.uid
+                                            .instance.currentUser!.uid,
+                                        'user_name':widget.user,
+                                        'receiverId':widget.postUserId
                                       });
                                     });
                                     messageController.text = "";
