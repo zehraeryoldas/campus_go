@@ -19,7 +19,6 @@ class _ilanlarimState extends State<ilanlarim> {
       .where('user.userStatus', isEqualTo: 1)
       .snapshots();
 
-
   String? dropdownValue = 'Sil';
 
   payPage newyork = payPage();
@@ -28,7 +27,6 @@ class _ilanlarimState extends State<ilanlarim> {
     return StreamBuilder<QuerySnapshot>(
         stream: _usersStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          
           if (snapshot.hasError) {
             return const Text('hatalı işlem');
           }
@@ -115,8 +113,6 @@ class _ilanlarimState extends State<ilanlarim> {
                             if (menuItemValue == 1) {
                               print("silindi");
                               setState(() {
-                          
-
                                 FirebaseFirestore.instance
                                     .collection("productss")
                                     .where('name', isEqualTo: data['name'])
