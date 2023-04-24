@@ -38,6 +38,8 @@ class urunDetayMesajlasma extends StatefulWidget {
 class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
   TextEditingController messageController = TextEditingController();
 
+ 
+
   void messageAdded(String text) {
     setState(() {
       FirebaseFirestore.instance
@@ -58,6 +60,14 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
   @override
   Widget build(BuildContext context) {
     final String userId = "pceXDyA3HagfmzQ8vyXw8vokOaz1";
+     final Stream<QuerySnapshot> messageStream=FirebaseFirestore.instance
+              .collection("productss")
+              .doc(widget.postId)
+              .collection('chats')
+              .where("senderId",
+                  isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                
+              .snapshots();
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -168,13 +178,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
       // ),
 
       body: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection("productss")
-              .doc(widget.postId)
-              .collection('chats')
-              .where("senderId",
-                  isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-              .snapshots(),
+          stream: messageStream,
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
