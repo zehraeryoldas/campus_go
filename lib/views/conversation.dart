@@ -26,38 +26,89 @@ class _ConversationPageState extends State<ConversationPage> {
               color: mainColor.color),
         ),
       ),
-      body: Card(
-        child: Row(
-          children: [
-            Text("Sohbetler",
-                style: TextStyle(color: Colors.black, fontSize: 22)),
-            Spacer(),
-            Row(
+      body: Column(
+        children: [
+          Card(
+           
+            child: Row(
               children: [
-                IconButton(onPressed: () {}, icon: Icon(Icons.search)),
-                PopupMenuButton(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18)),
-                  elevation: 1,
-                  icon: Icon(Icons.more_vert),
-                  itemBuilder: ((context) => [
-                        PopupMenuItem(
-                          child: Text("Sohbeti Sil",
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 22)),
-                          value: 1,
-                        )
-                      ]),
-                  onSelected: ((value) {
-                    if (value == 1) {
-                      print("Sohbet silindi");
-                    }
-                  }),
-                )
+                Text("Sohbetler",
+                    style: TextStyle(color: Colors.black, fontSize: 22)),
+                Spacer(),
+                Row(
+                  children: [
+                    IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+                    PopupMenuButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18)),
+                      elevation: 1,
+                      icon: Icon(Icons.more_vert),
+                      itemBuilder: ((context) => [
+                            PopupMenuItem(
+                              child: Text("Sohbeti Sil",
+                                  style:
+                                      TextStyle(color: Colors.black, fontSize: 22)),
+                              value: 1,
+                            )
+                          ]),
+                      onSelected: ((value) {
+                        if (value == 1) {
+                          print("Sohbet silindi");
+                        }
+                      }),
+                    )
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
+          ),
+          SizedBox(
+            width: double.infinity,
+            height: 120,
+            child: Card(
+              
+              child: Row(
+                children: [
+                  Container(
+                    width: 100,
+                    height: 100,
+                    child: Image.network("https://cdn.pixabay.com/photo/2023/04/18/08/42/children-7934514_1280.jpg"), //product photo will be displayed here
+                    
+                  ),
+                  Expanded(
+                    child: ListTile(
+                      title:Text('name') ,
+                      subtitle: Text('message'),
+                      trailing: Column(
+                        children: [
+                          Text("3:25"),
+                          PopupMenuButton(
+                            child: Icon(Icons.more_vert),
+                            itemBuilder: ((context) => [
+                                  PopupMenuItem(
+                                    child: Text("Sohbeti Sil"),
+                                    value: 1,
+                                  ),
+                                  
+                                ]),
+                            onSelected: (menuItemValue) {
+                              if (menuItemValue == 1) {
+                                print("silindi");
+                                
+                              }
+                             
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
