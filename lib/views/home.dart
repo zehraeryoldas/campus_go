@@ -61,29 +61,19 @@ class _homePageState extends State<homePage> {
       //body: conversationPage(),
       body: Column(
         children: [
-          SizedBox(
-            width: double.infinity,
-            height: 100,
-            child: Expanded(
-              child: Container(
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    SizedBox(
-                      width: 100,
-                      height: 50,
-                      
-                      child: Card(
-                        child: IconButton(onPressed: (){}, icon: Icon(Icons.electric_meter)),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),
+         SizedBox(height: 130,child: Expanded(child: category())),
           Expanded(child: allAds()),
         ],
+      ),
+    );
+  }
+
+  SizedBox _myCategoriesCard(Icon icon) {
+    return SizedBox(
+      width: 100,
+      height: 50,
+      child: Card(
+        child: IconButton(onPressed: () {}, icon: icon),
       ),
     );
   }
