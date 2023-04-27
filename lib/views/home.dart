@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables
+
 import 'package:campusgo/utility/color.dart';
+import 'package:campusgo/views/category.dart';
 import 'package:campusgo/views/productSearch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,12 +29,10 @@ class _homePageState extends State<homePage> {
       FirebaseFirestore.instance.collection("location");
   String? dropdownValue1;
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        
         title: Text(
           "CampusGo",
           style: TextStyle(
@@ -40,18 +41,14 @@ class _homePageState extends State<homePage> {
               fontStyle: FontStyle.italic,
               color: mainColor.color),
         ),
-      
-
         bottom: PreferredSize(
             child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.95,
                 child: _search(context)),
             preferredSize: Size.fromHeight(30)),
-
         actions: [
           Row(
             children: [
-             
               IconButton(
                 onPressed: () {},
                 icon: const Icon(Icons.notification_add),
@@ -62,9 +59,32 @@ class _homePageState extends State<homePage> {
         ],
       ),
       //body: conversationPage(),
-      body: allAds(),
-
-     
+      body: Column(
+        children: [
+          SizedBox(
+            width: double.infinity,
+            height: 100,
+            child: Expanded(
+              child: Container(
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    SizedBox(
+                      width: 100,
+                      height: 50,
+                      
+                      child: Card(
+                        child: IconButton(onPressed: (){}, icon: Icon(Icons.electric_meter)),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Expanded(child: allAds()),
+        ],
+      ),
     );
   }
 
@@ -124,4 +144,3 @@ class _homePageState extends State<homePage> {
         });
   }
 }
-
