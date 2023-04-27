@@ -1,4 +1,7 @@
+import 'package:campusgo/utility/color.dart';
+import 'package:campusgo/views/allAdsDetail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -12,37 +15,55 @@ class category extends StatefulWidget {
 }
 
 class _categoryState extends State<category> {
-  final Stream<QuerySnapshot> _categoryStream=FirebaseFirestore.instance.collection("category").snapshots();
+  var _categoryStream =
+      FirebaseFirestore.instance.collection("category").snapshots();
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
+
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(stream:_categoryStream ,
-    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) { 
-           if (snapshot.hasError) {
-            return const Text('hatalı işlem');
-          }
+    return StreamBuilder(
+      stream: _categoryStream,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return const Text('Loadingg...');
+        return ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: snapshot.data!.docs.length,
+          itemBuilder: (context, index) {
+            DocumentSnapshot data = snapshot.data!.docs[index];
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Text("Loading");
-          }
-      return ListView(
-        children: snapshot.data!.docs.map((DocumentSnapshot document){
-           Map<String, dynamic> data =
-                document.data()! as Map<String, dynamic>;
-            String category_name=data['name'].toString();
-               print("******");
-            print(data['name']);
-            print("******");
             return GestureDetector(
-              onTap: (){},
-              child: Card(
-                child: ListTile(
-                  title: Text(category_name),
+              onTap: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AllAdsDetailPage()));
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide(width: 1.0, color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(18)),
+                  elevation: 2,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        data['name'],
+                        style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 18.0,
+                            fontFamily: "RobotoCondensed"),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
-        })
-      );
-
-     },);
+          },
+        );
+      },
+    );
   }
 }
