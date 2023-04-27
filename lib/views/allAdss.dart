@@ -87,7 +87,7 @@ class _ilanlarimState extends State<allAds> {
     return StreamBuilder(
       stream: _usersStream,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) return const Text('Loading...');
+        if (!snapshot.hasData) return const Text('Loadingg...');
         return GridView.builder(
           itemCount: snapshot.data!.docs.length,
           gridDelegate:
@@ -125,23 +125,27 @@ class _ilanlarimState extends State<allAds> {
                 padding: const EdgeInsets.all(8.0),
                 child: Card(
                   shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 0.0, color: Colors.grey.shade300),
+                      side: BorderSide(width: 1.0, color: Colors.grey.shade300),
                       borderRadius: BorderRadius.circular(18)),
                   elevation: 2,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                   
                     children: [
                       Stack(children: [
                         Container(
                           //color: mainColor.color,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
+                              borderRadius: BorderRadius.circular(20.0),
+                              
                               image: DecorationImage(
-                                image: NetworkImage(data['images'].toString()),
-                              )),
+                                image: NetworkImage(data['images']),
+                               
+                              ),),
                           width: MediaQuery.of(context).size.width * 0.80,
                           height: MediaQuery.of(context).size.height * 0.16,
                         ),
+
                         Positioned(
                           left: 120,
                           bottom: 90,
