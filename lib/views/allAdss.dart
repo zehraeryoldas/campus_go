@@ -88,106 +88,108 @@ class _ilanlarimState extends State<allAds> {
       stream: _usersStream,
       builder: (context, snapshot) {
         if (!snapshot.hasData) return const Text('Loadingg...');
-        return GridView.builder(
-          itemCount: snapshot.data!.docs.length,
-          gridDelegate:
-              new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-          itemBuilder: (context, index) {
-            DocumentSnapshot data = snapshot.data!.docs[index];
-            String postUserId = data['userId'].toString();
-            String postId = data['id'].toString();
-            String resim = data['images'].toString();
-            String name = data['name'].toString();
-            int price = data['price'];
-            String durum = data['status'];
-            String aciklama = data['description'];
-            String konum = data['location'];
-            String user = data['user.name'].toString();
-
-            return GestureDetector(
-              onTap: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AllAdsDetailPage(
-                              postId: postId,
-                              postUserId: postUserId,
-                              price: price,
-                              name: name,
-                              resim: resim,
-                              durum: durum,
-                              aciklama: aciklama,
-                              konum: konum,
-                              user: user,
-                            )));
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 1.0, color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(18)),
-                  elevation: 2,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                   
-                    children: [
-                      Stack(children: [
-                        Container(
-                          //color: mainColor.color,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20.0),
-                              
-                              image: DecorationImage(
-                                image: NetworkImage(data['images']),
-                               
-                              ),),
-                          width: MediaQuery.of(context).size.width * 0.80,
-                          height: MediaQuery.of(context).size.height * 0.16,
-                        ),
-
-                        Positioned(
-                          left: 120,
-                          bottom: 90,
-                          child: favorites.contains(postId)
-                              ? IconButton(
-                                  onPressed: () {
-                                    removeFromFavoritesCollection(postId);
-                                  },
-                                  icon: Icon(
-                                    Icons.favorite,
-                                    color: mainColor.color,
-                                  ))
-                              : IconButton(
-                                  onPressed: () {
-                                    addToFavoritesCollection(postId);
-                                  },
-                                  icon: Icon(
-                                    Icons.favorite_border,
+        return Card(
+          child: GridView.builder(
+            itemCount: snapshot.data!.docs.length,
+            gridDelegate:
+                new SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+            itemBuilder: (context, index) {
+              DocumentSnapshot data = snapshot.data!.docs[index];
+              String postUserId = data['userId'].toString();
+              String postId = data['id'].toString();
+              String resim = data['images'].toString();
+              String name = data['name'].toString();
+              int price = data['price'];
+              String durum = data['status'];
+              String aciklama = data['description'];
+              String konum = data['location'];
+              String user = data['user.name'].toString();
+        
+              return GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AllAdsDetailPage(
+                                postId: postId,
+                                postUserId: postUserId,
+                                price: price,
+                                name: name,
+                                resim: resim,
+                                durum: durum,
+                                aciklama: aciklama,
+                                konum: konum,
+                                user: user,
+                              )));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 1.0, color: Colors.grey.shade300),
+                        borderRadius: BorderRadius.circular(18)),
+                    elevation: 2,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                     
+                      children: [
+                        Stack(children: [
+                          Container(
+                            //color: mainColor.color,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20.0),
+                                
+                                image: DecorationImage(
+                                  image: NetworkImage(data['images']),
+                                 
+                                ),),
+                            width: MediaQuery.of(context).size.width * 0.80,
+                            height: MediaQuery.of(context).size.height * 0.16,
+                          ),
+        
+                          Positioned(
+                            left: 120,
+                            bottom: 90,
+                            child: favorites.contains(postId)
+                                ? IconButton(
+                                    onPressed: () {
+                                      removeFromFavoritesCollection(postId);
+                                    },
+                                    icon: Icon(
+                                      Icons.favorite,
+                                      color: mainColor.color,
+                                    ))
+                                : IconButton(
+                                    onPressed: () {
+                                      addToFavoritesCollection(postId);
+                                    },
+                                    icon: Icon(
+                                      Icons.favorite_border,
+                                    ),
                                   ),
-                                ),
+                          )
+                        ]),
+                        Text(
+                          data['name'],
+                          style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 18.0,
+                              fontFamily: "RobotoCondensed"),
+                        ),
+                        Text(
+                          data['price'].toString() + "\u20ba",
+                          style: TextStyle(
+                              color: mainColor.color,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
                         )
-                      ]),
-                      Text(
-                        data['name'],
-                        style: TextStyle(
-                            color: Colors.black87,
-                            fontSize: 18.0,
-                            fontFamily: "RobotoCondensed"),
-                      ),
-                      Text(
-                        data['price'].toString() + "\u20ba",
-                        style: TextStyle(
-                            color: mainColor.color,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      )
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         );
       },
     );
