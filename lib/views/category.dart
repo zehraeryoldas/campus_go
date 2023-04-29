@@ -37,7 +37,7 @@ class _categoryState extends State<category> {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => AllAdsDetailPage()));
+                        builder: (context) => Container()));
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -49,12 +49,22 @@ class _categoryState extends State<category> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: CircleAvatar(
+                          child: Image.network(data['icon'].toString()),
+                   
+                        ),
+                      ),
                       Text(
                         data['name'],
                         style: TextStyle(
                             color: Colors.black87,
                             fontSize: 18.0,
+                            //fontWeight: FontWeight.bold,
                             fontFamily: "RobotoCondensed"),
+                            
                       ),
                     ],
                   ),
