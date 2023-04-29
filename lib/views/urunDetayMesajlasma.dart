@@ -41,7 +41,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
  
 
   void messageAdded(String text) {
-    setState(() {
+    
       FirebaseFirestore.instance
           .collection("productss")
           .doc(widget.postId)
@@ -54,12 +54,12 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
         'receiverId': widget.postUserId
       });
       messageController.text = "";
-    });
+    
   }
 
   @override
   Widget build(BuildContext context) {
-    final String userId = "pceXDyA3HagfmzQ8vyXw8vokOaz1";
+    //final String userId = "pceXDyA3HagfmzQ8vyXw8vokOaz1";
      final Stream<QuerySnapshot> messageStream=FirebaseFirestore.instance
               .collection("productss")
               .doc(widget.postId)
