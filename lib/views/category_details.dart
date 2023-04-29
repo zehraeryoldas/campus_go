@@ -55,13 +55,8 @@ class _categoryDetailsState extends State<categoryDetails> {
         setState(() {
           favorites.add(element.get('post_id'));
         });
-        // print(element.get('post_id'));
       });
     });
-
-    // favorites.forEach((element) {
-    //   print('element : ' + element);
-    // });
   }
 
   var favorites = <String>[];
