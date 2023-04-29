@@ -61,11 +61,7 @@ class _homePageState extends State<homePage> {
       //body: conversationPage(),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 220),
-            child: Text("Kategorilere göz at..",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 18),),
-          ),
-         SizedBox(height: 130,child: Expanded(child: category())),
+          SizedBox(height: 130, child: Expanded(child: category())),
           Expanded(child: allAds()),
         ],
       ),
