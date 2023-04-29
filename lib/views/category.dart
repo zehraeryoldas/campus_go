@@ -27,60 +27,79 @@ class _categoryState extends State<category> {
       stream: _categoryStream,
       builder: (context, snapshot) {
         if (!snapshot.hasData) return const Text('Loadingg...');
-        return ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: snapshot.data!.docs.length,
-          itemBuilder: (context, index) {
-            DocumentSnapshot data = snapshot.data!.docs[index];
-            var category_id = data['id'].toString();
-            var category_name = data['name'].toString();
+        return Column(
+          children: [
+           const Padding(
+              padding: const EdgeInsets.only(right: 220),
+              child: Text(
+                "Kategorilere göz at..",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontSize: 18),
+              ),
+            ),
+            Expanded(
+              child: Card(
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot data = snapshot.data!.docs[index];
+                    var category_id = data['id'].toString();
+                    var category_name = data['name'].toString();
 
-            return GestureDetector(
-              onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => categoryDetails(
-                      category_id: category_id,
-                      category_name: category_name,
-                    ),
-                  ),
-                );
-                print("ggggg");
-                print(category_id);
-                print("ggggg");
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 1.0, color: Colors.grey.shade300),
-                      borderRadius: BorderRadius.circular(18)),
-                  elevation: 2,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(
-                        width: 50,
-                        height: 50,
-                        child: CircleAvatar(
-                          child: Image.network(data['icon'].toString()),
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => categoryDetails(
+                              category_id: category_id,
+                              category_name: category_name,
+                            ),
+                          ),
+                        );
+                        print("ggggg");
+                        print(category_id);
+                        print("ggggg");
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                  width: 1.0, color: Colors.grey.shade300),
+                              borderRadius: BorderRadius.circular(18)),
+                          elevation: 2,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              SizedBox(
+                                width: 50,
+                                height: 50,
+                                child: CircleAvatar(
+                                  child: Image.network(data['icon'].toString()),
+                                ),
+                              ),
+                              Text(
+                                data['name'],
+                                style: TextStyle(
+                                    color: Colors.black87,
+                                    fontSize: 18.0,
+                                    //fontWeight: FontWeight.bold,
+                                    fontFamily: "RobotoCondensed"),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      Text(
-                        data['name'],
-                        style: TextStyle(
-                            color: Colors.black87,
-                            fontSize: 18.0,
-                            //fontWeight: FontWeight.bold,
-                            fontFamily: "RobotoCondensed"),
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
               ),
-            );
-          },
+            ),
+          ],
         );
       },
     );
