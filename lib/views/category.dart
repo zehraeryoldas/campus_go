@@ -1,5 +1,6 @@
 import 'package:campusgo/utility/color.dart';
 import 'package:campusgo/views/allAdsDetail.dart';
+import 'package:campusgo/views/category_details.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -31,13 +32,23 @@ class _categoryState extends State<category> {
           itemCount: snapshot.data!.docs.length,
           itemBuilder: (context, index) {
             DocumentSnapshot data = snapshot.data!.docs[index];
+            var category_id = data['id'].toString();
+            var category_name = data['name'].toString();
 
             return GestureDetector(
               onTap: () {
                 Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Container()));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => categoryDetails(
+                      category_id: category_id,
+                      category_name: category_name,
+                    ),
+                  ),
+                );
+                print("ggggg");
+                print(category_id);
+                print("ggggg");
               },
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -54,7 +65,6 @@ class _categoryState extends State<category> {
                         height: 50,
                         child: CircleAvatar(
                           child: Image.network(data['icon'].toString()),
-                   
                         ),
                       ),
                       Text(
@@ -64,7 +74,6 @@ class _categoryState extends State<category> {
                             fontSize: 18.0,
                             //fontWeight: FontWeight.bold,
                             fontFamily: "RobotoCondensed"),
-                            
                       ),
                     ],
                   ),
