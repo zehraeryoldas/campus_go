@@ -1,3 +1,4 @@
+import 'package:campusgo/arayuz.dart';
 import 'package:campusgo/utility/color.dart';
 import 'package:campusgo/views/allAdss.dart';
 import 'package:campusgo/views/home.dart';
@@ -98,7 +99,7 @@ class _categoryDetailsState extends State<categoryDetails> {
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => homePage()),
+                MaterialPageRoute(builder: (context) => Arayuz()),
               );
             },
             icon: Icon(
@@ -114,7 +115,11 @@ class _categoryDetailsState extends State<categoryDetails> {
       body: StreamBuilder<QuerySnapshot>(
           stream: _categoryStream,
           builder: ((context, snapshot) {
-            if (!snapshot.hasData) return const Text('Loadingg...');
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator(); // veri bekleniyor göstergesi
+            }else if (snapshot.hasError) {
+              return Text('Bir hata oluştu: ${snapshot.error}');
+            }
             return GridView.builder(
               itemCount: snapshot.data!.docs.length,
               gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
