@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
+import 'firebaseChat.dart';
+
 
 class MyFavsDEtailPage extends StatefulWidget {
   const MyFavsDEtailPage(
@@ -165,7 +167,15 @@ class _MyFavsDEtailPageState extends State<MyFavsDEtailPage> {
                   SizedBox(
                     width: 150,
                     child: ElevatedButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                                Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) => chat(
+                                      
+                                    ))));
+
+                        },
                         icon: Icon(Icons.handshake_outlined),
                         label: Text("Yüzyüze Talep"),
                         style: ButtonStyle(
