@@ -145,7 +145,7 @@ class _LoginState extends State<Login> {
       height: height * .25,
       decoration: BoxDecoration(
         image: DecorationImage(
-          fit: BoxFit.cover,
+         fit: BoxFit.fitHeight,
           image: AssetImage(topImage),
         ),
       ),
