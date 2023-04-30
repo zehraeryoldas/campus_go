@@ -16,6 +16,7 @@ class _chatState extends State<chat> {
     var androidAyari =
         const AndroidInitializationSettings("@mipmap/ic_launcher");
     var iosAyari = const DarwinInitializationSettings();
+    //ayarlar oluşturulduktan sonra birleştiriyorum
     var kurulumAyari =
         InitializationSettings(android: androidAyari, iOS: iosAyari);
     await flp.initialize(kurulumAyari,
@@ -45,6 +46,10 @@ class _chatState extends State<chat> {
         channelDescription: "kanal açıklama",
         priority: Priority.high,
         importance: Importance.max);
+    var iosBildirimDetay=const DarwinNotificationDetails(); //detaylandırma gerek yok ios bunu kendi hallediyor.
+    //bu iki yapıyı birleştirelim
+    var bildirimDetay=NotificationDetails(android: androidBildirimDetay,iOS: iosBildirimDetay);
+    await flp.show(0, "Zehra", "Son fiyat nedir", bildirimDetay,payload: "payload içerik");
   }
 
   @override
@@ -56,7 +61,9 @@ class _chatState extends State<chat> {
       body: Center(
         child: Column(
           children: [
-            ElevatedButton(onPressed: () {}, child: Text("Bildirim olustur")),
+            ElevatedButton(onPressed: () {
+              bildirimGoster();
+            }, child: Text("Bildirim olustur")),
             ElevatedButton(
                 onPressed: () {}, child: Text("Gecikmeli Bildirim olustur"))
           ],
