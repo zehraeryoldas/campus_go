@@ -70,7 +70,7 @@ class _categoryState extends State<category> {
                           shape: RoundedRectangleBorder(
                               side: BorderSide(
                                   width: 1.0, color: Colors.grey.shade300),
-                              borderRadius: BorderRadius.circular(18)),
+                              borderRadius: BorderRadius.circular(10)),
                           elevation: 2,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
