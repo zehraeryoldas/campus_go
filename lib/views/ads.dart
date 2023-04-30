@@ -23,7 +23,11 @@ class _adsPageState extends State<adsPage> {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            title: Text("CampusGo",style: TextStyle(fontSize: 20,color: mainColor.color,fontWeight: FontWeight.w500),),
+            title: Column(
+              children: [
+                Text("CampusGo",style: TextStyle(fontSize: 20,color: mainColor.color,fontWeight: FontWeight.w500),),
+              ],
+            ),
             backgroundColor: Colors.white,
             bottom: TabBar(
               //overlayColor: MaterialStateProperty.all(Colors.red),
