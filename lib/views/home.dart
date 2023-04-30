@@ -68,16 +68,6 @@ class _homePageState extends State<homePage> {
     );
   }
 
-  SizedBox _myCategoriesCard(Icon icon) {
-    return SizedBox(
-      width: 100,
-      height: 50,
-      child: Card(
-        child: IconButton(onPressed: () {}, icon: icon),
-      ),
-    );
-  }
-
   TextButton _search(BuildContext context) {
     return TextButton.icon(
         style: ButtonStyle(
