@@ -73,18 +73,18 @@ class _ilanlarimState extends State<ilanlarim> {
               },
               child: Card(
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0)),
+                    borderRadius: BorderRadius.circular(30.0)),
                 // elevation: 10,
                 child: Row(children: [
-                  Card(
-                    child: Container(
-                      //color: Colors.red,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(data['images'].toString()))),
-                      width: MediaQuery.of(context).size.width * 0.40,
-                      height: MediaQuery.of(context).size.height * 0.12,
-                    ),
+                  Container(
+                    //color: Colors.red,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.grey.shade300),
+                        image: DecorationImage(
+                            image: NetworkImage(data['images'].toString()))),
+                    width: MediaQuery.of(context).size.width * 0.40,
+                    height: MediaQuery.of(context).size.height * 0.12,
                   ),
                   Expanded(
                     child: Container(
