@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
+import 'firebaseChat.dart';
+
 class AllAdsDetailPage extends StatefulWidget {
   final String? postId;
   final String? postUserId;
@@ -184,7 +186,15 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
                   SizedBox(
                     width: 150,
                     child: ElevatedButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) => chat(
+                                      
+                                    ))));
+
+                        },
                         icon: Icon(Icons.handshake_outlined),
                         label: Text("Yüzyüze Talep"),
                         style: ButtonStyle(
