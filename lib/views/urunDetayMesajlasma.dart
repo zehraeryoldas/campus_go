@@ -212,12 +212,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
                     Icons.call,
                     color: Colors.black,
                   )),
-              IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.more_vert,
-                    color: Colors.black,
-                  ))
+              _messageRemovedPopupMenuButton(),
             ],
           )
         ],
@@ -279,71 +274,86 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
               return Text("Loading...");
             }
             return Column(children: [
-              Expanded(
-                child: ListView(
-                  children: snapshot.data!.docs
-                      .map((doc) => Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Card(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: ListTile(
-                                  title: Text(doc['message']),
-                                  trailing: PopupMenuButton(
-                                    itemBuilder: ((context) => [
-                                          PopupMenuItem(
-                                            child: Text("Mesajı sil"),
-                                            value: 1,
-                                          ),
-                                        ]),
-                                    onSelected: ((value) {
-                                      if (value == 1) {
-                                        messageRemoved(messageController.text);
-                                      }
-                                    }),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ))
-                      .toList(),
-                ),
-              ),
+              _messageGet(snapshot),
               Divider(
                 thickness: 3,
               ),
               Row(
                 children: [
-                  Expanded(
-                      child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.horizontal(
-                                  left: Radius.circular(25),
-                                  right: Radius.circular(25))),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: TextField(
-                                  onSubmitted: messageAdded,
-                                  decoration:
-                                      InputDecoration(hintText: "Mesaj"),
-                                  controller: messageController,
-                                ),
-                              ),
-                              IconButton(
-                                  onPressed: () {
-                                    messageAdded(messageController.text);
-                                    bildirimGoster();
-                                  },
-                                  icon: Icon(Icons.send))
-                            ],
-                          )))
+                  _messageSenderButton()
                 ],
               )
             ]);
           }),
     );
+  }
+
+  Expanded _messageGet(AsyncSnapshot<QuerySnapshot<Object?>> snapshot) {
+    return Expanded(
+              child: ListView(
+                children: snapshot.data!.docs
+                    .map((doc) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Card(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: ListTile(
+                                title: Text(doc['message']),
+                              ),
+                            ),
+                          ),
+                        ))
+                    .toList(),
+              ),
+            );
+  }
+
+  Expanded _messageSenderButton() {
+    return Expanded(
+                    child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.horizontal(
+                                left: Radius.circular(25),
+                                right: Radius.circular(25))),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                onSubmitted: messageAdded,
+                                decoration:
+                                    InputDecoration(hintText: "Mesaj"),
+                                controller: messageController,
+                              ),
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  messageAdded(messageController.text);
+                                  bildirimGoster();
+                                },
+                                icon: Icon(Icons.send))
+                          ],
+                        )));
+  }
+
+  PopupMenuButton<int> _messageRemovedPopupMenuButton() {
+    return PopupMenuButton(
+              icon: Icon(
+                Icons.more_vert,
+                color: Colors.black,
+              ),
+              itemBuilder: ((context) => [
+                    PopupMenuItem(
+                      child: Text("Sohbeti sil"),
+                      value: 1,
+                    ),
+                  ]),
+              onSelected: ((value) {
+                if (value == 1) {
+                  messageRemoved(messageController.text);
+                }
+              }),
+            );
   }
 }
