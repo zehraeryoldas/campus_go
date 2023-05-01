@@ -187,13 +187,10 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
                     width: 150,
                     child: ElevatedButton.icon(
                         onPressed: () {
-                                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) => chat(
-                                      
-                                    ))));
-
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => chat())));
                         },
                         icon: Icon(Icons.handshake_outlined),
                         label: Text("Yüzyüze Talep"),
