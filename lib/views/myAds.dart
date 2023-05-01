@@ -109,18 +109,7 @@ class _ilanlarimState extends State<ilanlarim> {
                               onSelected: (menuItemValue) {
                                 if (menuItemValue == 1) {
                                   print("silindi");
-                                  setState(() {
-                                    FirebaseFirestore.instance
-                                        .collection("productss")
-                                        .where('name', isEqualTo: data['name'])
-                                        .get()
-                                        .then((snapshot) {
-                                      snapshot.docs.forEach((document) {
-                                        document.reference
-                                            .update({'productStatus': 0});
-                                      });
-                                    });
-                                  });
+                                  _urunSilme(data);
                                 }
                                 if (menuItemValue == 2) {
                                   print("güncellendi");
@@ -151,5 +140,19 @@ class _ilanlarimState extends State<ilanlarim> {
                 );
               }));
         });
+  }
+
+  void _urunSilme(DocumentSnapshot<Object?> data) {
+    return setState(() {
+      FirebaseFirestore.instance
+          .collection("productss")
+          .where('name', isEqualTo: data['name'])
+          .get()
+          .then((snapshot) {
+        snapshot.docs.forEach((document) {
+          document.reference.update({'productStatus': 0});
+        });
+      });
+    });
   }
 }
