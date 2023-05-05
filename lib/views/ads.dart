@@ -13,8 +13,6 @@ class adsPage extends StatefulWidget {
 }
 
 class _adsPageState extends State<adsPage> {
-  
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,33 +23,39 @@ class _adsPageState extends State<adsPage> {
           appBar: AppBar(
             title: Column(
               children: [
-                Text("CampusGo",style: TextStyle(fontSize: 20,color: mainColor.color,fontWeight: FontWeight.w500),),
+                Text(
+                  "CampusGo",
+                  style: TextStyle(
+                      fontSize: 20,
+                      color: mainColor.color,
+                      fontWeight: FontWeight.w500),
+                ),
               ],
             ),
             backgroundColor: Colors.white,
             bottom: TabBar(
-              //overlayColor: MaterialStateProperty.all(Colors.red),
-              unselectedLabelColor: Colors.grey,
-              indicatorColor: mainColor.color,
-              labelColor: mainColor.color,
-              tabs: [
-              Tab(
-                  child: Text(
-                    "İlanlarım",
-                    //style: TextStyle(color: mainColor.color),
-                  ),
-                  icon: Icon(Icons.ads_click,
-                      color: mainColor.color)),
-              Tab(
-                  child: Text("Favorilerim",
-                      // style:
-                      //     TextStyle(color: mainColor.color)
-                          ),
-                  icon: Icon(
-                    Icons.favorite,
-                    color: mainColor.color,
-                  )),
-            ]),
+                //overlayColor: MaterialStateProperty.all(Colors.red),
+                unselectedLabelColor: Colors.grey,
+                indicatorColor: mainColor.color,
+                labelColor: mainColor.color,
+                tabs: [
+                  Tab(
+                      child: Text(
+                        "İlanlarım",
+                        //style: TextStyle(color: mainColor.color),
+                      ),
+                      icon: Icon(Icons.ads_click, color: mainColor.color)),
+                  Tab(
+                      child: Text(
+                        "Favorilerim",
+                        // style:
+                        //     TextStyle(color: mainColor.color)
+                      ),
+                      icon: Icon(
+                        Icons.favorite,
+                        color: mainColor.color,
+                      )),
+                ]),
           ),
           body: TabBarView(
             children: [
@@ -64,7 +68,3 @@ class _adsPageState extends State<adsPage> {
     );
   }
 }
-
-
-
-
