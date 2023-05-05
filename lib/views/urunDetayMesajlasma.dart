@@ -41,6 +41,7 @@ class urunDetayMesajlasma extends StatefulWidget {
 
 class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
   TextEditingController messageController = TextEditingController();
+  String user=FirebaseAuth.instance.currentUser!.uid;
 
   void messageAdded(String text) {
     FirebaseFirestore.instance
@@ -55,6 +56,9 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
       'receiverId': widget.postUserId
     });
     messageController.text = "";
+    print("qqqqq");
+    print(widget.postId);
+    print("qqqqq");
     bildirimGoster();
   }
 
@@ -63,6 +67,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
         .collection("productss")
         .doc(widget.postId)
         .collection("chats")
+        .where("senderId",isEqualTo: user)
         .get()
         .then((value) {
       value.docs.forEach((document) {
