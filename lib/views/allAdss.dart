@@ -20,6 +20,7 @@ class _ilanlarimState extends State<allAds> {
       .collection('productss')
       .where("productStatus", isEqualTo: 1)
       .where('user.userStatus', isEqualTo: 1)
+     
       .snapshots();
 
   @override
@@ -85,7 +86,7 @@ class _ilanlarimState extends State<allAds> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _usersStream,
+      stream:_usersStream,
       builder: (context, snapshot) {
         if (!snapshot.hasData) return const Text('Loadingg...');
         return Card(
@@ -103,6 +104,7 @@ class _ilanlarimState extends State<allAds> {
               String durum = data['status'];
               String aciklama = data['description'];
               String konum = data['location'];
+              String category=data['category_id'].toString();
               String user = data['user.name'].toString();
 
               return GestureDetector(
