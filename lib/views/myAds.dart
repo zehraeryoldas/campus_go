@@ -38,7 +38,7 @@ class _ilanlarimState extends State<ilanlarim> {
               itemCount: snapshot.data!.docs.length,
               itemBuilder: ((context, index) {
                 DocumentSnapshot data = snapshot.data!.docs[index];
-                String idx = data['id']!.toString();
+                String postId = data['id']!.toString();
 
                 String id = data['userId']!;
                 String resim = data['images'].toString();
@@ -62,7 +62,7 @@ class _ilanlarimState extends State<ilanlarim> {
                                   durum: durum,
                                   aciklama: aciklama,
                                   konum: konum,
-                                  idx: idx,
+                                  idx: postId,
                                   kategori: kategori,
                                 )));
                   },
@@ -118,11 +118,11 @@ class _ilanlarimState extends State<ilanlarim> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => MyAdsUpdate(
-                                                  id: idx,
+                                                  id: postId,
                                                   name: name,
                                                   aciklama: aciklama,
                                                   durum: durum,
-                                                  idx: idx,
+                                                  idx: postId,
                                                   konum: konum,
                                                   kategori: kategori,
                                                   price: price,
