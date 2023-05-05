@@ -2,9 +2,11 @@
 
 import 'dart:io';
 
+import 'package:campusgo/arayuz.dart';
 import 'package:campusgo/models/products_model.dart';
 import 'package:campusgo/utility/color.dart';
 import 'package:campusgo/views/ads.dart';
+import 'package:campusgo/views/allAdss.dart';
 import 'package:campusgo/views/call_backDropDown.dart';
 import 'package:campusgo/services/products_services.dart';
 import 'package:campusgo/views/myAds.dart';
@@ -175,7 +177,7 @@ class _MyAdsUpdateState extends State<MyAdsUpdate> {
         leading: IconButton(
             onPressed: () {
               Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => adsPage()));
+                  context, MaterialPageRoute(builder: (context) => Arayuz()));
             },
             icon: Icon(
               Icons.arrow_back,
