@@ -116,7 +116,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
     var bildirimDetay = NotificationDetails(
         android: androidBildirimDetay, iOS: iosBildirimDetay);
     //mesajın gösterilmesi için başlık,içerik, detay bilgilerini verdik.
-    await flp.show(0, widget.user, "fiyat nedir", bildirimDetay,
+    await flp.show(0, widget.user, "fiyat ne kadar!", bildirimDetay,
         payload: "payload içerik");
   }
 
