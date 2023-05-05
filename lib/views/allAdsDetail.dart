@@ -14,6 +14,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import 'firebaseChat.dart';
+import 'myAdsUpdate.dart';
 
 class AllAdsDetailPage extends StatefulWidget {
   final String? postId;
@@ -25,6 +26,7 @@ class AllAdsDetailPage extends StatefulWidget {
   final String? durum;
   final String? aciklama;
   final String? konum;
+  final String? category;
 
   AllAdsDetailPage({
     super.key,
@@ -37,6 +39,7 @@ class AllAdsDetailPage extends StatefulWidget {
     this.aciklama,
     this.konum,
     this.user,
+    this.category,
   });
 
   @override
@@ -44,8 +47,28 @@ class AllAdsDetailPage extends StatefulWidget {
 }
 
 class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
+  void edit() {
+    setState(() {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => MyAdsUpdate(
+                    id: widget.postId.toString(),
+                    name: widget.name.toString(),
+                    aciklama: widget.aciklama.toString(),
+                    durum: widget.durum.toString(),
+                    idx: widget.postId.toString(),
+                    konum: widget.konum.toString(),
+                    price: widget.price!.toInt(),
+                    resim: widget.resim.toString(),
+                    kategori: widget.category.toString(),
+                  )));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    var currentUser = FirebaseAuth.instance.currentUser!.uid;
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -62,12 +85,31 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
                 color: Colors.black,
               )),
           actions: [
-            IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.share,
-                  color: Colors.black,
-                ))
+            widget.postUserId == currentUser
+                ? Row(
+                    children: [
+                      IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.share,
+                            color: Colors.black,
+                          )),
+                      IconButton(
+                          onPressed: () {
+                            edit();
+                          },
+                          icon: Icon(
+                            Icons.edit,
+                            color: Colors.black,
+                          ))
+                    ],
+                  )
+                : IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.share,
+                      color: Colors.black,
+                    ))
           ],
         ),
         body: ListView(
@@ -149,65 +191,68 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  SizedBox(
-                    width: 150,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        print("000000000");
-                        print(widget.postUserId);
-                        print("999999");
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) => urunDetayMesajlasma(
-                                      postId: widget.postId.toString(),
-                                      postUserId: widget.postUserId.toString(),
-                                      name: widget.name.toString(),
-                                      price: widget.price!.toInt(),
-                                      resim: widget.resim.toString(),
-                                      konum: widget.konum.toString(),
-                                      durum: widget.durum.toString(),
-                                      user: widget.user.toString(),
-                                      aciklama: widget.aciklama.toString(),
-                                    ))));
-                      },
-                      icon: Icon(Icons.message),
-                      label: Text("Sohbet"),
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(mainColor.color),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0),
-                                      side: BorderSide(color: Colors.black)))),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 150,
-                    child: ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: ((context) => chat())));
-                        },
-                        icon: Icon(Icons.handshake_outlined),
-                        label: Text("Yüzyüze Talep"),
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(mainColor.color),
-                            shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18.0),
-                                    side: BorderSide(color: Colors.black))))),
-                  ),
+                  widget.postUserId == currentUser
+                      ? Container()
+                      : _sohbetButton(context),
+                  widget.postUserId == currentUser
+                      ? Container()
+                      : _yuzyuzeTalepButton(context),
                 ],
               ),
             )
           ],
         ));
+  }
+
+  SizedBox _yuzyuzeTalepButton(BuildContext context) {
+    return SizedBox(
+      width: 150,
+      child: ElevatedButton.icon(
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: ((context) => chat())));
+          },
+          icon: Icon(Icons.handshake_outlined),
+          label: Text("Yüzyüze Talep"),
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(mainColor.color),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                      side: BorderSide(color: Colors.black))))),
+    );
+  }
+
+  SizedBox _sohbetButton(BuildContext context) {
+    return SizedBox(
+      width: 150,
+      child: ElevatedButton.icon(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: ((context) => urunDetayMesajlasma(
+                        postId: widget.postId.toString(),
+                        postUserId: widget.postUserId.toString(),
+                        name: widget.name.toString(),
+                        price: widget.price!.toInt(),
+                        resim: widget.resim.toString(),
+                        konum: widget.konum.toString(),
+                        durum: widget.durum.toString(),
+                        user: widget.user.toString(),
+                        aciklama: widget.aciklama.toString(),
+                      ))));
+        },
+        icon: Icon(Icons.message),
+        label: Text("Sohbet"),
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(mainColor.color),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    side: BorderSide(color: Colors.black)))),
+      ),
+    );
   }
 
   Divider _myDivider() {
