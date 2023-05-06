@@ -125,34 +125,34 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
         payload: "payload içerik");
   }
 
-  Future<void> gecikmeliBildirimGoster() async {
-    var androidBildirimDetay = const AndroidNotificationDetails(
-        "kanal id", "kanal başlık",
-        channelDescription: "kanal açıklama",
-        priority: Priority.high,
-        importance: Importance.max);
-    var iosBildirimDetay =
-        const DarwinNotificationDetails(); //detaylandırma gerek yok ios bunu kendi hallediyor.
-    //bu iki yapıyı birleştirelim
-    var bildirimDetay = NotificationDetails(
-        android: androidBildirimDetay, iOS: iosBildirimDetay);
-    //mesajın gösterilmesi için başlık,içerik, detay bilgilerini verdik.
-    tz.initializeTimeZones();
-    var gecikme = tz.TZDateTime.now(tz.local).add(const Duration(
-        seconds:
-            10)); //.add sayesinde gecikme ekliyoruz.mevcut zamanda gecikme yaptık.
-    await flp.zonedSchedule(
-        0, "fatmanur", "fiyat ne kadar", gecikme, bildirimDetay,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
-        androidAllowWhileIdle:
-            true //telefon ekranı kapalıyken bildirim geldiğinde ekranın uyanmasını sağlıyor.
-        ,
-        payload:
-            "Payload içerik gecikmeli" //bildirime tıklandığında bilgi eklenir.
+  // Future<void> gecikmeliBildirimGoster() async {
+  //   var androidBildirimDetay = const AndroidNotificationDetails(
+  //       "kanal id", "kanal başlık",
+  //       channelDescription: "kanal açıklama",
+  //       priority: Priority.high,
+  //       importance: Importance.max);
+  //   var iosBildirimDetay =
+  //       const DarwinNotificationDetails(); //detaylandırma gerek yok ios bunu kendi hallediyor.
+  //   //bu iki yapıyı birleştirelim
+  //   var bildirimDetay = NotificationDetails(
+  //       android: androidBildirimDetay, iOS: iosBildirimDetay);
+  //   //mesajın gösterilmesi için başlık,içerik, detay bilgilerini verdik.
+  //   tz.initializeTimeZones();
+  //   var gecikme = tz.TZDateTime.now(tz.local).add(const Duration(
+  //       seconds:
+  //           10)); //.add sayesinde gecikme ekliyoruz.mevcut zamanda gecikme yaptık.
+  //   await flp.zonedSchedule(
+  //       0, "fatmanur", "fiyat ne kadar", gecikme, bildirimDetay,
+  //       uiLocalNotificationDateInterpretation:
+  //           UILocalNotificationDateInterpretation.absoluteTime,
+  //       androidAllowWhileIdle:
+  //           true //telefon ekranı kapalıyken bildirim geldiğinde ekranın uyanmasını sağlıyor.
+  //       ,
+  //       payload:
+  //           "Payload içerik gecikmeli" //bildirime tıklandığında bilgi eklenir.
 
-        );
-  }
+  //       );
+  // }
 
   @override
   Widget build(BuildContext context) {
