@@ -23,13 +23,7 @@ class _adsPageState extends State<adsPage> {
           appBar: AppBar(
             title: Column(
               children: [
-                Text(
-                  "CampusGo",
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: mainColor.color,
-                      fontWeight: FontWeight.w500),
-                ),
+                _logoText(),
               ],
             ),
             backgroundColor: Colors.white,
@@ -39,22 +33,14 @@ class _adsPageState extends State<adsPage> {
                 indicatorColor: mainColor.color,
                 labelColor: mainColor.color,
                 tabs: [
-                  Tab(
-                      child: Text(
-                        "İlanlarım",
-                        //style: TextStyle(color: mainColor.color),
-                      ),
-                      icon: Icon(Icons.ads_click, color: mainColor.color)),
-                  Tab(
-                      child: Text(
-                        "Favorilerim",
-                        // style:
-                        //     TextStyle(color: mainColor.color)
-                      ),
-                      icon: Icon(
+                  _myTab("İlanlarım",
+                      Icon(Icons.ads_click, color: mainColor.color)),
+                  _myTab(
+                      "Favorilerim",
+                      Icon(
                         Icons.favorite,
                         color: mainColor.color,
-                      )),
+                      ))
                 ]),
           ),
           body: TabBarView(
@@ -66,5 +52,21 @@ class _adsPageState extends State<adsPage> {
         ),
       ),
     );
+  }
+
+  Text _logoText() {
+    return Text(
+      "CampusGo",
+      style: TextStyle(
+          fontSize: 20, color: mainColor.color, fontWeight: FontWeight.w500),
+    );
+  }
+
+  Tab _myTab(String text, Icon icon) {
+    return Tab(
+        child: Text(text
+            //style: TextStyle(color: mainColor.color),
+            ),
+        icon: icon);
   }
 }
