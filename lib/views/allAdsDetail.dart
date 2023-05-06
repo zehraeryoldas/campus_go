@@ -75,35 +75,10 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
             widget.name.toString(),
             style: const TextStyle(color: Colors.black),
           ),
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (context) => Arayuz()));
-              },
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.black,
-              )),
+          leading: _arrowBackButton(context),
           actions: [
             widget.postUserId == currentUser
-                ? Row(
-                    children: [
-                      IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            Icons.share,
-                            color: Colors.black,
-                          )),
-                      IconButton(
-                          onPressed: () {
-                            edit();
-                          },
-                          icon: Icon(
-                            Icons.edit,
-                            color: Colors.black,
-                          ))
-                    ],
-                  )
+                ? _myAds()
                 : IconButton(
                     onPressed: () {},
                     icon: Icon(
@@ -115,14 +90,7 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
         body: ListView(
           //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Container(
-              width: MediaQuery.of(context).size.width * 0.5,
-              height: MediaQuery.of(context).size.height * 0.4,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                image: NetworkImage("${widget.resim}"),
-              )),
-            ),
+            _imageContainer(context),
             _myDivider(),
             ListTile(
               title: Text("${widget.price}" + " \u20ba",
@@ -202,6 +170,50 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
             )
           ],
         ));
+  }
+
+  Container _imageContainer(BuildContext context) {
+    return Container(
+            width: MediaQuery.of(context).size.width * 0.5,
+            height: MediaQuery.of(context).size.height * 0.4,
+            decoration: BoxDecoration(
+                image: DecorationImage(
+              image: NetworkImage("${widget.resim}"),
+            )),
+          );
+  }
+
+  IconButton _arrowBackButton(BuildContext context) {
+    return IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => Arayuz()));
+            },
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ));
+  }
+
+  Row _myAds() {
+    return Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.share,
+                          color: Colors.black,
+                        )),
+                    IconButton(
+                        onPressed: () {
+                          edit();
+                        },
+                        icon: Icon(
+                          Icons.edit,
+                          color: Colors.black,
+                        ))
+                  ],
+                );
   }
 
   SizedBox _yuzyuzeTalepButton(BuildContext context) {
