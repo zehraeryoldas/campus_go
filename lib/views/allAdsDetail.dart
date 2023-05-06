@@ -92,9 +92,8 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
           children: [
             _imageContainer(context),
             _myDivider(),
-
-            _myListtile("${widget.price} " + " \u20ba", "${widget.name}",
-                TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
+            
+            _myListtile("${widget.price} "+ " \u20ba", "${widget.name}",TextStyle(fontWeight: FontWeight.bold,fontSize: 24)),
             _myDivider(),
             const Text("    Detaylar",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
@@ -108,13 +107,11 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
               ),
             ),
             _myDivider(),
-            _myListtile(" Açıklama", "  ${widget.aciklama}",
-                TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-
+            _myListtile(" Açıklama",  "  ${widget.aciklama}",TextStyle(fontWeight: FontWeight.bold,fontSize: 18)),
+  
             _myDivider(),
-            _myListtile(" Konum", "  ${widget.konum}",
-                TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-
+            _myListtile(" Konum", "  ${widget.konum}",TextStyle(fontWeight: FontWeight.bold,fontSize: 18)),
+        
             _myDivider(),
             //_myListtile(metin, metin2)
             ListTile(
@@ -153,9 +150,10 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
         ));
   }
 
-  ListTile _myListtile(String metin, String metin2, TextStyle style) {
+  ListTile _myListtile(String metin, String metin2,TextStyle style) {
     return ListTile(
-      title: Text(metin, style: style),
+      title: Text(metin ,
+          style: style),
       subtitle: Text(metin2, style: const TextStyle(fontSize: 16)),
     );
   }
