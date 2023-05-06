@@ -92,15 +92,9 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
           children: [
             _imageContainer(context),
             _myDivider(),
-            ListTile(
-              title: Text("${widget.price}" + " \u20ba",
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24)),
-              subtitle:
-                  Text("${widget.name}", style: const TextStyle(fontSize: 16)),
-            ),
+
+            _myListtile("${widget.price} " + " \u20ba", "${widget.name}",
+                TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
             _myDivider(),
             const Text("    Detaylar",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
@@ -114,28 +108,15 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
               ),
             ),
             _myDivider(),
-            ListTile(
-              title: const Text(" Açıklama",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              subtitle: Text(
-                "  ${widget.aciklama}",
-                style: TextStyle(
-                  color: Colors.grey.shade800,
-                ),
-              ),
-            ),
+            _myListtile(" Açıklama", "  ${widget.aciklama}",
+                TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+
             _myDivider(),
-            ListTile(
-              title: const Text(" Konum",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              subtitle: Text(
-                "  ${widget.konum}",
-                style: TextStyle(
-                  color: Colors.grey.shade800,
-                ),
-              ),
-            ),
+            _myListtile(" Konum", "  ${widget.konum}",
+                TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+
             _myDivider(),
+            //_myListtile(metin, metin2)
             ListTile(
               leading: CircleAvatar(
                   backgroundColor: mainColor.color,
@@ -172,48 +153,55 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
         ));
   }
 
+  ListTile _myListtile(String metin, String metin2, TextStyle style) {
+    return ListTile(
+      title: Text(metin, style: style),
+      subtitle: Text(metin2, style: const TextStyle(fontSize: 16)),
+    );
+  }
+
   Container _imageContainer(BuildContext context) {
     return Container(
-            width: MediaQuery.of(context).size.width * 0.5,
-            height: MediaQuery.of(context).size.height * 0.4,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-              image: NetworkImage("${widget.resim}"),
-            )),
-          );
+      width: MediaQuery.of(context).size.width * 0.5,
+      height: MediaQuery.of(context).size.height * 0.4,
+      decoration: BoxDecoration(
+          image: DecorationImage(
+        image: NetworkImage("${widget.resim}"),
+      )),
+    );
   }
 
   IconButton _arrowBackButton(BuildContext context) {
     return IconButton(
-            onPressed: () {
-              Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => Arayuz()));
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.black,
-            ));
+        onPressed: () {
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => Arayuz()));
+        },
+        icon: Icon(
+          Icons.arrow_back,
+          color: Colors.black,
+        ));
   }
 
   Row _myAds() {
     return Row(
-                  children: [
-                    IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.share,
-                          color: Colors.black,
-                        )),
-                    IconButton(
-                        onPressed: () {
-                          edit();
-                        },
-                        icon: Icon(
-                          Icons.edit,
-                          color: Colors.black,
-                        ))
-                  ],
-                );
+      children: [
+        IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.share,
+              color: Colors.black,
+            )),
+        IconButton(
+            onPressed: () {
+              edit();
+            },
+            icon: Icon(
+              Icons.edit,
+              color: Colors.black,
+            ))
+      ],
+    );
   }
 
   SizedBox _yuzyuzeTalepButton(BuildContext context) {
