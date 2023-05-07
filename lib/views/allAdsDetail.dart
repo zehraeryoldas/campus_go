@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_string_interpolations
 
+
 import 'package:campusgo/arayuz.dart';
 import 'package:campusgo/models/products_model.dart';
 import 'package:campusgo/services/products_services.dart';
@@ -13,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-import 'firebaseChat.dart';
+import '../utility/firebaseChat.dart';
 import 'myAdsUpdate.dart';
 
 class AllAdsDetailPage extends StatefulWidget {
@@ -230,6 +231,8 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
               context,
               MaterialPageRoute(
                   builder: ((context) => urunDetayMesajlasma(
+                        userId: FirebaseAuth.instance.currentUser!.uid.toString(),
+                        conversationId: widget.postId.toString(),
                         postId: widget.postId.toString(),
                         postUserId: widget.postUserId.toString(),
                         name: widget.name.toString(),
