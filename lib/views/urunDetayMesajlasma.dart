@@ -10,21 +10,22 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'firebaseChat.dart';
+import '../utility/firebaseChat.dart';
 
 class urunDetayMesajlasma extends StatefulWidget {
-  urunDetayMesajlasma({
-    super.key,
-    this.postId,
-    this.postUserId,
-    this.user,
-    this.resim,
-    this.name,
-    this.price,
-    this.durum,
-    this.aciklama,
-    this.konum,
-  });
+  urunDetayMesajlasma(
+      {super.key,
+      this.postId,
+      this.postUserId,
+      this.user,
+      this.resim,
+      this.name,
+      this.price,
+      this.durum,
+      this.aciklama,
+      this.konum,
+      this.userId,
+      this.conversationId});
   final String? postId;
   final String? postUserId;
   final String? user;
@@ -34,14 +35,15 @@ class urunDetayMesajlasma extends StatefulWidget {
   final String? durum;
   final String? aciklama;
   final String? konum;
-
+  final String? userId;
+  final String? conversationId;
   @override
   State<urunDetayMesajlasma> createState() => _urunDetayMesajlasmaState();
 }
 
 class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
   TextEditingController messageController = TextEditingController();
-  String user=FirebaseAuth.instance.currentUser!.uid;
+  String user = FirebaseAuth.instance.currentUser!.uid;
 
   void messageAdded(String text) {
     FirebaseFirestore.instance
@@ -52,8 +54,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
       'message': text,
       'timeStamp': DateTime.now(),
       'senderId': FirebaseAuth.instance.currentUser!.uid,
-      'user_name': widget.user,
-      'receiverId': widget.postUserId
+      'receiverId': widget.postUserId,
     });
     messageController.text = "";
     print("qqqqq");
@@ -67,7 +68,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
         .collection("productss")
         .doc(widget.postId)
         .collection("chats")
-        .where("senderId",isEqualTo: user)
+        .where("senderId", isEqualTo: user)
         .get()
         .then((value) {
       value.docs.forEach((document) {
@@ -125,35 +126,6 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
         payload: "payload içerik");
   }
 
-  // Future<void> gecikmeliBildirimGoster() async {
-  //   var androidBildirimDetay = const AndroidNotificationDetails(
-  //       "kanal id", "kanal başlık",
-  //       channelDescription: "kanal açıklama",
-  //       priority: Priority.high,
-  //       importance: Importance.max);
-  //   var iosBildirimDetay =
-  //       const DarwinNotificationDetails(); //detaylandırma gerek yok ios bunu kendi hallediyor.
-  //   //bu iki yapıyı birleştirelim
-  //   var bildirimDetay = NotificationDetails(
-  //       android: androidBildirimDetay, iOS: iosBildirimDetay);
-  //   //mesajın gösterilmesi için başlık,içerik, detay bilgilerini verdik.
-  //   tz.initializeTimeZones();
-  //   var gecikme = tz.TZDateTime.now(tz.local).add(const Duration(
-  //       seconds:
-  //           10)); //.add sayesinde gecikme ekliyoruz.mevcut zamanda gecikme yaptık.
-  //   await flp.zonedSchedule(
-  //       0, "fatmanur", "fiyat ne kadar", gecikme, bildirimDetay,
-  //       uiLocalNotificationDateInterpretation:
-  //           UILocalNotificationDateInterpretation.absoluteTime,
-  //       androidAllowWhileIdle:
-  //           true //telefon ekranı kapalıyken bildirim geldiğinde ekranın uyanmasını sağlıyor.
-  //       ,
-  //       payload:
-  //           "Payload içerik gecikmeli" //bildirime tıklandığında bilgi eklenir.
-
-  //       );
-  // }
-
   @override
   Widget build(BuildContext context) {
     //final String userId = "pceXDyA3HagfmzQ8vyXw8vokOaz1";
@@ -161,7 +133,8 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
         .collection("productss")
         .doc(widget.postId)
         .collection('chats')
-        .where("senderId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .orderBy("timeStamp", descending: false)
+        .where("senderId")
         .snapshots();
 
     return Scaffold(
@@ -222,52 +195,6 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
           )
         ],
       ),
-      // body: Column(
-      //   children: [
-      //     Expanded(
-      //       child: ListView.builder(
-      //           itemCount: 10,
-      //           itemBuilder: ((context, index) {
-      //             return ListTile(
-      //               title: Align(
-      //                   alignment: index % 2 == 0
-      //                       ? Alignment.centerLeft
-      //                       : Alignment.centerRight,
-      //                   child: Container(
-      //                     padding: EdgeInsets.all(8),
-      //                     decoration: BoxDecoration(
-      //                         color: Colors.yellow,
-      //                         borderRadius: BorderRadius.horizontal(
-      //                             left: Radius.circular(10),
-      //                             right: Radius.circular(10))),
-      //                     child: Text("Deneme mesajı"),
-      //                   )),
-      //             );
-      //           })),
-      //     ),
-      //     Row(
-      //       children: [
-      //         Expanded(
-      //             child: Container(
-      //                 decoration: BoxDecoration(
-      //                     borderRadius: BorderRadius.horizontal(
-      //                         left: Radius.circular(25),
-      //                         right: Radius.circular(25))),
-      //                 child: Row(
-      //                   children: [
-      //                     Expanded(
-      //                       child: TextField(
-      //                         decoration: InputDecoration(hintText: "Mesaj"),
-      //                       ),
-      //                     ),
-      //                    IconButton(onPressed: (){}, icon: Icon(Icons.send))
-      //                   ],
-      //                 )))
-      //       ],
-      //     )
-      //   ],
-      // ),
-
       body: StreamBuilder(
           stream: messageStream,
           builder:
@@ -278,15 +205,50 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Text("Loading...");
             }
+            // return Column(
+            //   children: [
+            //     Expanded(
+            //       child: ListView(
+            //         children: snapshot.data!.docs
+            //             .map((document) => ListTile(
+            //                   title: Align(
+            //                     alignment: widget.userId == document['senderId']
+            //                         ? Alignment.centerRight
+            //                         : Alignment.centerLeft,
+            //                     child: Container(
+            //                       padding: EdgeInsets.all(8.0),
+            //                       decoration: BoxDecoration(
+            //                         color: Theme.of(context).primaryColor,
+            //                         borderRadius: BorderRadius.horizontal(
+            //                           left: Radius.circular(10),
+            //                           right: Radius.circular(10),
+            //                         ),
+            //                       ),
+            //                       child: Text(
+            //                         document['message'].toString(),
+            //                         style: TextStyle(color: Colors.white),
+            //                       ),
+            //                     ),
+            //                   ),
+            //                 ))
+            //             .toList(),
+            //       ),
+            //     ),
+            //             Divider(
+            //     thickness: 3,
+            //   ),
+            //       Row(
+            //                 children: [_messageSenderButton()],
+            //               )
+            //   ],
+            // );
             return Column(children: [
               _messageGet(snapshot),
               Divider(
                 thickness: 3,
               ),
               Row(
-                children: [
-                  _messageSenderButton()
-                ],
+                children: [_messageSenderButton()],
               )
             ]);
           }),
@@ -295,70 +257,74 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
 
   Expanded _messageGet(AsyncSnapshot<QuerySnapshot<Object?>> snapshot) {
     return Expanded(
-              child: ListView(
-                children: snapshot.data!.docs
-                    .map((doc) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Card(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: ListTile(
-                                title: Text(doc['message']),
-                              ),
-                            ),
-                          ),
-                        ))
-                    .toList(),
-              ),
-            );
+      child: ListView(
+        children: snapshot.data!.docs
+            .map((doc) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListTile(
+                    title: Align(
+                        alignment: widget.userId == doc['senderId']
+                            ? Alignment.centerRight
+                            : Alignment.centerLeft,
+                        child: Container(
+                            padding: EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                                color: mainColor.color,
+                                borderRadius: BorderRadius.horizontal(
+                                  left: Radius.circular(10),
+                                  right: Radius.circular(10),
+                                )),
+                            child: Text(doc['message'].toString(),
+                                style: TextStyle(color: Colors.white)))),
+                  ),
+                ))
+            .toList(),
+      ),
+    );
   }
 
   Expanded _messageSenderButton() {
     return Expanded(
-                    child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.horizontal(
-                                left: Radius.circular(25),
-                                right: Radius.circular(25))),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                onSubmitted: messageAdded,
-                                decoration:
-                                    InputDecoration(hintText: "Mesaj"),
-                                controller: messageController,
-                              ),
-                            ),
-                            IconButton(
-                                onPressed: () {
-                                  messageAdded(messageController.text);
-                                  bildirimGoster();
-                                },
-                                icon: Icon(Icons.send))
-                          ],
-                        )));
+        child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.horizontal(
+                    left: Radius.circular(25), right: Radius.circular(25))),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    onSubmitted: messageAdded,
+                    decoration: InputDecoration(hintText: "Mesaj"),
+                    controller: messageController,
+                  ),
+                ),
+                IconButton(
+                    onPressed: () {
+                      messageAdded(messageController.text);
+                      bildirimGoster();
+                    },
+                    icon: Icon(Icons.send))
+              ],
+            )));
   }
 
   PopupMenuButton<int> _messageRemovedPopupMenuButton() {
     return PopupMenuButton(
-              icon: Icon(
-                Icons.more_vert,
-                color: Colors.black,
-              ),
-              itemBuilder: ((context) => [
-                    PopupMenuItem(
-                      child: Text("Sohbeti sil"),
-                      value: 1,
-                    ),
-                  ]),
-              onSelected: ((value) {
-                if (value == 1) {
-                  messageRemoved(messageController.text);
-                }
-              }),
-            );
+      icon: Icon(
+        Icons.more_vert,
+        color: Colors.black,
+      ),
+      itemBuilder: ((context) => [
+            PopupMenuItem(
+              child: Text("Sohbeti sil"),
+              value: 1,
+            ),
+          ]),
+      onSelected: ((value) {
+        if (value == 1) {
+          messageRemoved(messageController.text);
+        }
+      }),
+    );
   }
 }
