@@ -205,43 +205,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Text("Loading...");
             }
-            // return Column(
-            //   children: [
-            //     Expanded(
-            //       child: ListView(
-            //         children: snapshot.data!.docs
-            //             .map((document) => ListTile(
-            //                   title: Align(
-            //                     alignment: widget.userId == document['senderId']
-            //                         ? Alignment.centerRight
-            //                         : Alignment.centerLeft,
-            //                     child: Container(
-            //                       padding: EdgeInsets.all(8.0),
-            //                       decoration: BoxDecoration(
-            //                         color: Theme.of(context).primaryColor,
-            //                         borderRadius: BorderRadius.horizontal(
-            //                           left: Radius.circular(10),
-            //                           right: Radius.circular(10),
-            //                         ),
-            //                       ),
-            //                       child: Text(
-            //                         document['message'].toString(),
-            //                         style: TextStyle(color: Colors.white),
-            //                       ),
-            //                     ),
-            //                   ),
-            //                 ))
-            //             .toList(),
-            //       ),
-            //     ),
-            //             Divider(
-            //     thickness: 3,
-            //   ),
-            //       Row(
-            //                 children: [_messageSenderButton()],
-            //               )
-            //   ],
-            // );
+
             return Column(children: [
               _messageGet(snapshot),
               Divider(
