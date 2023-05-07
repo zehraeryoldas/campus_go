@@ -225,26 +225,30 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
         children: snapshot.data!.docs
             .map((doc) => Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: ListTile(
-                    title: Align(
-                        alignment: widget.userId == doc['senderId']
-                            ? Alignment.centerRight
-                            : Alignment.centerLeft,
-                        child: Container(
-                            padding: EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                                color: mainColor.color,
-                                borderRadius: BorderRadius.horizontal(
-                                  left: Radius.circular(10),
-                                  right: Radius.circular(10),
-                                )),
-                            child: Text(doc['message'].toString(),
-                                style: TextStyle(color: Colors.white)))),
-                  ),
+                  child: _myMessageScreen(doc),
                 ))
             .toList(),
       ),
     );
+  }
+
+  ListTile _myMessageScreen(QueryDocumentSnapshot<Object?> doc) {
+    return ListTile(
+                  title: Align(
+                      alignment: widget.userId == doc['senderId']
+                          ? Alignment.centerRight
+                          : Alignment.centerLeft,
+                      child: Container(
+                          padding: EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                              color: mainColor.color,
+                              borderRadius: BorderRadius.horizontal(
+                                left: Radius.circular(10),
+                                right: Radius.circular(10),
+                              )), 
+                          child: Text(doc['message'],
+                              style: TextStyle(color: Colors.white)))),
+                );
   }
 
   Expanded _messageSenderButton() {
