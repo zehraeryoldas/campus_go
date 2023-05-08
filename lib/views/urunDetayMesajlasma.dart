@@ -134,7 +134,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
         .doc(widget.postId)
         .collection('chats')
         .orderBy("timeStamp", descending: false)
-        .where("senderId")
+        //.where("senderId")
         .snapshots();
 
     return Scaffold(
