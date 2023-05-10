@@ -60,7 +60,8 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
     print("qqqqq");
     print(widget.postId);
     print("qqqqq");
-    bildirimGoster();
+  
+    bildirimGoster(text);
   }
 
   void messageRemoved(String text) {
@@ -110,7 +111,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
     androidKurulum();
   }
 
-  Future<void> bildirimGoster() async {
+  Future<void> bildirimGoster(String message) async {
     var androidBildirimDetay = const AndroidNotificationDetails(
         "kanal id", "kanal başlık",
         channelDescription: "kanal açıklama",
@@ -122,7 +123,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
     var bildirimDetay = NotificationDetails(
         android: androidBildirimDetay, iOS: iosBildirimDetay);
     //mesajın gösterilmesi için başlık,içerik, detay bilgilerini verdik.
-    await flp.show(0, widget.user, "fiyat ne kadar!", bildirimDetay,
+    await flp.show(0, widget.user, message, bildirimDetay,
         payload: "payload içerik");
   }
 
@@ -234,21 +235,21 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
 
   ListTile _myMessageScreen(QueryDocumentSnapshot<Object?> doc) {
     return ListTile(
-                  title: Align(
-                      alignment: widget.userId == doc['senderId']
-                          ? Alignment.centerRight
-                          : Alignment.centerLeft,
-                      child: Container(
-                          padding: EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                              color: mainColor.color,
-                              borderRadius: BorderRadius.horizontal(
-                                left: Radius.circular(10),
-                                right: Radius.circular(10),
-                              )), 
-                          child: Text(doc['message'],
-                              style: TextStyle(color: Colors.white)))),
-                );
+      title: Align(
+          alignment: widget.userId == doc['senderId']
+              ? Alignment.centerRight
+              : Alignment.centerLeft,
+          child: Container(
+              padding: EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                  color: mainColor.color,
+                  borderRadius: BorderRadius.horizontal(
+                    left: Radius.circular(10),
+                    right: Radius.circular(10),
+                  )),
+              child:
+                  Text(doc['message'], style: TextStyle(color: Colors.white)))),
+    );
   }
 
   Expanded _messageSenderButton() {
@@ -268,8 +269,9 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
                 ),
                 IconButton(
                     onPressed: () {
-                      messageAdded(messageController.text);
-                      bildirimGoster();
+                      String message = messageController.text;
+                      messageAdded(message);
+                      bildirimGoster(message);
                     },
                     icon: Icon(Icons.send))
               ],
