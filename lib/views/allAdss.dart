@@ -91,6 +91,7 @@ class _ilanlarimState extends State<allAds> {
         if (!snapshot.hasData) return const Text('Loadingg...');
         return Card(
           child: GridView.builder(
+           
             itemCount: snapshot.data!.docs.length,
             gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2),
