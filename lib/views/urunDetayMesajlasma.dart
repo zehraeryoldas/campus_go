@@ -37,6 +37,8 @@ class urunDetayMesajlasma extends StatefulWidget {
   final String? konum;
   final String? userId;
   final String? conversationId;
+
+
   @override
   State<urunDetayMesajlasma> createState() => _urunDetayMesajlasmaState();
 }
@@ -46,22 +48,27 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
   String user = FirebaseAuth.instance.currentUser!.uid;
 
   void messageAdded(String text) {
-    FirebaseFirestore.instance
-        .collection("productss")
-        .doc(widget.postId)
-        .collection("chats")
-        .add({
-      'message': text,
-      'timeStamp': DateTime.now(),
-      'senderId': FirebaseAuth.instance.currentUser!.uid,
-      'receiverId': widget.postUserId,
-    });
-    messageController.text = "";
-    print("qqqqq");
-    print(widget.postId);
-    print("qqqqq");
-  
-    bildirimGoster(text);
+     //final user = FirebaseAuth.instance.currentUser!.uid;
+    if (user != null) {
+        FirebaseFirestore.instance
+            .collection("productss")
+            .doc(widget.postId)
+            .collection("chats")
+            .add({
+                'message': text,
+                'timeStamp': DateTime.now(),
+                'senderId': user,
+                'receiverId': widget.postUserId,
+                'users':[widget.postUserId,user]
+               
+        });
+        messageController.text = "";
+        print("qqqqq");
+        print(widget.postId);
+        print("qqqqq");
+    
+        bildirimGoster(text);
+    }
   }
 
   void messageRemoved(String text) {
@@ -130,13 +137,13 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
   @override
   Widget build(BuildContext context) {
     //final String userId = "pceXDyA3HagfmzQ8vyXw8vokOaz1";
-    final Stream<QuerySnapshot> messageStream = FirebaseFirestore.instance
-        .collection("productss")
-        .doc(widget.postId)
-        .collection('chats')
-        .orderBy("timeStamp", descending: false)
-        //.where("senderId")
-        .snapshots();
+ final Stream<QuerySnapshot> messageStream = FirebaseFirestore.instance
+  .collection("productss")
+  .doc(widget.postId)
+  .collection('chats')
+  .where("users",isEqualTo: [widget.postUserId,user])
+  .orderBy("timeStamp", descending: false)
+  .snapshots();
 
     return Scaffold(
       appBar: AppBar(
