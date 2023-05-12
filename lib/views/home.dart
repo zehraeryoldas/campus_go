@@ -61,7 +61,7 @@ class _homePageState extends State<homePage> {
       //body: conversationPage(),
       body: Column(
         children: [
-          SizedBox(height: 130, child: Expanded(child: category())),
+          SizedBox(height: 130, child: category()),
           Expanded(child: allAds()),
         ],
       ),
