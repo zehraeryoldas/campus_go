@@ -3,6 +3,7 @@
 import 'package:campusgo/views/ads.dart';
 import 'package:campusgo/views/conversation.dart';
 import 'package:campusgo/utility/firebaseChat.dart';
+import 'package:campusgo/views/conversation2.dart';
 import 'package:campusgo/views/home.dart';
 import 'package:campusgo/views/productAdd.dart';
 import 'package:campusgo/views/profile.dart';
@@ -29,7 +30,7 @@ class _AnaSayfaState extends State<Arayuz> {
       //ImageUploads(),
 
       const homePage(),
-      ConversationPage(),
+      conversation(),
       const payPage(),
       adsPage(),
 
