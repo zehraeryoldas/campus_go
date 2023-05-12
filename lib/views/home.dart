@@ -33,7 +33,7 @@ class _homePageState extends State<homePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title:const Text(
           "CampusGo",
           style: TextStyle(
               fontWeight: FontWeight.bold,
