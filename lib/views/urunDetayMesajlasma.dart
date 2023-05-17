@@ -55,9 +55,10 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
         'senderId': user,
         'receiverId': widget.postUserId,
         'product_id': widget.postId,
-        'name': widget.user,
+        'user_name': widget.user,
         'images': widget.resim,
-        'users': [widget.postUserId, user]
+        'users': [widget.postUserId, user],
+        'product_name':widget.name,
       }).then((value) {
         messageController.text = '';
         bildirimGoster(text);
@@ -145,7 +146,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => AllAdsDetailPage(
@@ -209,7 +210,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Text("Loading...");
             }
-
+           
             return Column(children: [
               _messageGet(snapshot),
               Divider(
