@@ -130,9 +130,13 @@ class _ConversationState extends State<Conversation> {
                             SizedBox(
                               width: 60,
                               height: 80,
-                              child: CircleAvatar(
-                                child: Image.network(images),
-                              ),
+                              child: images.toString() == ""
+                                  ? CircleAvatar(
+                                      child: Text("No img"),
+                                    )
+                                  : CircleAvatar(
+                                      child: Image.network(images),
+                                    ),
                             ),
                             Column(
                               children: [
