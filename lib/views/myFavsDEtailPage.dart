@@ -1,7 +1,7 @@
 import 'package:campusgo/arayuz.dart';
 import 'package:campusgo/utility/color.dart';
 import 'package:campusgo/views/ads.dart';
-import 'package:campusgo/views/conversation.dart';
+import 'package:campusgo/views/messageDetail.dart';
 import 'package:campusgo/views/urunDetayMesajlasma.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
