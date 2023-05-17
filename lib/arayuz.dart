@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:campusgo/views/ads.dart';
-import 'package:campusgo/views/conversation.dart';
+import 'package:campusgo/views/messageDetail.dart';
 import 'package:campusgo/utility/firebaseChat.dart';
 import 'package:campusgo/views/conversation2.dart';
 import 'package:campusgo/views/home.dart';
