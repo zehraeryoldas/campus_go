@@ -38,7 +38,6 @@ class urunDetayMesajlasma extends StatefulWidget {
   final String? userId;
   final String? conversationId;
 
-
   @override
   State<urunDetayMesajlasma> createState() => _urunDetayMesajlasmaState();
 }
@@ -48,40 +47,38 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
   String user = FirebaseAuth.instance.currentUser!.uid;
 
   void messageAdded(String text) {
-     //final user = FirebaseAuth.instance.currentUser!.uid;
+    //final user = FirebaseAuth.instance.currentUser!.uid;
     if (user != null) {
-        FirebaseFirestore.instance
-            .collection("productss")
-            .doc(widget.postId)
-            .collection("chats")
-            .add({
-                'message': text,
-                'timeStamp': DateTime.now(),
-                'senderId': user,
-                'receiverId': widget.postUserId,
-                'users':[widget.postUserId,user]
-               
-        });
-        messageController.text = "";
-        print("qqqqq");
-        print(widget.postId);
-        print("qqqqq");
-    
+      FirebaseFirestore.instance.collection("chats").add({
+        'message': text,
+        'timeStamp': DateTime.now(),
+        'senderId': user,
+        'receiverId': widget.postUserId,
+        'product_id': widget.postId,
+        'name': widget.user,
+        'images': widget.resim,
+        'users': [widget.postUserId, user]
+      }).then((value) {
+        messageController.text = '';
         bildirimGoster(text);
+      }).catchError((error) {
+        print("Error adding message: $error");
+      });
     }
   }
 
-  void messageRemoved(String text) {
+  void messageRemoved() {
     FirebaseFirestore.instance
         .collection("productss")
         .doc(widget.postId)
         .collection("chats")
-        .where("senderId", isEqualTo: user)
         .get()
-        .then((value) {
-      value.docs.forEach((document) {
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((QueryDocumentSnapshot document) {
         document.reference.delete();
       });
+    }).catchError((error) {
+      print("Error removing messages: $error");
     });
   }
 
@@ -115,7 +112,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
     //uygulama ilk açıldığında
     //kurulum fonksiyonunu gerçekleştiriyoruz.
     // Bununla işlerimizi halledebiliyoruz.
-    androidKurulum();
+    // androidKurulum();
   }
 
   Future<void> bildirimGoster(String message) async {
@@ -129,21 +126,20 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
     //bu iki yapıyı birleştirelim
     var bildirimDetay = NotificationDetails(
         android: androidBildirimDetay, iOS: iosBildirimDetay);
+    await androidKurulum(); // Bildirimleri başlat
     //mesajın gösterilmesi için başlık,içerik, detay bilgilerini verdik.
-    await flp.show(0, widget.user, message, bildirimDetay,
+    await flp.show(0, widget.user!, message, bildirimDetay,
         payload: "payload içerik");
   }
 
   @override
   Widget build(BuildContext context) {
     //final String userId = "pceXDyA3HagfmzQ8vyXw8vokOaz1";
- final Stream<QuerySnapshot> messageStream = FirebaseFirestore.instance
-  .collection("productss")
-  .doc(widget.postId)
-  .collection('chats')
-  .where("users",isEqualTo: [widget.postUserId,user])
-  .orderBy("timeStamp", descending: false)
-  .snapshots();
+    final Stream<QuerySnapshot> messageStream = FirebaseFirestore.instance
+        .collection('chats')
+        .where("users", isEqualTo: [widget.postUserId, user])
+        .orderBy("timeStamp", descending: false)
+        .snapshots();
 
     return Scaffold(
       appBar: AppBar(
@@ -228,16 +224,20 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
   }
 
   Expanded _messageGet(AsyncSnapshot<QuerySnapshot<Object?>> snapshot) {
-    return Expanded(
-      child: ListView(
-        children: snapshot.data!.docs
-            .map((doc) => Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: _myMessageScreen(doc),
-                ))
-            .toList(),
-      ),
-    );
+    if (snapshot.hasData) {
+      return Expanded(
+        child: ListView(
+          children: snapshot.data!.docs
+              .map((doc) => Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: _myMessageScreen(doc),
+                  ))
+              .toList(),
+        ),
+      );
+    } else {
+      return Expanded(child: Container()); // Veri henüz yüklenmedi
+    }
   }
 
   ListTile _myMessageScreen(QueryDocumentSnapshot<Object?> doc) {
@@ -299,7 +299,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
           ]),
       onSelected: ((value) {
         if (value == 1) {
-          messageRemoved(messageController.text);
+          messageRemoved();
         }
       }),
     );
