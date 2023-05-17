@@ -1,4 +1,5 @@
 import 'package:campusgo/utility/color.dart';
+import 'package:campusgo/views/messageDetail.dart';
 import 'package:campusgo/views/urunDetayMesajlasma.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,16 +15,7 @@ class Conversation extends StatefulWidget {
 }
 
 class _ConversationState extends State<Conversation> {
-  late String user;
-
-  @override
-  void initState() {
-    super.initState();
-    User? currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
-      user = currentUser.uid;
-    }
-  }
+  String user = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +82,6 @@ class _ConversationState extends State<Conversation> {
             stream: FirebaseFirestore.instance
                 .collection('chats')
                 .where("receiverId", isEqualTo: user)
-                .limit(1)
                 .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -109,27 +100,22 @@ class _ConversationState extends State<Conversation> {
                     String message = data['message'].toString();
                     String product_id = data['product_id'].toString();
                     String images = data['images'].toString();
-                    String user_name = data['name'].toString();
-
+                    String user_name = data['user_name'].toString();
+                    String product_name = data['product_name'].toString();
                     return GestureDetector(
                       onTap: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => urunDetayMesajlasma(
-                        userId: senderId,
-                        conversationId:senderId.toString(),
-                        postId:product_id.toString(),
-                        postUserId:receiverId.toString(),
-                        
-                        user:user_name.toString(),
-                       
-                        resim: images.toString(),
-                       
-                       
-                      
-                            ),
-                          ),
+                              builder: (context) => MessageDetail(
+                                    userId: FirebaseAuth
+                                        .instance.currentUser!.uid
+                                        .toString(),
+                                    postId: product_id.toString(),
+                                    postUserId: receiverId.toString(),
+                                    resim: images.toString(),
+                                    user: user_name.toString(),
+                                  )),
                         );
                       },
                       child: Container(
@@ -148,7 +134,6 @@ class _ConversationState extends State<Conversation> {
                                 child: Image.network(images),
                               ),
                             ),
-                            
                             Column(
                               children: [
                                 Padding(
