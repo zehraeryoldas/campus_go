@@ -30,7 +30,7 @@ class _AnaSayfaState extends State<Arayuz> {
       //ImageUploads(),
 
       const homePage(),
-      ConversationPage(),
+      Conversation(),
       const payPage(),
       adsPage(),
 
