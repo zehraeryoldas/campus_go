@@ -242,6 +242,7 @@ class _AllAdsDetailPageState extends State<AllAdsDetailPage> {
                         durum: widget.durum.toString(),
                         user: widget.user.toString(),
                         aciklama: widget.aciklama.toString(),
+                        
                       ))));
         },
         icon: Icon(Icons.message),
