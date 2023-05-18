@@ -16,6 +16,11 @@ class Conversation extends StatefulWidget {
 
 class _ConversationState extends State<Conversation> {
   String user = FirebaseAuth.instance.currentUser!.uid;
+  final Stream<QuerySnapshot> stream = FirebaseFirestore.instance
+      .collection('chats')
+      .where("receiverId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+      //.limit(1)
+      .snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +39,7 @@ class _ConversationState extends State<Conversation> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 30,
           ),
           Padding(
@@ -79,10 +84,7 @@ class _ConversationState extends State<Conversation> {
             ),
           ),
           StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance
-                .collection('chats')
-                .where("receiverId", isEqualTo: user)
-                .snapshots(),
+            stream: stream,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Text('Loading...');
@@ -96,11 +98,12 @@ class _ConversationState extends State<Conversation> {
                   itemBuilder: (context, index) {
                     DocumentSnapshot data = snapshot.data!.docs[index];
                     String receiverId = data['receiverId'].toString();
-                    String senderId = user;
+                    String senderId = data['senderId'].toString();
                     String message = data['message'].toString();
                     String product_id = data['product_id'].toString();
                     String images = data['images'].toString();
-                    String user_name = data['user_name'].toString();
+
+                    // String user_name = data['name'].toString();
                     String product_name = data['product_name'].toString();
                     return GestureDetector(
                       onTap: () {
@@ -112,9 +115,11 @@ class _ConversationState extends State<Conversation> {
                                         .instance.currentUser!.uid
                                         .toString(),
                                     postId: product_id.toString(),
-                                    postUserId: receiverId.toString(),
+                                   // postUserId: receiverId.toString(),
+                                    name: senderId.toString(),
                                     resim: images.toString(),
-                                    user: user_name.toString(),
+                                    product_name: product_name.toString(),
+                                    user: senderId.toString(),
                                   )),
                         );
                       },
@@ -131,7 +136,7 @@ class _ConversationState extends State<Conversation> {
                               width: 60,
                               height: 80,
                               child: images.toString() == ""
-                                  ? CircleAvatar(
+                                  ? const CircleAvatar(
                                       child: Text("No img"),
                                     )
                                   : CircleAvatar(
@@ -143,29 +148,29 @@ class _ConversationState extends State<Conversation> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 20),
                                   child: Text(
-                                    user_name,
-                                    style: TextStyle(
+                                    senderId,
+                                    style: const TextStyle(
                                       color: Colors.black87,
-                                      fontSize: 22.0,
+                                      fontSize: 15.0,
                                       fontWeight: FontWeight.bold,
                                       fontFamily: "RobotoCondensed",
                                     ),
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(right: 80),
+                                  padding: const EdgeInsets.all(8.0),
                                   child: Text(
                                     message,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: Colors.grey,
-                                      fontSize: 18.0,
+                                      fontSize: 15.0,
                                       fontFamily: "RobotoCondensed",
                                     ),
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(width: 80),
+                            SizedBox(width: 30),
                             Column(
                               children: [
                                 PopupMenuButton(
