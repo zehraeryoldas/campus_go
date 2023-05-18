@@ -11,52 +11,45 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class MessageDetail extends StatefulWidget {
-    MessageDetail(
-      {super.key,
-      this.postId,
-      this.postUserId,
-      this.user,
-      this.resim,
-      this.name,
-      this.price,
-      this.durum,
-      this.aciklama,
-      this.konum,
-      this.userId,
-      this.conversationId});
+  MessageDetail({
+    super.key,
+    this.postId,
+    this.postUserId,
+    this.user,
+    this.resim,
+    this.name,
+    this.product_name,
+    this.userId,
+  });
   final String? postId;
   final String? postUserId;
   final String? user;
   final String? resim;
   final String? name;
-  final int? price;
-  final String? durum;
-  final String? aciklama;
-  final String? konum;
+  final String? product_name;
   final String? userId;
-  final String? conversationId;
 
   @override
   State<MessageDetail> createState() => _MessageDetailState();
 }
 
 class _MessageDetailState extends State<MessageDetail> {
- TextEditingController messageController = TextEditingController();
-  String user = FirebaseAuth.instance.currentUser!.uid;
+  TextEditingController messageController = TextEditingController();
+  String user2 = FirebaseAuth.instance.currentUser!.uid;
 
   void messageAdded(String text) {
     //final user = FirebaseAuth.instance.currentUser!.uid;
-    if (user != null) {
+    if (user2 != null) {
       FirebaseFirestore.instance.collection("chats").add({
         'message': text,
         'timeStamp': DateTime.now(),
-        'senderId': user,
-        'receiverId': widget.postUserId,
+        'senderId': user2,
+        'receiverId': widget.user,
         'product_id': widget.postId,
-        'name': widget.user,
+        'user_name': FirebaseAuth.instance.currentUser!.uid,
         'images': widget.resim,
-        'users': [widget.postUserId, user],
-        'product_name':widget.name,
+        'users': [user2, widget.user],
+        'product_name': widget.name,
       }).then((value) {
         messageController.text = '';
         bildirimGoster(text);
@@ -136,7 +129,8 @@ class _MessageDetailState extends State<MessageDetail> {
     //final String userId = "pceXDyA3HagfmzQ8vyXw8vokOaz1";
     final Stream<QuerySnapshot> messageStream = FirebaseFirestore.instance
         .collection('chats')
-        .where("users", isEqualTo: [widget.postUserId, user])
+        .where("users", isEqualTo: [user2, widget.user])
+        .where("product_id", isEqualTo: widget.postId)
         .orderBy("timeStamp", descending: false)
         .snapshots();
 
@@ -145,9 +139,7 @@ class _MessageDetailState extends State<MessageDetail> {
         leading: IconButton(
             onPressed: () {
               Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => Arayuz()));
+                  context, MaterialPageRoute(builder: (context) => Arayuz()));
             },
             icon: Icon(
               Icons.arrow_back,
@@ -162,15 +154,15 @@ class _MessageDetailState extends State<MessageDetail> {
             Expanded(
                 child: ListTile(
               title: Text(
-                widget.user.toString(),
-                style: TextStyle(color: Colors.black),
-              ),
-              subtitle: Text(
                 widget.name.toString(),
                 style: TextStyle(
                     color: Colors.black,
-                    fontSize: 18,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(
+                widget.product_name.toString(),
+                style: TextStyle(color: Colors.black, fontSize: 15),
               ),
             ))
           ],
