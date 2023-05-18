@@ -55,10 +55,10 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
         'senderId': user,
         'receiverId': widget.postUserId,
         'product_id': widget.postId,
-        'user_name': widget.user,
+        'product_name':widget.name,
         'images': widget.resim,
         'users': [widget.postUserId, user],
-        'product_name':widget.name,
+        
       }).then((value) {
         messageController.text = '';
         bildirimGoster(text);
@@ -139,6 +139,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
     final Stream<QuerySnapshot> messageStream = FirebaseFirestore.instance
         .collection('chats')
         .where("users", isEqualTo: [widget.postUserId, user])
+        .where("product_id",isEqualTo: widget.postId)
         .orderBy("timeStamp", descending: false)
         .snapshots();
 
@@ -146,7 +147,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => AllAdsDetailPage(
@@ -210,7 +211,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Text("Loading...");
             }
-           
+
             return Column(children: [
               _messageGet(snapshot),
               Divider(
