@@ -147,7 +147,7 @@ class _urunDetayMesajlasmaState extends State<urunDetayMesajlasma> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => AllAdsDetailPage(
