@@ -35,20 +35,20 @@ class MessageDetail extends StatefulWidget {
 
 class _MessageDetailState extends State<MessageDetail> {
   TextEditingController messageController = TextEditingController();
-  String user2 = FirebaseAuth.instance.currentUser!.uid;
+  String currentUser = FirebaseAuth.instance.currentUser!.uid;
 
   void messageAdded(String text) {
     //final user = FirebaseAuth.instance.currentUser!.uid;
-    if (user2 != null) {
+    if (currentUser != null) {
       FirebaseFirestore.instance.collection("chats").add({
         'message': text,
         'timeStamp': DateTime.now(),
-        'senderId': user2,
+        'senderId': currentUser,
         'receiverId': widget.user,
         'product_id': widget.postId,
         'user_name': FirebaseAuth.instance.currentUser!.uid,
         'images': widget.resim,
-        'users': [user2, widget.user],
+        'users': [currentUser, widget.user],
         'product_name': widget.name,
       }).then((value) {
         messageController.text = '';
@@ -129,7 +129,7 @@ class _MessageDetailState extends State<MessageDetail> {
     //final String userId = "pceXDyA3HagfmzQ8vyXw8vokOaz1";
     final Stream<QuerySnapshot> messageStream = FirebaseFirestore.instance
         .collection('chats')
-        .where("users", isEqualTo: [user2, widget.user])
+        .where("users", isEqualTo: [currentUser, widget.user])
         .where("product_id", isEqualTo: widget.postId)
         .orderBy("timeStamp", descending: false)
         .snapshots();
