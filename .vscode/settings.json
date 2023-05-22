@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "/Users/zehraeryoldas/Desktop/flutterAllProject/campusgo/linux"
+    "cmake.sourceDirectory": "/Users/zehraeryoldas/Desktop/flutterAllProject/campusgo/linux",
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
