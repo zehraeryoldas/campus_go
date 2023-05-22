@@ -1,9 +1,7 @@
-import 'package:campusgo/arayuz.dart';
-import 'package:campusgo/models/users_model.dart';
+
 import 'package:campusgo/services/user_service.dart';
-import 'package:campusgo/services/user_service.dart';
+
 import 'package:campusgo/validation.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

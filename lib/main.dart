@@ -3,14 +3,12 @@ import 'dart:io';
 import 'package:campusgo/arayuz.dart';
 import 'package:campusgo/firebase_options.dart';
 import 'package:campusgo/validation.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
-import 'firebase_options.dart';
+
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();

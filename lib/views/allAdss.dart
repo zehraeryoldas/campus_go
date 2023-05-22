@@ -105,7 +105,7 @@ class _ilanlarimState extends State<allAds> {
               String durum = data['status'];
               String aciklama = data['description'];
               String konum = data['location'];
-              String category=data['category_id'].toString();
+              
               String user = data['user.name'].toString();
 
               return GestureDetector(
@@ -175,6 +175,7 @@ class _ilanlarimState extends State<allAds> {
         image: DecorationImage(
           image: NetworkImage(data['images']),
         ),
+     
       ),
       width: MediaQuery.of(context).size.width * 0.80,
       height: MediaQuery.of(context).size.height * 0.16,

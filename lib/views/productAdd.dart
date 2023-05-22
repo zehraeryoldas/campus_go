@@ -11,8 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
+
 import 'package:path/path.dart';
 
 class payPage extends StatefulWidget {

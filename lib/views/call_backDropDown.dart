@@ -16,7 +16,7 @@ class CallBackDropDown extends StatefulWidget {
 
 class _CallBackDropDownState extends State<CallBackDropDown> {
   CallBackUser? _users;
-  String _bos = "select";
+  
 
   void _updateUser(CallBackUser? item) {
     setState(() {
