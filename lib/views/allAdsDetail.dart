@@ -2,13 +2,11 @@
 
 
 import 'package:campusgo/arayuz.dart';
-import 'package:campusgo/models/products_model.dart';
-import 'package:campusgo/services/products_services.dart';
+
 import 'package:campusgo/utility/color.dart';
-import 'package:campusgo/views/messageDetail.dart';
-import 'package:campusgo/views/home.dart';
+
 import 'package:campusgo/views/urunDetayMesajlasma.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';

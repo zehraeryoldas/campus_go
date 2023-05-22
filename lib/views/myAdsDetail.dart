@@ -1,5 +1,4 @@
-import 'package:campusgo/arayuz.dart';
-import 'package:campusgo/utility/color.dart';
+
 import 'package:campusgo/views/ads.dart';
 import 'package:campusgo/views/myAdsUpdate.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

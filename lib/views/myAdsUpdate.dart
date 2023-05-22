@@ -3,21 +3,18 @@
 import 'dart:io';
 
 import 'package:campusgo/arayuz.dart';
-import 'package:campusgo/models/products_model.dart';
+
 import 'package:campusgo/utility/color.dart';
-import 'package:campusgo/views/ads.dart';
-import 'package:campusgo/views/allAdss.dart';
+
 import 'package:campusgo/views/call_backDropDown.dart';
-import 'package:campusgo/services/products_services.dart';
-import 'package:campusgo/views/myAds.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
+
 import 'package:path/path.dart';
 
 class MyAdsUpdate extends StatefulWidget {
